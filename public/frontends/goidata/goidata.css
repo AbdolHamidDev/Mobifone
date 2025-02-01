@@ -1,0 +1,199 @@
+.goi-data-card {
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.goi-data-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.goi-data-card .card-header {
+    font-size: 1.2rem;
+    border-bottom: none;
+}
+
+.goi-data-card .card-body {
+    padding: 20px;
+    font-size: 0.9rem;
+}
+
+.goi-data-card .price {
+    font-size: 1rem;
+    color: #007bff;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.goi-data-card .feature {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-bottom: 15px;
+}
+
+.goi-data-card button {
+    border-radius: 20px;
+    font-weight: bold;
+    padding: 10px 20px;
+    background-color: #0056b3;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+.goi-data-card button:hover {
+    background-color: #003d80;
+}
+
+
+.no-data-card {
+    border: 1px dashed #ced4da;
+    background-color: #f8f9fa;
+    display: inline-block;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.no-data-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.no-data-card i {
+    color: #adb5bd;
+}
+
+.no-data-card p {
+    font-size: 1rem;
+    color: #6c757d;
+}
+
+/* Tabs container */
+.nav-tabs {
+    gap: 10px; /* Khoảng cách giữa các tab */
+    border-bottom: 2px solid #dee2e6; /* Đường gạch chân nhạt */
+    justify-content: center;
+    display: flex;
+}
+
+.nav-tabs .nav-link {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #555;
+    border: 2px solid transparent;
+    border-radius: 25px;
+    padding: 10px 20px;
+    transition: all 0.3s ease-in-out;
+    background-color: #f8f9fa; /* Màu nền nhạt */
+}
+
+.nav-tabs .nav-link.active {
+    background-color: #007bff; /* Màu nền khi tab được chọn */
+    color: white;
+    border-color: #007bff;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+.nav-tabs .nav-link:hover {
+    background-color: #e9ecef; /* Hiệu ứng hover với màu sáng */
+    color: #007bff;
+}
+
+.nav-tabs .nav-link:focus {
+    outline: none;
+    box-shadow: 0 0 5px #007bff;
+}
+
+/* Responsive styling */
+@media (max-width: 768px) {
+    .nav-tabs {
+        flex-wrap: wrap;
+    }
+
+    .nav-tabs .nav-link {
+        flex-grow: 1;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+}
+
+
+.carousel-item .row {
+    justify-content: center;
+}
+
+.card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    height: 100%;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    transition: transform 0.3s ease-in-out;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    filter: invert(1);
+}
+
+.btn-outline-primary {
+    border: 2px solid #007bff;
+    font-weight: bold;
+}
+
+.btn-outline-primary:hover {
+    background-color: #007bff;
+    color: #fff;
+}
+
+#goidataCarousel {
+    height: 350px; /* Đặt chiều cao cố định */
+    background-image: url('/assets/images/bg.jpg'); /* Đường dẫn đến ảnh */
+    background-size: cover; /* Ảnh bao phủ toàn bộ vùng */
+    background-position: center; /* Căn giữa ảnh */
+    background-repeat: no-repeat; /* Không lặp lại */
+    border-radius: 15px; /* Bo góc nếu cần */
+    padding: 20px; /* Thêm khoảng cách bên trong */
+    
+}
+
+
+
+.carousel-container {
+    position: relative;
+}
+
+.custom-control-prev,
+.custom-control-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    width: 40px!important;
+    height: 40px!important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.custom-control-prev {
+    left: -60px!important; /* Đặt nút ra ngoài rìa trái */
+}
+
+.custom-control-next {
+    right: -60px!important; /* Đặt nút ra ngoài rìa phải */
+}
+
+.custom-control-prev-icon,
+.custom-control-next-icon {
+    width: 20px;
+    height: 20px;
+    background-size: contain;
+}

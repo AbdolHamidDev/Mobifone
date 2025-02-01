@@ -1,0 +1,241 @@
+.bg-background-card {
+    background-image: url('/assets/images/sothuebao.jpg'); /* Đường dẫn ảnh đúng */
+    background-size: cover; /* Ảnh phủ toàn bộ */
+    background-position: center; /* Căn giữa */
+    background-repeat: no-repeat; /* Không lặp lại ảnh */
+    border-radius: 12px; /* Bo tròn các góc */
+    color: #fff; /* Đảm bảo chữ dễ đọc trên ảnh */
+}
+
+.square-card {
+    width: 500px;
+    height: 300px;
+    border-radius: 12px;
+    position: relative;
+    background: linear-gradient(to bottom, #00468e, #003670);
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+
+/* Ảnh góc phải phía trên */
+.card-images-right {
+    position: absolute;
+    top: 20px; /* Cách phía trên 10px */
+    right: 10px; /* Cách phía phải 10px */
+    text-align: right;
+    background: none;
+}
+
+.logo-image {
+    width: 100px;
+    height: auto;
+    display: block; /* Mỗi ảnh là một dòng riêng */
+    margin-bottom: 40px; /* Khoảng cách giữa logo và sim */
+    background: none;
+}
+
+.sim-image {
+    width: 60px;
+    height: auto;
+    background: none;
+}
+
+
+.card-title {
+    font-size: 16px;
+    color: #fff;
+    margin-bottom: 5px;
+}
+
+.card-body h3 {
+    font-size: 24px;
+    color: #ffc107; /* Màu vàng nổi bật */
+    margin-bottom: 5px;
+}
+
+.card-body p {
+    font-size: 14px;
+    color: #ddd;
+}
+
+.card-body .fw-bold {
+    color: #fff;
+}
+
+.card-body hr {
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+#countdown-timer {
+    font-size: 1.0rem;
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 8px;
+    background-color: #c0c0c59c !important; /* Nền xanh nhạt */
+    color: #f40622; /* Màu chữ đỏ */
+    margin: 15px 0; /* Khoảng cách trên và dưới */
+    display: inline-block; /* Đảm bảo kích thước đúng */
+}
+
+
+
+
+.progress-container {
+    display: flex;
+    align-items: center;
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    gap: 10px;
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.progress-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+
+.progress-line {
+    width: 30px;
+    height: 2px;
+    background-color: #d3d3d3;
+}
+
+.progress-step .circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #d3d3d3;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.progress-step p {
+    font-size: 12px;
+    font-weight: bold;
+    color: #6c757d;
+    margin: 0;
+}
+
+.progress-step.active .circle {
+    background-color: #0d6efd;
+}
+
+.progress-step.active p {
+    color: black;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Card Gói Cước */
+.package-card {
+    width: 100%; /* Chiều rộng cố định (có thể đặt max-width nếu cần) */
+    max-width: 400px; /* Giới hạn chiều rộng */
+    height: 220px; /* Chiều cao cố định */
+    border: 1px solid #c4baba; /* Viền nhẹ */
+    border-radius: 10px; /* Bo góc nhẹ */
+    overflow: hidden; /* Cắt phần tràn */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Đổ bóng */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Hiệu ứng hover */
+    background-color: #fff; /* Màu nền */
+    display: flex; /* Dùng flexbox để căn chỉnh */
+    flex-direction: column;
+    justify-content: space-between; /* Căn đều nội dung theo chiều dọc */
+    padding: 1rem; /* Khoảng cách padding */
+    background-image: url('/assets/images/background.png'); 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.package-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Gạch ngang giữa các phần */
+.package-card hr {
+    border: none;
+    border-top: 1px solid #736c6c;
+    margin: 0.5rem 0;
+}
+
+/* Giá màu đen in đậm */
+.package-card h5 {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #000;
+    margin-bottom: 0.5rem;
+}
+
+/* Danh sách chi tiết */
+.package-card ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.package-card ul li {
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 0.3rem;
+    display: flex;
+    align-items: center;
+}
+
+.package-card ul li::before {
+    content: '✔';
+    color: #28a745;
+    margin-right: 0.5rem;
+    font-size: 1rem;
+}
+
+/* Nút Radio */
+.package-card input[type="radio"] {
+    transform: scale(1.2);
+    accent-color: #007bff;
+}
+
+/* Nút Xem thêm */
+.package-card a {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.package-card a:hover {
+    text-decoration: underline;
+}
+
+
+
+
+
+
+

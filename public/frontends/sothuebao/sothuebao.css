@@ -1,0 +1,401 @@
+/* Nút bộ lọc */
+.btn-outline-dark, .btn-dark {
+    border-radius: 30px;
+    padding: 8px 20px;
+    font-size: 14px;
+    font-weight: normal; /* Không in đậm */
+    transition: all 0.3s ease;
+}
+.btn-outline-dark {
+    color: #000; /* Chữ đen */
+    border: 1px solid #000; /* Viền đen */
+}
+.btn-outline-dark:hover {
+    background-color: #000; /* Nền đen khi hover */
+    color: #fff; /* Chữ trắng khi hover */
+}
+.btn-dark {
+    background-color: #000; /* Nền đen */
+    color: #fff; /* Chữ trắng */
+    border: none;
+}
+.btn-dark:hover {
+    background-color: #333; /* Đen nhạt hơn khi hover */
+}
+
+/* Badge hiển thị số lượng bộ lọc */
+.badge.bg-dark {
+    color: #fff; /* Chữ trắng */
+    background-color: #000; /* Nền đen */
+}
+.badge.bg-light {
+    color: #000; /* Chữ đen */
+    background-color: #f8f9fa; /* Xám nhạt */
+    border: 1px solid #000; /* Viền đen */
+}
+
+/* Card */
+.card-title {
+    font-weight: normal; /* Không in đậm */
+    font-size: 16px;
+    color: #000; /* Màu đen */
+}
+.card {
+    border-radius: 15px;
+    border: 1px solid #000; /* Viền đen */
+}
+
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
+}
+.d-flex.justify-content-center.align-items-center {
+    min-height: 200px; /* Đảm bảo vùng spinner có chiều cao tối thiểu */
+}
+/* Toàn bộ bảng */
+.table {
+    
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+    background: linear-gradient(135deg, #f8f9fa, #e3e4e6); /* Gradient nền nhẹ */
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* Đổ bóng mềm mại */
+}
+
+/* Header bảng */
+.table thead {
+    background: linear-gradient(135deg, #1e293b, #3b4253); /* Gradient xanh đậm */
+    color: #fff;
+    font-size: 16px;
+    text-transform: uppercase;
+    font-weight: bold;
+    text-align: left;
+    letter-spacing: 1px;
+}
+
+/* Màu sắc xám nhẹ cho tên cột */
+.table thead th {
+    color: #32536f; /* Xám nhạt */
+    font-weight: bold; /* Làm đậm chữ */
+    text-transform: uppercase; /* Chữ in hoa */
+    font-size: 14px; /* Giảm kích thước chữ một chút */
+    background-color: #e8ebee;
+}
+/* Nội dung bảng */
+/* Zoom nhẹ hơn khi hover */
+.table tbody tr:hover {
+    transform: scale(1.005); /* Zoom rất nhẹ */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Bóng mềm mại */
+    background-color: #f8f9fa; /* Màu nền sáng hơn khi hover */
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+/* Nền mặc định của dòng */
+.table tbody tr {
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+
+.table tbody td {
+    padding: 15px 20px;
+    font-size: 14px;
+    color: #4a5568; /* Màu chữ xám đậm */
+    vertical-align: middle;
+}
+
+/* Tùy chỉnh nút "Chọn" */
+.btn-primary {
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 50px; /* Nút bo tròn đầy đủ */
+    background: linear-gradient(135deg, #4a90e2, #007bff); /* Gradient xanh lam */
+    color: #fff;
+    transition: all 0.3s ease-in-out;
+    border: none;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #0056b3, #004085); /* Xanh đậm hơn khi hover */
+    transform: scale(1.05); /* Zoom nút khi hover */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Phân trang */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination .page-link {
+    border: none;
+    color: #007bff;
+    font-size: 14px;
+    font-weight: bold;
+    margin: 0 5px;
+    padding: 10px 15px;
+    background: #fff;
+    border-radius: 50px; /* Nút tròn */
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.pagination .page-link:hover {
+    background: #007bff;
+    color: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.pagination .active .page-link {
+    background: linear-gradient(135deg, #4a90e2, #007bff);
+    color: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Dòng thông báo không tìm thấy dữ liệu */
+.table tbody .text-center {
+    font-size: 16px;
+    font-weight: 600;
+    color: #6c757d;
+    padding: 20px;
+}
+
+/* Hiệu ứng khi tải dữ liệu */
+#table-container.loading::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    backdrop-filter: blur(5px); /* Hiệu ứng mờ nền */
+}
+
+#table-container.loading::after {
+    content: '';
+    width: 50px;
+    height: 50px;
+    border: 4px solid #ccc;
+    border-top: 4px solid #007bff; /* Màu quay vòng */
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* Hiệu ứng quay tròn */
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+/* Làm nổi bật số thuê bao */
+.table tbody td:first-child {
+    font-size: 16px; /* Tăng kích thước chữ */
+    font-weight: bold; /* Làm đậm */
+    color: #343131; /* Màu xanh lam nổi bật */
+    text-align: center; /* Căn giữa nội dung */
+    background-color: #f8f9fa; /* Nền sáng hơn để làm nổi bật */
+    border-left: 4px solid #a82727; /* Viền trái màu xanh lam */
+}
+
+/* Hiệu ứng hover cho số thuê bao */
+.table tbody tr:hover td:first-child {
+    background-color: #e3f2fd; /* Nền sáng xanh lam nhạt */
+    color: #0056b3; /* Màu chữ đậm hơn */
+    transition: all 0.3s ease;
+}
+
+/* Thêm khoảng cách cho cột số thuê bao */
+.table tbody td:first-child {
+    padding: 12px 20px;
+    border-radius: 5px;
+}
+
+/* Tùy chỉnh cho header */
+.table thead th:first-child {
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+
+/* Tùy chỉnh icon tooltip */
+.custom-tooltip-icon i {
+    color: #6c757d; /* Màu xám nhạt */
+    font-size: 16px;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.custom-tooltip-icon i:hover {
+    color: #007bff; /* Màu xanh lam khi hover */
+}
+
+/* Tùy chỉnh tooltip */
+.tooltip {
+    background: #fff !important; /* Nền trắng */
+    color: #333 !important; /* Chữ đen */
+    border: 1px solid #ddd; /* Viền nhạt */
+    border-radius: 8px; /* Bo góc */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Đổ bóng */
+    padding: 10px !important; /* Khoảng cách bên trong */
+    max-width: 300px; /* Giới hạn kích thước */
+    transform: scale(0.8); /* Thu nhỏ mặc định */
+    opacity: 0; /* Ẩn tooltip khi chưa hiển thị */
+    transition: transform 0.2s ease-out, opacity 0.2s ease-out; /* Hiệu ứng */
+}
+
+/* Tooltip hiển thị */
+.tooltip.show {
+    transform: scale(1); /* Phóng to */
+    opacity: 1; /* Hiển thị tooltip */
+}
+
+/* Tùy chỉnh mũi tên tooltip */
+.tooltip-arrow {
+    border-top-color: #ddd !important; /* Màu viền cho mũi tên */
+}
+
+
+   /* Định dạng phần container */
+   .search-container {
+ 
+    background-size: cover;
+    width: 100%;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* Ô tìm kiếm và nút */
+.search-box {
+    display: flex;
+    align-items: center;
+    background: white;
+    padding: 10px;
+    border-radius: 30px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    width: 50%;
+    max-width: 500px;
+}
+
+.search-box input {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 30px;
+}
+
+.search-box button {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+.search-box button:hover {
+    background: #0056b3;
+}
+
+/* Tiêu đề */
+.search-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 10%;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+.search-header a {
+    text-decoration: none;
+    color: #333;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.search-header a:hover {
+    color: #007bff;
+}
+
+.tooltip {
+    position: absolute;
+    background: rgba(54, 54, 54, 0.85) !important;
+    padding: 14px;
+    border-radius: 12px;
+    font-size: 13px !important;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+    z-index: 1000;
+    pointer-events: none;
+    max-width: 400px; /* Giới hạn chiều rộng tối đa */
+    text-align: left;
+   
+}
+
+/* Mũi tên tooltip */
+.tooltip::before {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: 20px;
+    border-width: 10px;
+    border-style: solid;
+    border-color: transparent transparent rgba(0, 0, 0, 0.85) transparent !important;
+}
+
+/* Hiển thị tooltip khi hover vào input */
+.search-box:hover .tooltip {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(100px) !important;
+}
+
+/* Tiêu đề tooltip */
+.tooltip h4 {
+    font-size: 13px !important;
+    margin-bottom: 6px;
+    color: rgba(255, 255, 255, 0.92) !important; /* Chữ trắng nhẹ hơn */
+}
+
+/* Danh sách hướng dẫn */
+.tooltip ul {
+    padding-left: 20px !important;
+    margin: 0 !important;
+    font-size: 14px !important;
+    color: rgba(255, 255, 255, 0.87) !important; /* Chữ trắng mượt */
+    display: flex; /* Hiển thị các mục trong danh sách theo hàng ngang */
+    flex-wrap: wrap; /* Cho phép các mục xuống dòng nếu không đủ chỗ */
+    list-style-type: none; /* Loại bỏ dấu chấm đầu dòng */
+}
+
+/* Căn chỉnh danh sách item */
+.tooltip ul li {
+    line-height: 1.6 !important;
+    padding-bottom: 4px;
+    margin-right: 10px; /* Khoảng cách giữa các mục */
+}
+
+
