@@ -9,7 +9,8 @@
                 <div class="card-body text-center">
                     <h1 class="display-6 text-primary">{{ $subscriptionType->name }}</h1>
                     <p class="text-muted mb-4">{{ $subscriptionType->title }}</p>
-                    <img src="{{ Storage::url($subscriptionType->image) }}" 
+                    <img src="{{ asset('storage/' . $subscriptionType->image) }}" 
+
                          alt="{{ $subscriptionType->name }}" 
                          class="img-fluid rounded shadow" 
                          style="max-width: 100%; height: auto;">
@@ -56,7 +57,8 @@
                         <div class="card mb-3 border-0 shadow-sm">
                             <div class="row g-0">
                                 <div class="col-4">
-                                    <img src="{{ Storage::url($item->image) }}" 
+                                    <img src="{{ asset('storage/' . $item->image) }}" 
+
                                          class="img-fluid rounded-start" 
                                          alt="{{ $item->name }}" 
                                          style="height: 100%; object-fit: cover;">
@@ -64,7 +66,8 @@
                                 <div class="col-8">
                                     <div class="card-body">
                                         <h6 class="card-title text-primary">{{ $item->name }}</h6>
-                                        <p class="text-muted small">{{ Str::limit($item->title, 50) }}</p>
+                                        <p class="text-muted small">{{ \Illuminate\Support\Str::limit($item->title, 50) }}</p>
+
                                         <a href="{{ route('frontend.dichvudidong.details', ['subscriptionTypeId' => $item->id]) }}" 
                                            class="btn btn-sm btn-outline-primary">
                                             Xem chi tiết

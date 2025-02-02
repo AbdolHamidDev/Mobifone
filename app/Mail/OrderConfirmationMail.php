@@ -5,12 +5,16 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Contracts\Queue\ShouldQueue;
+
+
 
 class OrderConfirmationMail extends Mailable
 {
     use Queueable, SerializesModels;
 
     public $orderDetails;
+    public $qrCodePath; // ✅ Thêm biến để lưu QR Code
 
     /**
      * Create a new message instance.
@@ -20,6 +24,10 @@ class OrderConfirmationMail extends Mailable
     public function __construct($orderDetails)
     {
         $this->orderDetails = $orderDetails;
+         // Nếu có QR Code, tạo đường dẫn tuyệt đối
+         if (!empty($orderDetails['qr_code'])) {
+            $this->qrCodePath = storage_path('app/public/' . str_replace('storage/', '', $orderDetails['qr_code']));
+        }
     }
 
     /**
@@ -29,14 +37,21 @@ class OrderConfirmationMail extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.order_confirmation')
-                    ->with([
-                        'customer_name' => $this->orderDetails['customer_name'],
-                        'order_code' => $this->orderDetails['order_code'],
-                        'total_amount' => $this->orderDetails['total_amount'],
-                        'payment_method' => $this->orderDetails['payment_method'],
-                        'qr_code_url' => asset($this->orderDetails['qr_code']), // Truyền đường dẫn file
-                    ]);
+        $email = $this->subject("Xác nhận đặt hàng - MobiFone")
+                      ->view('emails.order_confirmation')
+                      ->with('orderDetails', $this->orderDetails);
+    
+        // Kiểm tra nếu có QR Code thì đính kèm file
+        if (!empty($this->orderDetails['qr_code_path']) && file_exists($this->orderDetails['qr_code_path'])) {
+            $email->attach($this->orderDetails['qr_code_path'], [
+                'as' => 'QR_Code.png', // Tên file đính kèm
+                'mime' => 'image/png', // Định dạng file
+            ]);
+        }
+    
+        return $email;
     }
+    
+    
     
 }

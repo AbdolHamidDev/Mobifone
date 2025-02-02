@@ -122,24 +122,46 @@ $shippingFee = $isEsim ? 0 : ($request->input('shipping_fee') ?? 25000); // Mặ
 
         // Đặt flash session để hiển thị trên trang success
         session()->flash('order_complete', true);
-        session()->flash('order_code', $order->id);
+        session()->flash('order_code', $order->order_code); 
         session()->flash('customer_name', $order->customer_name);
         session()->flash('total_amount', $order->total_amount);
         session()->flash('sim_type', $validated['sim_type']); // ✅ Lưu loại SIM vào session
         session()->flash('qr_code', asset($order->qr_code)); // ✅ Trả về URL ảnh QR Code
 
-        // Gửi email xác nhận nếu có email
-        $qrCodeUrl = !empty($order->qr_code) ? asset($order->qr_code) : null;
+// Xác định loại SIM (eSIM hoặc SIM Vật lý)
+$isEsim = $order->sim_type === 'eSIM';
+$goiCuoc = Goicuoc::find($order->goi_cuoc_id);
 
-if (!empty($validated['email'])) {
-    Mail::to($validated['email'])->send(new OrderConfirmationMail([
-        'customer_name' => $order->customer_name,
-        'order_code' => $order->id,
-        'total_amount' => $totalAmount,
-        'payment_method' => $order->payment_method,
-        'qr_code' => $qrCodeUrl, // ✅ Gửi đường dẫn QR Code hoặc null nếu không có
-    ]));
+// Lấy đường dẫn file QR Code từ storage
+$qrCodeBase64 = null;
+if ($isEsim && !empty($order->qr_code)) {
+    $qrCodePath = storage_path('app/public/' . str_replace('storage/', '', $order->qr_code));
+    
+    // Chuyển QR Code thành Base64
+    if (file_exists($qrCodePath)) {
+        $qrCodeData = file_get_contents($qrCodePath);
+        $qrCodeBase64 = 'data:image/png;base64,' . base64_encode($qrCodeData);
+    }
 }
+
+// Gửi email với Base64 QR Code
+Mail::to($validated['email'])->send(new OrderConfirmationMail([
+    'customer_name' => $order->customer_name,
+    'order_code' => $order->order_code, // Mã đơn hàng chính xác
+    'total_amount' => $totalAmount,
+    'payment_method' => $order->payment_method,
+    'sim_type' => $order->sim_type ?? 'SIM Vật lý',
+    'is_esim' => $isEsim, // Xác định eSIM
+    'qr_code' => $qrCodeBase64, // ✅ Truyền Base64 QR Code vào email
+    'shipping_fee' => $order->shipping_fee ?? 0,
+    'activation_fee' => $order->activation_fee ?? 0,
+    'package_price' => $order->package_price ?? 0,
+    'ten_goicuoc' => $goiCuoc ? $goiCuoc->ten_goicuoc : 'Không xác định',
+    'address' => $order->address ?? 'Không có địa chỉ',
+]));
+
+
+
 
 
         // Chuyển hướng đến trang thành công
@@ -183,7 +205,7 @@ if (!empty($validated['email'])) {
     
         // Lưu dữ liệu vào cache với thời gian hết hạn 15 phút
         Cache::put($tempId, $dataToCache, now()->addMinutes(15));
-    
+        
         // Chuyển hướng sang bước 2 với temp_id
         return redirect()->route('frontend.dichvudidong.step2.show', ['temp_id' => $tempId]);
     }
@@ -300,6 +322,31 @@ public function toggleDeliveryStatus(Order $order)
     ]);
 }
 
+
+
+
+
+
+public function getOrderByCode($order_code)
+{
+    $order = DB::table('orders')
+        ->join('goicuocs', 'orders.goi_cuoc_id', '=', 'goicuocs.id')
+        ->select('orders.*', 'goicuocs.ten_goicuoc')
+        ->where('orders.order_code', $order_code) // Tra cứu bằng order_code thay vì id
+        ->first();
+
+    if ($order) {
+        return response()->json([
+            'success' => true,
+            'order' => $order
+        ]);
+    } else {
+        return response()->json([
+            'success' => false,
+            'message' => 'Không tìm thấy đơn hàng.'
+        ]);
+    }
+}
 
 
 

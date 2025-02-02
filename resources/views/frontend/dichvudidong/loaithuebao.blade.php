@@ -24,7 +24,8 @@
                 @forelse ($items as $item)
                     <div class="col-md-4 mb-4">
                         <div class="card shadow-sm h-100">
-                            <img src="{{ Storage::url($item->image) }}" class="card-img-top rounded-top" alt="{{ $item->name }}">
+                            <img src="{{ asset('storage/' . $item->image) }}" />
+
                             <div class="card-body d-flex flex-column">
                                 <h5 class="card-title text-truncate">{{ $item->name }}</h5>
                                 <p class="card-text text-truncate" title="{{ $item->title }}">{{ $item->title }}</p>

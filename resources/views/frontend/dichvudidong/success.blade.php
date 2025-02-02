@@ -36,7 +36,7 @@
                 <div class="modal-body">
                     <div class="text-center">
                         <img src="{{ asset('assets/images/hoantat.jpg') }}" alt="Đặt hàng thành công" style="width: 80px;">
-                        <p class="mt-3">Mã đơn hàng: <strong>{{ session('order_code') }}</strong></p>
+                        <p class="mt-3">Mã giữ số: <strong>{{ session('order_code') }}</strong></p>
                         <p class="mb-3">Khách hàng: <strong>{{ session('customer_name') }}</strong></p>
                         <p class="mb-3">Tổng thanh toán: <strong>{{ number_format(session('total_amount')) }}đ</strong></p>
                 

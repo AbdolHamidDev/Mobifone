@@ -399,3 +399,19 @@
 }
 
 
+.search-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background: #f4f4f4;
+    border-radius: 5px;
+}
+.search-header a {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+}
+.search-header a:hover {
+    text-decoration: underline;
+}

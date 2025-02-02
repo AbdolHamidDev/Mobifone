@@ -94,7 +94,7 @@ Route::name('frontend.')->group(function () {
     Route::get('/dich-vu-di-dong/so-thue-bao', [SoThueBaoController::class, 'loc'])->name('dichvudidong.sothuebao');
     Route::get('/dich-vu-di-dong/so-thue-bao/chi-tiet/{id}', [SoThueBaoController::class, 'showChiTietSoThueBao'])->name('dichvudidong.chitiet');
     Route::post('/dich-vu-di-dong/so-thue-bao/search', [SoThueBaoController::class, 'search'])->name('dichvudidong.search');
-
+   
     //oder
     // frontend
   // Route GET hiển thị bước 2
@@ -105,6 +105,8 @@ Route::name('frontend.')->group(function () {
 
     Route::get('/orders/success', [OrderController::class, 'success'])->name('orders.success');
 
+     // API lấy thông tin đơn hàng
+     Route::get('/dich-vu-di-dong/so-thue-bao/orders/{order_code}', [OrderController::class, 'getOrderByCode']);
 
     // tuyển dụng
     Route::get('/tuyen-dung', [TuyenDungController::class, 'tuyendung']);

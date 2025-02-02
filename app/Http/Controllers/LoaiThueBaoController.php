@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\SubscriptionType;
 use App\Models\LoaiThueBao;
 
+
 class LoaiThueBaoController extends Controller
 {
     /**
