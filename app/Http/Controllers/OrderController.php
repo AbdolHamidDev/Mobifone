@@ -10,7 +10,6 @@ use App\Mail\OrderConfirmationMail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Session;
 use BaconQrCode\Renderer\Image\SvgImageBackEnd;
 use BaconQrCode\Renderer\RendererStyle\RendererStyle;
 use BaconQrCode\Renderer\ImageRenderer;
@@ -20,6 +19,8 @@ use Illuminate\Support\Facades\Storage;
 
 class OrderController extends Controller
 {
+
+
     public function store(Request $request)
     {
         if ($request->has('temp_id')) {
@@ -74,8 +75,8 @@ class OrderController extends Controller
             'shipping_fee' => $isEsim ? 'nullable|numeric' : 'required|numeric',
             'total_amount' => 'required|numeric',
         ]);
-// Nếu là eSIM, phí ship luôn = 0, nếu không thì lấy từ request
-$shippingFee = $isEsim ? 0 : ($request->input('shipping_fee') ?? 25000); // Mặc định 25,000đ nếu không có giá trị
+        // Nếu là eSIM, phí ship luôn = 0, nếu không thì lấy từ request
+        $shippingFee = $isEsim ? 0 : ($request->input('shipping_fee') ?? 25000); // Mặc định 25,000đ nếu không có giá trị
         // Tính tổng tiền
         $totalAmount = $validated['activation_fee'] + $validated['package_price'] + ($isEsim ? 0 : $validated['shipping_fee']);
 
@@ -102,7 +103,7 @@ $shippingFee = $isEsim ? 0 : ($request->input('shipping_fee') ?? 25000); // Mặ
                 $qrCodePath = 'storage/' . $fileName;
         
             } catch (\Exception $e) {
-                \Log::error('Lỗi tạo QR Code: ' . $e->getMessage());
+                 // Không log lỗi nữa
             }
         }
         
@@ -128,48 +129,41 @@ $shippingFee = $isEsim ? 0 : ($request->input('shipping_fee') ?? 25000); // Mặ
         session()->flash('sim_type', $validated['sim_type']); // ✅ Lưu loại SIM vào session
         session()->flash('qr_code', asset($order->qr_code)); // ✅ Trả về URL ảnh QR Code
 
-// Xác định loại SIM (eSIM hoặc SIM Vật lý)
-$isEsim = $order->sim_type === 'eSIM';
-$goiCuoc = Goicuoc::find($order->goi_cuoc_id);
+        // Xác định loại SIM (eSIM hoặc SIM Vật lý)
+        $isEsim = $order->sim_type === 'eSIM';
+        $goiCuoc = Goicuoc::find($order->goi_cuoc_id);
 
-// Lấy đường dẫn file QR Code từ storage
-$qrCodeBase64 = null;
-if ($isEsim && !empty($order->qr_code)) {
-    $qrCodePath = storage_path('app/public/' . str_replace('storage/', '', $order->qr_code));
-    
-    // Chuyển QR Code thành Base64
-    if (file_exists($qrCodePath)) {
-        $qrCodeData = file_get_contents($qrCodePath);
-        $qrCodeBase64 = 'data:image/png;base64,' . base64_encode($qrCodeData);
-    }
-}
+        // Lấy đường dẫn file QR Code từ storage
+        $qrCodeBase64 = null;
+        if ($isEsim && !empty($order->qr_code)) {
+            $qrCodePath = storage_path('app/public/' . str_replace('storage/', '', $order->qr_code));
+            
+            // Chuyển QR Code thành Base64
+            if (file_exists($qrCodePath)) {
+                $qrCodeData = file_get_contents($qrCodePath);
+                $qrCodeBase64 = 'data:image/png;base64,' . base64_encode($qrCodeData);
+            }
+        }
 
-// Gửi email với Base64 QR Code
-Mail::to($validated['email'])->send(new OrderConfirmationMail([
-    'customer_name' => $order->customer_name,
-    'order_code' => $order->order_code, // Mã đơn hàng chính xác
-    'total_amount' => $totalAmount,
-    'payment_method' => $order->payment_method,
-    'sim_type' => $order->sim_type ?? 'SIM Vật lý',
-    'is_esim' => $isEsim, // Xác định eSIM
-    'qr_code' => $qrCodeBase64, // ✅ Truyền Base64 QR Code vào email
-    'shipping_fee' => $order->shipping_fee ?? 0,
-    'activation_fee' => $order->activation_fee ?? 0,
-    'package_price' => $order->package_price ?? 0,
-    'ten_goicuoc' => $goiCuoc ? $goiCuoc->ten_goicuoc : 'Không xác định',
-    'address' => $order->address ?? 'Không có địa chỉ',
-]));
-
-
-
-
+        // Gửi email với Base64 QR Code
+        Mail::to($validated['email'])->send(new OrderConfirmationMail([
+            'customer_name' => $order->customer_name,
+            'order_code' => $order->order_code, // Mã đơn hàng chính xác
+            'total_amount' => $totalAmount,
+            'payment_method' => $order->payment_method,
+            'sim_type' => $order->sim_type ?? 'SIM Vật lý',
+            'is_esim' => $isEsim, // Xác định eSIM
+            'qr_code' => $qrCodeBase64, // ✅ Truyền Base64 QR Code vào email
+            'shipping_fee' => $order->shipping_fee ?? 0,
+            'activation_fee' => $order->activation_fee ?? 0,
+            'package_price' => $order->package_price ?? 0,
+            'ten_goicuoc' => $goiCuoc ? $goiCuoc->ten_goicuoc : 'Không xác định',
+            'address' => $order->address ?? 'Không có địa chỉ',
+        ]));
 
         // Chuyển hướng đến trang thành công
         return redirect()->route('frontend.orders.success');
     }
-
-
-
 
 
     public function step2(Request $request)
@@ -210,9 +204,6 @@ Mail::to($validated['email'])->send(new OrderConfirmationMail([
         return redirect()->route('frontend.dichvudidong.step2.show', ['temp_id' => $tempId]);
     }
     
-    
-    
-
 
     public function showStep2(Request $request)
     {
@@ -239,9 +230,9 @@ Mail::to($validated['email'])->send(new OrderConfirmationMail([
     
     
     public function success()
-{
-    return view('frontend.dichvudidong.success');
-}
+    {
+        return view('frontend.dichvudidong.success');
+    }
 
 
 
@@ -268,85 +259,90 @@ Mail::to($validated['email'])->send(new OrderConfirmationMail([
 
 
     public function show($id)
-{
-    
-    $order = Order::findOrFail($id); // Tìm đơn hàng theo ID
-    return response()->json($order); // Trả về dữ liệu JSON để hiển thị trên modal
-}
-
-
-// API: Thay đổi trạng thái thanh toán
-public function togglePaymentStatus($id)
-{
-    $order = Order::findOrFail($id);
-
-    // Chuyển đổi trạng thái
-    $newStatus = $order->trang_thai === 'hoa_mang' ? 'giu_so' : 'hoa_mang';
-    $order->trang_thai = $newStatus;
-    $order->save();
-
-    // Đồng bộ trạng thái với bảng so_thue_bao
-    $soThueBao = $order->soThueBao;
-    if ($soThueBao) {
-        $soThueBao->trang_thai = $newStatus;
-        $soThueBao->save();
+    {
+        
+        $order = Order::findOrFail($id); // Tìm đơn hàng theo ID
+        return response()->json($order); // Trả về dữ liệu JSON để hiển thị trên modal
     }
 
-    return response()->json([
-        'success' => true,
-        'newStatus' => $newStatus,
-    ]);
-}
 
+    // API: Thay đổi trạng thái thanh toán
+    public function togglePaymentStatus($id)
+    {
+        $order = Order::findOrFail($id);
 
+        // Chuyển đổi trạng thái
+        $newStatus = $order->trang_thai === 'hoa_mang' ? 'giu_so' : 'hoa_mang';
+        $order->trang_thai = $newStatus;
+        $order->save();
 
+        // Đồng bộ trạng thái với bảng so_thue_bao
+        $soThueBao = $order->soThueBao;
+        if ($soThueBao) {
+            $soThueBao->trang_thai = $newStatus;
+            $soThueBao->save();
+        }
 
-//API: Thay đổi trạng thái nhận hàng
-
-public function toggleDeliveryStatus(Order $order)
-{
-    if ($order->trang_thai !== 'hoa_mang') {
-        return response()->json([
-            'success' => false,
-            'message' => 'Đơn hàng chưa Hòa mạng, không thể nhận hàng.'
-        ], 400);
-    }
-
-    // Chuyển đổi trạng thái nhận hàng
-    $order->da_nhan_hang = !$order->da_nhan_hang;
-    $order->save();
-
-    return response()->json([
-        'success' => true,
-        'isDelivered' => $order->da_nhan_hang,
-    ]);
-}
-
-
-
-
-
-
-public function getOrderByCode($order_code)
-{
-    $order = DB::table('orders')
-        ->join('goicuocs', 'orders.goi_cuoc_id', '=', 'goicuocs.id')
-        ->select('orders.*', 'goicuocs.ten_goicuoc')
-        ->where('orders.order_code', $order_code) // Tra cứu bằng order_code thay vì id
-        ->first();
-
-    if ($order) {
         return response()->json([
             'success' => true,
-            'order' => $order
-        ]);
-    } else {
-        return response()->json([
-            'success' => false,
-            'message' => 'Không tìm thấy đơn hàng.'
+            'newStatus' => $newStatus,
         ]);
     }
-}
+
+
+
+
+    //API: Thay đổi trạng thái nhận hàng
+
+    public function toggleDeliveryStatus(Order $order)
+    {
+        if ($order->trang_thai !== 'hoa_mang') {
+            return response()->json([
+                'success' => false,
+                'message' => 'Đơn hàng chưa Hòa mạng, không thể nhận hàng.'
+            ], 400);
+        }
+
+        // Chuyển đổi trạng thái nhận hàng
+        $order->da_nhan_hang = !$order->da_nhan_hang;
+        $order->save();
+
+        return response()->json([
+            'success' => true,
+            'isDelivered' => $order->da_nhan_hang,
+        ]);
+    }
+
+
+
+
+
+    // tra cứu số thuê bao đã orders
+    public function getOrderByCode($order_code)
+    {
+        $order = DB::table('orders')
+            ->join('goicuocs', 'orders.goi_cuoc_id', '=', 'goicuocs.id')
+            ->leftJoin('so_thue_bao', 'orders.so_thue_bao_id', '=', 'so_thue_bao.id') // Thêm join với bảng số thuê bao
+            ->select(
+                'orders.*', 
+                'goicuocs.ten_goicuoc', 
+                'so_thue_bao.so_thue_bao as so_thue_bao' // Lấy số thuê bao
+            )
+            ->where('orders.order_code', $order_code) 
+            ->first();
+
+        if ($order) {
+            return response()->json([
+                'success' => true,
+                'order' => $order
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Không tìm thấy đơn hàng.'
+            ]);
+        }
+    }
 
 
 

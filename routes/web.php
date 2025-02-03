@@ -23,6 +23,8 @@ use App\Http\Controllers\DichvuChitietController;
 use App\Http\Controllers\SoThueBaoController;
 use App\Http\Controllers\OrderController;
 
+
+
 // Google OAuth 
 Route::get('/login/google', [HomeController::class, 'getGoogleLogin'])->name('google.login'); 
 Route::get('/login/google/callback', [HomeController::class, 'getGoogleCallback'])->name('google.callback');
@@ -53,6 +55,32 @@ Route::name('frontend.')->group(function () {
     Route::get('/chuyendoi-mang', function () {
         return view('frontend.chuyenmang.home');
     });
+
+    // dịch vụ quốc tế
+    Route::get('/dich-vu-quoc-te', function () {
+        return view('frontend.dichvudidong.dichvuquocte');
+    });
+
+    Route::get('/dich-vu/ra-nuoc-ngoai', function () {
+        return view('frontend.dichvudidong.ra-nuoc-ngoai');
+    })->name('dichvu.ra-nuoc-ngoai');
+    
+    Route::get('/dich-vu/nuoc-ngoai-den-vn', function () {
+        return view('frontend.dichvudidong.nuoc-ngoai-den-vn');
+    })->name('dichvu.nuoc-ngoai-den-vn');
+    
+    Route::get('/dich-vu/thoai-quoc-te', function () {
+        return view('frontend.dichvudidong.thoai-quoc-te');
+    })->name('dichvu.thoai-quoc-te');
+    
+    Route::get('/dich-vu/quoc-te-khac', function () {
+        return view('frontend.dichvudidong.quoc-te-khac');
+    })->name('dichvu.quoc-te-khac');
+    
+
+
+
+
 
     Route::get('/dieu-khoan-su-dung', function () {
         return view('frontend.dieukhoan.terms-of-use');
@@ -93,7 +121,8 @@ Route::name('frontend.')->group(function () {
     ->name('dichvudidong.sothuebao');
     Route::get('/dich-vu-di-dong/so-thue-bao', [SoThueBaoController::class, 'loc'])->name('dichvudidong.sothuebao');
     Route::get('/dich-vu-di-dong/so-thue-bao/chi-tiet/{id}', [SoThueBaoController::class, 'showChiTietSoThueBao'])->name('dichvudidong.chitiet');
-    Route::post('/dich-vu-di-dong/so-thue-bao/search', [SoThueBaoController::class, 'search'])->name('dichvudidong.search');
+    // tìm kiếm
+    Route::get('/tim-kiem', [SoThueBaoController::class, 'timKiem']);
    
     //oder
     // frontend
@@ -119,8 +148,8 @@ Route::name('frontend.')->group(function () {
     Route::get('/store-search', [StoreController::class, 'search'])->name('store.search');
     Route::get('/get-coordinates', [StoreController::class, 'getCoordinates'])->name('get.coordinates');
 
+
     
-   
 
 });
 

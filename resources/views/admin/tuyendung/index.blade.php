@@ -32,8 +32,8 @@
                     <tr class="hover:bg-gray-50 transition-all duration-200">
                         <td class="px-6 py-4">{{ $tuyendung->id }}</td>
                         <td class="px-6 py-4">{{ $tuyendung->vi_tri }}</td>
-                        <td class="px-6 py-4">{{ Str::limit($tuyendung->mo_ta, 50) }}</td>
-                        <td class="px-6 py-4">{{ Str::limit($tuyendung->yeu_cau, 50) }}</td>
+                        <td class="px-6 py-4">{{  \Illuminate\Support\Str::limit($tuyendung->mo_ta, 50) }}</td>
+                        <td class="px-6 py-4">{{  \Illuminate\Support\Str::limit($tuyendung->yeu_cau, 50) }}</td>
                         <td class="px-6 py-4">
                             @if(is_numeric($tuyendung->luong))
                                 {{ number_format($tuyendung->luong) }} đ

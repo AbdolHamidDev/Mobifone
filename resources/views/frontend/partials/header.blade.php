@@ -23,7 +23,7 @@
                             <li><a href="{{ route('frontend.dichvudidong.goidata') }}">Gói data</a></li>
                             <li><a href="{{ route('frontend.dichvudidong.dichvu') }}">Dịch vụ</a></li>
                             <li><a href="{{ route('frontend.dichvudidong.sothuebao') }}">Đăng ký hòa mạng</a></li>
-                            <li><a href="#">Dịch vụ quốc tế</a></li>
+                            <li><a href="{{ url('/dich-vu-quoc-te') }}">Dịch vụ quốc tế</a></li>
                           </ul>
                         </li>
                   

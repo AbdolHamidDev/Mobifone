@@ -1,8 +1,12 @@
 @extends('layouts.frontend')
+
 <link rel="stylesheet" href="{{ asset('frontends/sothuebao/sothuebao_chitiet.css') }}">
+<link rel="stylesheet" href="{{ asset('frontends/order/main.css') }}">
 @section('content')
+
     <div class="container" style="padding-top: 15vh;">
 
+        <!-- Bộ đếm thời gian -->
         <div class="text-center mt-4">
             <p>
                 Phiên đặt số có hiệu lực trong
@@ -10,8 +14,9 @@
             </p>
         </div>
 
+        <!-- Bước hoàn thành -->
         <div class="progress-container">
-            <div class="progress-step completed"> <!-- Bước hoàn thành -->
+            <div class="progress-step completed"> 
                 <div class="circle"></div>
                 <p>Chọn SIM</p>
             </div>
@@ -29,141 +34,146 @@
 
 
 
-        <div class="row">
-            <!-- Cột trái: Form nhập thông tin -->
-            <div class="col-lg-8">
-                <div class="card shadow-sm p-4">
-                    <form action="{{ route('orders.store') }}" method="POST">
-                        @csrf
-                        <input type="hidden" name="temp_id" value="{{ $tempId }}">
+<div class="row">
+    <!-- Cột trái: Form nhập thông tin -->
+    <div class="col-lg-8">
+        <div class="card shadow-sm p-4">
+            <form action="{{ route('orders.store') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="temp_id" value="{{ $tempId }}">
 
-                   
+                    <!-- Loại SIM -->
+                    <div class="mb-3">
+                        <label class="form-label">Loại SIM</label>
+                        <div class="d-flex gap-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="sim_type" id="sim_vat_ly" value="SIM Vật lý" checked>
+                                <label class="form-check-label" for="sim_vat_ly">SIM Vật lý</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="sim_type" id="esim" value="eSIM">
+                                <label class="form-check-label" for="esim">eSIM</label>
+                            </div>
+                        </div>
 
-<!-- Loại SIM -->
-<div class="mb-3">
-    <label class="form-label">Loại SIM</label>
-    <div class="d-flex gap-3">
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="sim_type" id="sim_vat_ly" value="SIM Vật lý" checked>
-            <label class="form-check-label" for="sim_vat_ly">SIM Vật lý</label>
-        </div>
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="sim_type" id="esim" value="eSIM">
-            <label class="form-check-label" for="esim">eSIM</label>
-        </div>
-    </div>
+                        <!-- Thông báo chỉ hiển thị khi chọn eSIM -->
+                        <div id="esim_notice" class="mt-2 text-secondary" style="display: none;">
+                            eSIM là SIM điện tử và chỉ dùng cho các dòng máy hỗ trợ eSIM, vui lòng xem danh sách thiết bị 
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#esimModal">tại đây</a>!
+                        </div>
+                    </div>
 
-    <!-- Thông báo chỉ hiển thị khi chọn eSIM -->
-    <div id="esim_notice" class="mt-2 text-secondary" style="display: none;">
-        eSIM là SIM điện tử và chỉ dùng cho các dòng máy hỗ trợ eSIM, vui lòng xem danh sách thiết bị 
-        <a href="#" data-bs-toggle="modal" data-bs-target="#esimModal">tại đây</a>!
-    </div>
-</div>
+                        <!-- Thông tin khách hàng -->
+                        <h5 class="mt-4">Thông tin khách hàng</h5>
+                        <div class="mb-3">
+                            <label for="customer_name" class="form-label">Họ và tên</label>
+                            <input type="text" id="customer_name" name="customer_name" class="form-control"
+                                value="{{ old('customer_name') }}" placeholder="Họ và tên" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Số điện thoại</label>
+                            <input type="text" id="phone" name="phone" class="form-control"
+                                value="{{ old('phone') }}" placeholder="Số điện thoại" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" id="email" name="email" class="form-control"
+                                value="{{ old('email') }}" placeholder="Email">
+                        </div>
 
-<!-- Thông tin khách hàng -->
-<h5 class="mt-4">Thông tin khách hàng</h5>
-<div class="mb-3">
-    <label for="customer_name" class="form-label">Họ và tên</label>
-    <input type="text" id="customer_name" name="customer_name" class="form-control"
-        value="{{ old('customer_name') }}" placeholder="Họ và tên" required>
-</div>
-<div class="mb-3">
-    <label for="phone" class="form-label">Số điện thoại</label>
-    <input type="text" id="phone" name="phone" class="form-control"
-        value="{{ old('phone') }}" placeholder="Số điện thoại" required>
-</div>
-<div class="mb-3">
-    <label for="email" class="form-label">Email</label>
-    <input type="email" id="email" name="email" class="form-control"
-        value="{{ old('email') }}" placeholder="Email">
-</div>
+                        <!-- Địa chỉ nhận SIM (Ẩn khi chọn eSIM) -->
+                        <div id="address_section">
+                                <h5 class="mt-4">Địa chỉ nhận SIM</h5>
+                                <div class="mb-3">
+                                    <label for="province" class="form-label">Tỉnh/Thành phố</label>
+                                    <select id="province" name="province" class="form-control" required>
+                                        <option value="">Chọn Tỉnh/Thành phố</option>
+                                    </select>
+                                    <input type="hidden" id="province_name" name="province_name">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="district" class="form-label">Quận/Huyện</label>
+                                    <select id="district" name="district" class="form-control" required>
+                                        <option value="">Chọn Quận/Huyện</option>
+                                    </select>
+                                    <input type="hidden" id="district_name" name="district_name">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="ward" class="form-label">Phường/Xã</label>
+                                    <select id="ward" name="ward" class="form-control" required>
+                                        <option value="">Chọn Phường/Xã</option>
+                                    </select>
+                                    <input type="hidden" id="ward_name" name="ward_name">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="address" class="form-label">Địa chỉ cụ thể</label>
+                                    <textarea id="address" name="address" class="form-control" rows="3" placeholder="Địa chỉ cụ thể" required>{{ old('address') }}</textarea>
+                                </div>
+                        </div>
 
-<!-- Địa chỉ nhận SIM (Ẩn khi chọn eSIM) -->
-<div id="address_section">
-    <h5 class="mt-4">Địa chỉ nhận SIM</h5>
-    <div class="mb-3">
-        <label for="province" class="form-label">Tỉnh/Thành phố</label>
-        <select id="province" name="province" class="form-control" required>
-            <option value="">Chọn Tỉnh/Thành phố</option>
-        </select>
-        <input type="hidden" id="province_name" name="province_name">
-    </div>
-    <div class="mb-3">
-        <label for="district" class="form-label">Quận/Huyện</label>
-        <select id="district" name="district" class="form-control" required>
-            <option value="">Chọn Quận/Huyện</option>
-        </select>
-        <input type="hidden" id="district_name" name="district_name">
-    </div>
-    <div class="mb-3">
-        <label for="ward" class="form-label">Phường/Xã</label>
-        <select id="ward" name="ward" class="form-control" required>
-            <option value="">Chọn Phường/Xã</option>
-        </select>
-        <input type="hidden" id="ward_name" name="ward_name">
-    </div>
-    <div class="mb-3">
-        <label for="address" class="form-label">Địa chỉ cụ thể</label>
-        <textarea id="address" name="address" class="form-control" rows="3" placeholder="Địa chỉ cụ thể" required>{{ old('address') }}</textarea>
-    </div>
-</div>
-<!-- Hình thức nhận SIM (Chỉ hiển thị khi chọn eSIM) -->
-<div id="qr_code_section" class="text-center mt-4" style="display: none;">
-    <h5>Hình thức nhận SIM: <span class="text-primary">QR Code</span></h5>
-    <button id="show_qr_code" class="btn btn-success mt-2">Nhận QR Code</button>
-</div>
+                        <!-- Hình thức nhận SIM (Chỉ hiển thị khi chọn eSIM) -->
+                        <div id="qr_code_section" class="text-center mt-4" style="display: none;">
+                                <h5>Hình thức nhận SIM: <span class="text-primary">QR Code</span></h5>                        
+                        </div>
 
-<!-- Phương thức vận chuyển (Ẩn khi chọn eSIM) -->
-<div id="delivery_section">
-    <h5 class="mt-4">Thông tin vận chuyển và thanh toán</h5>
-    <div class="mb-3">
-        <label for="delivery_method" class="form-label">Phương thức vận chuyển</label>
-        <div id="delivery_options">
-            <label class="delivery-option">
-                <input type="radio" name="delivery_method" value="25000" checked>
-                <img src="http://localhost/mobifone/public/assets/images/logo_ghtk.jpg" alt="GHTK" class="delivery-icon">
-                Giao hàng tiết kiệm (25,000đ)
-            </label>
-            <label class="delivery-option">
-                <input type="radio" name="delivery_method" value="30000">
-                <img src="http://localhost/mobifone/public/assets/images/logo_ghn.jpg" alt="GHN" class="delivery-icon">
-                Giao hàng nhanh (30,000đ)
-            </label>
-        </div>
-    </div>
-</div>
-<!-- Input ẩn để lưu shipping_fee -->
-<input type="hidden" name="shipping_fee" id="shipping_fee_input" value="25000">
+                        <!-- Phương thức vận chuyển (Ẩn khi chọn eSIM) -->
+                        <div id="delivery_section">
+                                <h5 class="mt-4">Thông tin vận chuyển và thanh toán</h5>
+                                <div class="mb-3">
+                                    <label for="delivery_method" class="form-label">Phương thức vận chuyển</label>
+                                    <div id="delivery_options">
+                                        <label class="delivery-option">
+                                            <input type="radio" name="delivery_method" value="25000" checked>
+                                            <img src="http://localhost/mobifone/public/assets/images/logo_ghtk.jpg" alt="GHTK" class="delivery-icon">
+                                            Giao hàng tiết kiệm (25,000đ)
+                                        </label>
+                                        <label class="delivery-option">
+                                            <input type="radio" name="delivery_method" value="30000">
+                                            <img src="http://localhost/mobifone/public/assets/images/logo_ghn.jpg" alt="GHN" class="delivery-icon">
+                                            Giao hàng nhanh (30,000đ)
+                                        </label>
+                                    </div>
+                                </div>
+                        </div>
 
-<!-- Phương thức thanh toán -->
-<div class="mb-3">
-    <label for="payment_method" class="form-label">Phương thức thanh toán</label>
-    <div id="payment_options">
-        <label class="payment-option" id="vietcombank-option">
-            <input type="radio" name="payment_method" value="Vietcombank QR" checked id="vietcombank">
-            <img src="http://localhost/mobifone/public/assets/images/Icon-Vietcombank.jpg" alt="Vietcombank" class="payment-icon">
-            Vietcombank QR
-        </label>
-        <label class="payment-option" id="cash-option">
-            <input type="radio" name="payment_method" value="Tiền mặt khi nhận hàng" id="cash">
-            <img src="http://localhost/mobifone/public/assets/images/tienmat.jpg" alt="Tiền mặt" class="payment-icon">
-            Thanh toán khi nhận hàng
-        </label>
-    </div>
-</div>
-     <!-- Vùng hiển thị QR Code -->
-     <div id="qr_code_container" class="mt-3" style="display: none;">
-        <p style="color: red; font-style: italic; text-align: center;">Vui lòng chuyển khoản trước khi đặt hàng
-        </p>
-        <img id="qr_code_image" src="http://localhost/mobifone/public/assets/images/thanhtoan.jpg"
-            alt="QR Code" style="max-width: 200px;">
-        <p style="color: black; font-style: italic; text-align: center; margin-top: 10px;">
-            * Hệ thống sẽ kiểm tra giao dịch trước khi đi đơn
-        </p>
-    </div>
-</div>
-    </div>
+
+                                        <!-- Input ẩn để lưu shipping_fee -->
+                                        <input type="hidden" name="shipping_fee" id="shipping_fee_input" value="25000">
+
+                        <!-- Phương thức thanh toán -->
+                        <div class="mb-3">
+                            <label for="payment_method" class="form-label">Phương thức thanh toán</label>
+                            <div id="payment_options">
+                                <label class="payment-option" id="vietcombank-option">
+                                    <input type="radio" name="payment_method" value="Vietcombank QR" checked id="vietcombank">
+                                    <img src="http://localhost/mobifone/public/assets/images/Icon-Vietcombank.jpg" alt="Vietcombank" class="payment-icon">
+                                    Vietcombank QR
+                                </label>
+                                <label class="payment-option" id="cash-option">
+                                    <input type="radio" name="payment_method" value="Tiền mặt khi nhận hàng" id="cash">
+                                    <img src="http://localhost/mobifone/public/assets/images/tienmat.jpg" alt="Tiền mặt" class="payment-icon">
+                                    Thanh toán khi nhận hàng
+                                </label>
+                            </div>
+                        </div>
+
+
+                        <!-- Vùng hiển thị QR Code -->
+                        <div id="qr_code_container" class="mt-3" style="display: none;">
+                            <p style="color: red; font-style: italic; text-align: center;">Vui lòng chuyển khoản trước khi đặt hàng
+                            </p>
+                            <img id="qr_code_image" src="http://localhost/mobifone/public/assets/images/thanhtoan.jpg"
+                                alt="QR Code" style="max-width: 200px;">
+                            <p style="color: black; font-style: italic; text-align: center; margin-top: 10px;">
+                                * Hệ thống sẽ kiểm tra giao dịch trước khi đi đơn <br>
+                                * Trường hợp Esim hệ thống sẽ kiểm tra giao dịch trước khi hòa mạng
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
     
+                  <!-- Vùng hiển thị Khu vực main thẻ sim step 2 -->
                 <div class="col-lg-4">
                     <div class="square-card text-white shadow-sm bg-background-card">
                         <div class="card-body">
@@ -211,52 +221,49 @@
                         </div>
                         
                     </div>
-               
-                
-                    <!-- Đơn hàng nằm dưới Step 2 -->
+                   
+                        <!-- Đơn hàng nằm dưới Step 2 -->
                     <div class="mt-4">
                         <h4 class="fw-bold">Đơn hàng</h4>
                         <div class="card shadow-sm p-4">
-                           <!-- Tổng tiền hàng -->
-<div class="d-flex justify-content-between mb-2">
-    <div>
-        <p class="mb-0 text-muted">Tổng tiền hàng</p>
-    </div>
-    <div>
-        <p class="fw-bold" id="total_price">
-            {{ number_format($totalTienHang) }}đ
-        </p>
-    </div>
-</div>
 
-<!-- Phí giao hàng -->
-<div class="d-flex justify-content-between mb-2">
-    <div>
-        <p class="mb-0 text-muted">Phí giao hàng</p>
-    </div>
-    <div>
-        <p id="shipping_fee" class="fw-bold">25,000đ</p> <!-- Giá mặc định -->
-    </div>
-</div>
-<hr>
-
-<!-- Tổng tiền -->
-<div class="d-flex justify-content-between">
-    <div>
-        <p class="fw-bold text-muted">Tổng tiền thanh toán</p>
-    </div>
-    <div>
-        <p id="total_payment" class="fw-bold text-success">
-            {{ number_format($soThueBao->activation_fee + ($goiCuoc->gia ?? 0) + 25000) }}đ
-        </p>
-    </div>
-
-
+                        <!-- Tổng tiền hàng -->
+                        <div class="d-flex justify-content-between mb-2">
+                            <div>
+                                <p class="mb-0 text-muted">Tổng tiền hàng</p>
                             </div>
+                            <div>
+                                <p class="fw-bold" id="total_price">
+                                    {{ number_format($totalTienHang) }}đ
+                                </p>
+                            </div>
+                        </div>
 
+                        <!-- Phí giao hàng -->
+                        <div class="d-flex justify-content-between mb-2">
+                            <div>
+                                <p class="mb-0 text-muted">Phí giao hàng</p>
+                            </div>
+                            <div>
+                                <p id="shipping_fee" class="fw-bold">25,000đ</p> <!-- Giá mặc định -->
+                            </div>
+                        </div>
+                        <hr>
 
+                        <!-- Tổng tiền -->
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <p class="fw-bold text-muted">Tổng tiền thanh toán</p>
+                            </div>
+                            <div>
+                                <p id="total_payment" class="fw-bold text-success">
+                                    {{ number_format($soThueBao->activation_fee + ($goiCuoc->gia ?? 0) + 25000) }}đ
+                                </p>
+                            </div>
+                        </div>
                     </div>
 
+                    <!-- Khu vực hiện thị đồng ý chính sách -->
                     <div class="form-check mt-3">
                         <input class="form-check-input" type="checkbox" id="terms" required>
                         <label class="form-check-label text-muted" for="terms">
@@ -267,106 +274,95 @@
                     <div class="d-flex justify-content-between mt-3">
                         <a href="javascript:history.back()" class="btn btn-outline-secondary">Quay lại</a>
                         <button type="submit" class="btn btn-primary">Đặt hàng</button>
-                    </form>
+            </form>
+        </div>
+    </div>
+
+            <!-- Modal Esim -->
+            <div class="modal fade" id="esimModal" tabindex="-1" aria-labelledby="esimModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="esimModalLabel">Thông tin eSIM và danh sách thiết bị hỗ trợ</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p><strong>Lưu ý:</strong> eSIM là một loại SIM điện tử (sử dụng mã QR) và KHÔNG PHẢI thẻ SIM vật lý lắp vào điện thoại. eSIM không dùng cho các đồng hồ thông minh.</p>
+
+                            <h6>Apple</h6>
+                            <ul>
+                                <li>iPhone XR (mẫu A2105, từ 2018)</li>
+                                <li>iPhone XS (mẫu A2097, từ 2018)</li>
+                                <li>iPhone XS Max (mẫu A2101, từ 2018)</li>
+                                <li>iPhone 11/ 11 Pro/ 11 Pro Max</li>
+                                <li>iPhone SE (mẫu 2020)</li>
+                                <li>iPhone 12/ 12mini/ 12 Pro/ 12 Pro Max</li>
+                                <li>iPhone 13/ 13 mini/ 13 Pro/ 13 Pro Max</li>
+                                <li>iPhone 14/ 14 Plus/ 14 Pro/ 14 Pro Max</li>
+                                <li>iPhone 15/ 15 Plus/ 15 Pro/ 15 Pro Max</li>
+                            </ul>
+                            <p><strong>Lưu ý:</strong> Đối với các dòng máy Lock và mã LL/A (bản Mỹ) và ZA/A (bản Singapore) không hỗ trợ eSIM.</p>
+
+                            <h6>Google</h6>
+                            <ul>
+                                <li>Google Pixel 7/ 7 Pro</li>
+                                <li>Google Pixel 6/ 6a/ 6 Pro</li>
+                                <li>Google Pixel 5/ 5a 5G</li>
+                                <li>Google Pixel 4/ 4a/ 4a 5G/ 4 XL</li>
+                                <li>Google Pixel 3/ 3a/ 3a XL/ 3 XL</li>
+                            </ul>
+
+                            <h6>Huawei</h6>
+                            <ul>
+                                <li>Huawei P40/ P40 4G/ P40 Pro</li>
+                                <li>Huawei Mate 40 Pro</li>
+                            </ul>
+
+                            <h6>Oppo</h6>
+                            <ul>
+                                <li>Oppo Reno 5 A/ 6 Pro 5G</li>
+                                <li>Oppo Find X3/ X3 Pro/ X5/ X5 Pro</li>
+                            </ul>
+
+                            <h6>Samsung</h6>
+                            <ul>
+                                <li>Samsung Galaxy Fold</li>
+                                <li>Samsung Galaxy Note 20/ Note 20 Plus/ Note 20 Ultra</li>
+                                <li>Samsung Galaxy S20/ S20+/ S20 Ultra</li>
+                                <li>Samsung Galaxy S21 5G/ S21+ 5G/ S21 Ultra 5G</li>
+                                <li>Samsung Galaxy S22 5G/ S22 Plus 5G/ S22 Ultra</li>
+                                <li>Samsung Galaxy S23/ S23 Plus/ S23 Ultra</li>
+                                <li>Samsung Galaxy Z Flip/ Flip3 5G/ Flip 4</li>
+                                <li>Samsung Galaxy Z Fold/ Fold 2/ Fold 3 / Fold 4</li>
+                            </ul>
+
+                            <h6>Sony</h6>
+                            <ul>
+                                <li>Sony Xperia 10 III Lite/ 5 IV/ 1 IV</li>
+                            </ul>
+
+                            <h6>iPad</h6>
+                            <ul>
+                                <li>iPad Pro LTE (2018)</li>
+                                <li>iPad Pro 11" (mẫu A2068, từ 2020)/ iPad Pro 11 (2021, 2020)</li>
+                                <li>iPad Pro 12.9" (mẫu A2069, từ 2020)/ iPad Pro 12.9 (2021, 2020, 2017, 2015)</li>
+                                <li>iPad Air (mẫu A2123, từ 2019)/ iPad Air (2022, 2020)</li>
+                                <li>iPad (mẫu A2198, từ 2019)</li>
+                                <li>iPad Mini (mẫu A2124, từ 2019)/ iPad mini (2021, 2019)/ iPad mini 3/ iPad mini 6</li>
+                                <li>iPad 10.2 (2021, 2020, 2019)</li>
+                                <li>iPad 9.7 (2016)</li>
+                            </ul>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                        </div>
                     </div>
                 </div>
-
-
-           
-
-
-           
-
-
-                  <!-- Modal Esim -->
-    <div class="modal fade" id="esimModal" tabindex="-1" aria-labelledby="esimModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="esimModalLabel">Thông tin eSIM và danh sách thiết bị hỗ trợ</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p><strong>Lưu ý:</strong> eSIM là một loại SIM điện tử (sử dụng mã QR) và KHÔNG PHẢI thẻ SIM vật lý lắp vào điện thoại. eSIM không dùng cho các đồng hồ thông minh.</p>
-
-                    <h6>Apple</h6>
-                    <ul>
-                        <li>iPhone XR (mẫu A2105, từ 2018)</li>
-                        <li>iPhone XS (mẫu A2097, từ 2018)</li>
-                        <li>iPhone XS Max (mẫu A2101, từ 2018)</li>
-                        <li>iPhone 11/ 11 Pro/ 11 Pro Max</li>
-                        <li>iPhone SE (mẫu 2020)</li>
-                        <li>iPhone 12/ 12mini/ 12 Pro/ 12 Pro Max</li>
-                        <li>iPhone 13/ 13 mini/ 13 Pro/ 13 Pro Max</li>
-                        <li>iPhone 14/ 14 Plus/ 14 Pro/ 14 Pro Max</li>
-                        <li>iPhone 15/ 15 Plus/ 15 Pro/ 15 Pro Max</li>
-                    </ul>
-                    <p><strong>Lưu ý:</strong> Đối với các dòng máy Lock và mã LL/A (bản Mỹ) và ZA/A (bản Singapore) không hỗ trợ eSIM.</p>
-
-                    <h6>Google</h6>
-                    <ul>
-                        <li>Google Pixel 7/ 7 Pro</li>
-                        <li>Google Pixel 6/ 6a/ 6 Pro</li>
-                        <li>Google Pixel 5/ 5a 5G</li>
-                        <li>Google Pixel 4/ 4a/ 4a 5G/ 4 XL</li>
-                        <li>Google Pixel 3/ 3a/ 3a XL/ 3 XL</li>
-                    </ul>
-
-                    <h6>Huawei</h6>
-                    <ul>
-                        <li>Huawei P40/ P40 4G/ P40 Pro</li>
-                        <li>Huawei Mate 40 Pro</li>
-                    </ul>
-
-                    <h6>Oppo</h6>
-                    <ul>
-                        <li>Oppo Reno 5 A/ 6 Pro 5G</li>
-                        <li>Oppo Find X3/ X3 Pro/ X5/ X5 Pro</li>
-                    </ul>
-
-                    <h6>Samsung</h6>
-                    <ul>
-                        <li>Samsung Galaxy Fold</li>
-                        <li>Samsung Galaxy Note 20/ Note 20 Plus/ Note 20 Ultra</li>
-                        <li>Samsung Galaxy S20/ S20+/ S20 Ultra</li>
-                        <li>Samsung Galaxy S21 5G/ S21+ 5G/ S21 Ultra 5G</li>
-                        <li>Samsung Galaxy S22 5G/ S22 Plus 5G/ S22 Ultra</li>
-                        <li>Samsung Galaxy S23/ S23 Plus/ S23 Ultra</li>
-                        <li>Samsung Galaxy Z Flip/ Flip3 5G/ Flip 4</li>
-                        <li>Samsung Galaxy Z Fold/ Fold 2/ Fold 3 / Fold 4</li>
-                    </ul>
-
-                    <h6>Sony</h6>
-                    <ul>
-                        <li>Sony Xperia 10 III Lite/ 5 IV/ 1 IV</li>
-                    </ul>
-
-                    <h6>iPad</h6>
-                    <ul>
-                        <li>iPad Pro LTE (2018)</li>
-                        <li>iPad Pro 11" (mẫu A2068, từ 2020)/ iPad Pro 11 (2021, 2020)</li>
-                        <li>iPad Pro 12.9" (mẫu A2069, từ 2020)/ iPad Pro 12.9 (2021, 2020, 2017, 2015)</li>
-                        <li>iPad Air (mẫu A2123, từ 2019)/ iPad Air (2022, 2020)</li>
-                        <li>iPad (mẫu A2198, từ 2019)</li>
-                        <li>iPad Mini (mẫu A2124, từ 2019)/ iPad mini (2021, 2019)/ iPad mini 3/ iPad mini 6</li>
-                        <li>iPad 10.2 (2021, 2020, 2019)</li>
-                        <li>iPad 9.7 (2016)</li>
-                    </ul>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                </div>
             </div>
-        </div>
-    </div>
+
 </div>
-
-            </div>
-
-
-        </div>
-    </div>
 @endsection
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const esimRadio = document.querySelector('input[value="eSIM"]');
@@ -446,10 +442,6 @@
     });
 </script>
     
-
-
-
-
 
 <!-- ẩn phương thức địa chỉ khi nhấn vào Esim -->
 <script>
@@ -555,7 +547,7 @@
         setInterval(updateCountdown, 1000);
         updateCountdown(); // Chạy ngay khi tải trang
     });
-    </script>
+</script>
     
 
 <!-- Chọn sim-->
@@ -750,225 +742,4 @@
 </script>
 
 
-<style>
-    #qr_code_container {
-        text-align: center;
-        /* Căn giữa nội dung */
-        padding: 10px;
-        border: 2px solid #ddd;
-        /* Viền để phân biệt */
-        border-radius: 8px;
-        /* Bo tròn góc */
-        background-color: #f9f9f9;
-        /* Màu nền nhạt */
-        margin-top: 15px;
-    }
 
-    #qr_code_container img {
-        max-width: 100%;
-        /* Hình ảnh co giãn phù hợp */
-        height: auto;
-        border-radius: 5px;
-        /* Bo tròn hình ảnh */
-    }
-
-    /* Phong cách cho từng tùy chọn vận chuyển */
-    .delivery-option {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        /* Khoảng cách giữa hình ảnh và chữ */
-        margin-bottom: 15px;
-        /* Tăng khoảng cách giữa các tùy chọn */
-        padding: 10px;
-        /* Thêm padding để tạo khoảng cách nội dung */
-        border: 2px solid #ddd;
-        /* Đường viền mặc định */
-        border-radius: 8px;
-        /* Bo tròn góc */
-        background-color: #f9f9f9;
-        /* Màu nền mặc định */
-        transition: all 0.3s ease;
-        /* Hiệu ứng mượt */
-        cursor: pointer;
-    }
-
-    .delivery-option:hover {
-        background-color: #f1f1f1;
-        /* Màu nền khi hover */
-        border-color: #ccc;
-        /* Đổi màu viền khi hover */
-    }
-
-    .delivery-option input[type="radio"] {
-        display: none;
-        /* Ẩn nút radio */
-    }
-
-    .delivery-option img.delivery-icon {
-        width: 40px;
-        /* Kích thước icon lớn hơn */
-        height: auto;
-        border-radius: 8px;
-        /* Bo tròn góc icon */
-        transition: transform 0.3s ease, border 0.3s ease;
-    }
-
-    /* Tùy chọn được chọn */
-    .delivery-option input[type="radio"]:checked+.delivery-icon {
-        transform: scale(1.2);
-        /* Phóng to icon khi được chọn */
-        border: 3px solid #007bff;
-        /* Đường viền xanh khi được chọn */
-    }
-
-    .delivery-option input[type="radio"]:checked+.delivery-icon+span {
-        font-weight: bold;
-        /* Làm đậm chữ khi được chọn */
-        color: #007bff;
-        /* Đổi màu chữ */
-    }
-
-    .delivery-option input[type="radio"]:checked+.delivery-icon+span:hover {
-        text-decoration: underline;
-        /* Thêm hiệu ứng hover cho chữ */
-    }
-
-
-    /* Container chính */
-    .progress-container {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    /* Mỗi bước */
-    .progress-step {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    /* Vòng tròn */
-    .circle {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        background-color: #ddd;
-        /* Màu mặc định */
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 18px;
-        font-weight: bold;
-        color: #000;
-        /* Màu chữ mặc định */
-        position: relative;
-        transition: background-color 0.3s, color 0.3s;
-    }
-
-    /* Bước hoàn thành với dấu check */
-    .progress-step.completed .circle {
-        background-color: #007bff;
-        /* Màu xanh lá */
-        color: white;
-        /* Dấu check màu trắng */
-    }
-
-    .progress-step.completed .circle::before {
-        content: '✓';
-        /* Dấu check */
-        font-family: Arial, sans-serif;
-        font-size: 20px;
-        font-weight: bold;
-        position: absolute;
-        color: white;
-    }
-
-    .progress-step.completed .circle>span {
-        display: none;
-        /* Ẩn số khi đã có dấu check */
-    }
-
-    /* Bước hiện tại */
-    .progress-step.active .circle {
-        background-color: #007bff;
-        /* Màu xanh dương */
-        color: white;
-        /* Màu chữ */
-        font-weight: bold;
-    }
-
-    /* Đường kết nối */
-    .progress-line {
-        flex: 1;
-        height: 4px;
-        background-color: #ddd;
-        /* Màu mặc định */
-        transition: background-color 0.3s;
-    }
-
-    .progress-line.active {
-        background-color: #007bff;
-        /* Màu xanh dương khi active */
-    }
-
-
-
-    /* Phong cách cho từng tùy chọn thanh toán */
-    .payment-option {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        /* Khoảng cách giữa hình ảnh và văn bản */
-        margin-bottom: 15px;
-        /* Tăng khoảng cách giữa các tùy chọn */
-        padding: 10px;
-        /* Thêm khoảng cách bên trong */
-        border: 2px solid #ddd;
-        /* Đường viền mặc định */
-        border-radius: 8px;
-        /* Bo tròn góc */
-        background-color: #f9f9f9;
-        /* Màu nền mặc định */
-        cursor: pointer;
-        transition: all 0.3s ease;
-        /* Hiệu ứng mượt */
-    }
-
-    .payment-option:hover {
-        background-color: #f1f1f1;
-        /* Màu nền khi hover */
-        border-color: #ccc;
-        /* Đổi màu viền khi hover */
-    }
-
-    .payment-option input[type="radio"] {
-        display: none;
-        /* Ẩn nút radio */
-    }
-
-    .payment-option img.payment-icon {
-        width: 40px;
-        /* Kích thước icon */
-        height: auto;
-        border-radius: 5px;
-        /* Bo tròn góc */
-        transition: transform 0.3s ease, border 0.3s ease;
-    }
-
-    /* Khi tùy chọn được chọn */
-    .payment-option input[type="radio"]:checked+.payment-icon {
-        transform: scale(1.2);
-        /* Phóng to icon khi được chọn */
-        border: 2px solid #007bff;
-        /* Đường viền xanh khi được chọn */
-    }
-
-    .payment-option input[type="radio"]:checked+.payment-icon+span {
-        font-weight: bold;
-        /* Làm đậm chữ khi được chọn */
-        color: #007bff;
-        /* Đổi màu chữ */
-    }
-</style>

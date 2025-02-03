@@ -15,7 +15,7 @@
         <ul class="nav nav-tabs flex-nowrap overflow-hidden" id="dichVuTabs" style="flex-grow: 1; white-space: nowrap;">
             @foreach($loaiDichVus as $key => $loai)
             <li class="nav-item d-inline-block">
-                <a class="nav-link {{ $key === 0 ? 'active' : '' }} text-uppercase" data-bs-toggle="tab" href="#tab-{{ Str::slug($loai) }}">
+                <a class="nav-link {{ $key === 0 ? 'active' : '' }} text-uppercase" data-bs-toggle="tab" href="#tab-{{  \Illuminate\Support\Str::slug($loai) }}">
                     {{ $loai }}
                 </a>
             </li>
@@ -27,7 +27,7 @@
     <!-- Nội dung danh mục -->
     <div class="tab-content">
         @foreach($loaiDichVus as $key => $loai)
-        <div class="tab-pane fade {{ $key === 0 ? 'show active' : '' }}" id="tab-{{ Str::slug($loai) }}">
+        <div class="tab-pane fade {{ $key === 0 ? 'show active' : '' }}" id="tab-{{  \Illuminate\Support\Str::slug($loai) }}">
               <button class="btn btn-outline-primary arrow-btn d-none" id="prevCard">
                     <i class="fas fa-chevron-left"></i>
                 </button>
@@ -44,7 +44,7 @@
                    
                         <div class="card-body text-center">
                             <h5 class="card-title fw-bold" style="color: #003366;">{{ $dichvu->ten_dich_vu }}</h5>
-                            <p class="card-text text-muted">{{ Str::limit($dichvu->noi_dung, 100) }}</p>
+                            <p class="card-text text-muted">{{  \Illuminate\Support\Str::limit($dichvu->noi_dung, 100) }}</p>
                         </div>
                         <div class="card-footer bg-light border-0 text-center">
                             <a href="{{ route('frontend.dichvu_chitiet.index', ['id' => $dichvu->id]) }}" 

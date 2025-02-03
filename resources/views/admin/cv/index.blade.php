@@ -52,7 +52,7 @@
                         <li><strong>Ngành nghề:</strong> {{ $cv->ngành_nghề }}</li>
                         <li><strong>Trình độ:</strong> {{ $cv->trình_độ }}</li>
                         <li><strong>Kinh nghiệm:</strong> 
-                            <span class="short-text">{{ Str::limit($cv->tóm_tắt_kinh_nghiệm, 50) }}</span>
+                            <span class="short-text">{{ \Illuminate\Support\Str::limit($cv->tóm_tắt_kinh_nghiệm, 50) }}</span>
                             <span class="full-text hidden">{{ $cv->tóm_tắt_kinh_nghiệm }}</span>
                             @if (strlen($cv->tóm_tắt_kinh_nghiệm) > 50)
                                 <a href="#" class="toggle-view text-blue-500 hover:underline">Xem thêm</a>

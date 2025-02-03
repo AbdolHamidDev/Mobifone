@@ -1,0 +1,55 @@
+.service-detail-card {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.15);
+    padding: 25px; /* Tăng khoảng cách nội dung */
+    max-width: 1200px; /* Tăng độ rộng card */
+    min-height: 220px; /* Tăng chiều cao */
+    margin: 30px auto;
+}
+
+.service-image {
+    width: 320px; /* Tăng kích thước ảnh */
+    height: auto;
+    border-radius: 12px;
+    object-fit: cover;
+    margin-right: 30px;
+}
+
+.service-info {
+    flex: 1;
+}
+
+.service-title {
+    font-size: 22px; /* Tăng kích thước chữ tiêu đề */
+    font-weight: bold;
+    color: #003366;
+    margin-bottom: 10px;
+}
+
+.service-description {
+    font-size: 16px; /* Làm chữ dễ đọc hơn */
+    color: #333;
+    line-height: 1.6;
+}
+
+
+.flag-icon {
+    width: 24px;
+    height: 16px;
+    object-fit: cover; /* Giữ đúng tỷ lệ ảnh */
+    margin-right: 8px;
+}
+
+
+#app {
+    padding-top: 20px;  /* Tăng khoảng cách phía trên */
+    padding-bottom: 100px; /* Tăng khoảng cách phía dưới */
+}
+
+button:hover {
+    transform: scale(1.05);
+}
+

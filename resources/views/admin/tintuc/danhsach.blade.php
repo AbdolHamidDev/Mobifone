@@ -41,7 +41,7 @@
                             @endif
                         </td>
                         <td class="border border-gray-300 px-4 py-2">
-                            {{ Str::limit($value->content, 50, '...') }}
+                            {{ \Illuminate\Support\Str::limit($value->content, 50, '...') }}
                         </td>
                         <td class="border border-gray-300 px-4 py-2">{{ $value->published_at }}</td>
 

@@ -125,7 +125,6 @@
     <div class="email-container">
         <!-- Header -->
         <div class="email-header">
-            <img src="{{ url('/assets/images/logo.png') }}" alt="MobiFone" style="max-width: 120px;">
             <h1>Xác nhận đặt hàng</h1>
         </div>
 

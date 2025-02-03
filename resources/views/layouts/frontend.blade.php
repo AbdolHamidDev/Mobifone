@@ -66,8 +66,8 @@
  <script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.min.js"></script>
  <script src="{{ asset('assets/js/script.js') }}"></script>
 
-    
-    @stack('scripts')
+ @yield('js')
+@stack('scripts')
 </body>
 
 </html>

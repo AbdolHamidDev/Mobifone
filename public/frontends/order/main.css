@@ -1,0 +1,220 @@
+#qr_code_container {
+    text-align: center;
+    /* Căn giữa nội dung */
+    padding: 10px;
+    border: 2px solid #ddd;
+    /* Viền để phân biệt */
+    border-radius: 8px;
+    /* Bo tròn góc */
+    background-color: #f9f9f9;
+    /* Màu nền nhạt */
+    margin-top: 15px;
+}
+
+#qr_code_container img {
+    max-width: 100%;
+    /* Hình ảnh co giãn phù hợp */
+    height: auto;
+    border-radius: 5px;
+    /* Bo tròn hình ảnh */
+}
+
+/* Phong cách cho từng tùy chọn vận chuyển */
+.delivery-option {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    /* Khoảng cách giữa hình ảnh và chữ */
+    margin-bottom: 15px;
+    /* Tăng khoảng cách giữa các tùy chọn */
+    padding: 10px;
+    /* Thêm padding để tạo khoảng cách nội dung */
+    border: 2px solid #ddd;
+    /* Đường viền mặc định */
+    border-radius: 8px;
+    /* Bo tròn góc */
+    background-color: #f9f9f9;
+    /* Màu nền mặc định */
+    transition: all 0.3s ease;
+    /* Hiệu ứng mượt */
+    cursor: pointer;
+}
+
+.delivery-option:hover {
+    background-color: #f1f1f1;
+    /* Màu nền khi hover */
+    border-color: #ccc;
+    /* Đổi màu viền khi hover */
+}
+
+.delivery-option input[type="radio"] {
+    display: none;
+    /* Ẩn nút radio */
+}
+
+.delivery-option img.delivery-icon {
+    width: 40px;
+    /* Kích thước icon lớn hơn */
+    height: auto;
+    border-radius: 8px;
+    /* Bo tròn góc icon */
+    transition: transform 0.3s ease, border 0.3s ease;
+}
+
+/* Tùy chọn được chọn */
+.delivery-option input[type="radio"]:checked+.delivery-icon {
+    transform: scale(1.2);
+    /* Phóng to icon khi được chọn */
+    border: 3px solid #007bff;
+    /* Đường viền xanh khi được chọn */
+}
+
+.delivery-option input[type="radio"]:checked+.delivery-icon+span {
+    font-weight: bold;
+    /* Làm đậm chữ khi được chọn */
+    color: #007bff;
+    /* Đổi màu chữ */
+}
+
+.delivery-option input[type="radio"]:checked+.delivery-icon+span:hover {
+    text-decoration: underline;
+    /* Thêm hiệu ứng hover cho chữ */
+}
+
+
+/* Container chính */
+.progress-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Mỗi bước */
+.progress-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Vòng tròn */
+.circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #ddd;
+    /* Màu mặc định */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: #000;
+    /* Màu chữ mặc định */
+    position: relative;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Bước hoàn thành với dấu check */
+.progress-step.completed .circle {
+    background-color: #007bff;
+    /* Màu xanh lá */
+    color: white;
+    /* Dấu check màu trắng */
+}
+
+.progress-step.completed .circle::before {
+    content: '✓';
+    /* Dấu check */
+    font-family: Arial, sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+    position: absolute;
+    color: white;
+}
+
+.progress-step.completed .circle>span {
+    display: none;
+    /* Ẩn số khi đã có dấu check */
+}
+
+/* Bước hiện tại */
+.progress-step.active .circle {
+    background-color: #007bff;
+    /* Màu xanh dương */
+    color: white;
+    /* Màu chữ */
+    font-weight: bold;
+}
+
+/* Đường kết nối */
+.progress-line {
+    flex: 1;
+    height: 4px;
+    background-color: #ddd;
+    /* Màu mặc định */
+    transition: background-color 0.3s;
+}
+
+.progress-line.active {
+    background-color: #007bff;
+    /* Màu xanh dương khi active */
+}
+
+
+
+/* Phong cách cho từng tùy chọn thanh toán */
+.payment-option {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    /* Khoảng cách giữa hình ảnh và văn bản */
+    margin-bottom: 15px;
+    /* Tăng khoảng cách giữa các tùy chọn */
+    padding: 10px;
+    /* Thêm khoảng cách bên trong */
+    border: 2px solid #ddd;
+    /* Đường viền mặc định */
+    border-radius: 8px;
+    /* Bo tròn góc */
+    background-color: #f9f9f9;
+    /* Màu nền mặc định */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    /* Hiệu ứng mượt */
+}
+
+.payment-option:hover {
+    background-color: #f1f1f1;
+    /* Màu nền khi hover */
+    border-color: #ccc;
+    /* Đổi màu viền khi hover */
+}
+
+.payment-option input[type="radio"] {
+    display: none;
+    /* Ẩn nút radio */
+}
+
+.payment-option img.payment-icon {
+    width: 40px;
+    /* Kích thước icon */
+    height: auto;
+    border-radius: 5px;
+    /* Bo tròn góc */
+    transition: transform 0.3s ease, border 0.3s ease;
+}
+
+/* Khi tùy chọn được chọn */
+.payment-option input[type="radio"]:checked+.payment-icon {
+    transform: scale(1.2);
+    /* Phóng to icon khi được chọn */
+    border: 2px solid #007bff;
+    /* Đường viền xanh khi được chọn */
+}
+
+.payment-option input[type="radio"]:checked+.payment-icon+span {
+    font-weight: bold;
+    /* Làm đậm chữ khi được chọn */
+    color: #007bff;
+    /* Đổi màu chữ */
+}
