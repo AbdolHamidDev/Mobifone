@@ -233,6 +233,43 @@
 
 
 
+
+<!-- Dropdown dịch vụ quốc tế -->
+<li class="nav-item has-treeview">
+    <a href="#" class="nav-link ajax-link toggle-dropdown">
+        <i class="fas fa-user-edit" style="color:#D72638;"></i> <!-- Màu đỏ rực -->
+        <p>
+            Dịch vụ quốc tế
+            <i class="fas fa-sort-down right" style="color:#07689F;"></i> <!-- Màu xanh biển tối -->
+        </p>
+    </a>
+    <ul class="nav nav-treeview">
+        <!-- Quốc gia -->
+        <li class="nav-item">
+            <a href="{{ route('quoc-gia.index') }}" class="nav-link ajax-link">
+                <i class="fas fa-link" style="color:#FFC300;"></i> <!-- Màu vàng đậm -->
+                <p>Quốc gia</p>
+            </a>
+        </li>
+        <!-- Nhà khai thác -->
+        <li class="nav-item">
+            <a href="{{ route('nha-khai-thac.index') }}" class="nav-link ajax-link">
+                <i class="fas fa-network-wired" style="color:#118DF0;"></i> <!-- Màu xanh lam sáng -->
+                <p>Nhà khai thác</p>
+            </a>
+        </li>
+        <!-- Cước Quốc tế -->
+        <li class="nav-item">
+            <a href="{{ route('cuoc-quoc-te.index') }}" class="nav-link ajax-link">
+                <i class="fas fa-tools" style="color:#EF3054;"></i> <!-- Màu đỏ tươi -->
+                <p> Cước Quốc tế</p>
+            </a>
+        </li>
+
+    </ul>
+</li>
+
+
                 
             </ul>
         </nav>

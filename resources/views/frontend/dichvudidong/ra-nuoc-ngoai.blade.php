@@ -22,49 +22,65 @@
     <h3 class="text-2xl font-bold text-gray-700 text-center mt-6">Bạn muốn đi đâu?</h3>
 
     <div id="app" class="max-w-3xl mx-auto mt-6 p-6 bg-white rounded-lg shadow-md">
-        <label for="country" class="block text-lg font-semibold text-gray-700 mb-2">
-            <i class="fas fa-globe-americas text-blue-500"></i> Chọn quốc gia:
-        </label>
-
         <div class="grid grid-cols-3 gap-4 items-center">
             <!-- Dropdown Quốc Gia -->
             <div class="relative">
-                <button @click="dropdownOpen = !dropdownOpen"
-                    class="w-full flex items-center px-4 py-2 bg-white border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-300">
-                    <span v-if="selectedCountry" class="flex items-center">
-                        <img :src="selectedCountry.flag" class="w-6 h-4 rounded-sm mr-2"> @{{ selectedCountry.name }}
-                    </span>
-                    <span v-else class="text-gray-500">-- Chọn quốc gia --</span>
-                </button>
-
-                <ul v-show="dropdownOpen"
-                    class="absolute w-full bg-white border rounded-lg shadow-lg max-h-60 overflow-y-auto z-50">
-                    <li v-for="country in countries" :key="country.code"
-                        @click="selectCountry(country)"
-                        class="px-4 py-2 hover:bg-blue-100 cursor-pointer flex items-center">
-                        <img :src="country.flag" class="w-6 h-4 rounded-sm mr-2"> @{{ country.name }}
-                    </li>
-                </ul>
-            </div>
-
-            <!-- Dropdown Loại Thuê Bao -->
-            <div class="relative">
-                <select v-model="selectedSubscription"
-                    class="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-300">
-                    <option value="">Chọn loại thuê bao</option>
-                    <option value="prepaid">Trả trước</option>
-                    <option value="postpaid">Trả sau</option>
+                <select v-model="selectedCountry" class="form-control">
+                    <option value="">-- Chọn quốc gia --</option>
+                    <option v-for="country in countries" :value="country.code" :key="country.id">
+                        @{{ country.name }}
+                    </option>
                 </select>
             </div>
-
+    
+            <!-- Dropdown Loại Thuê Bao -->
+            <div class="relative">
+                <select v-model="selectedSubscription" class="form-control">
+                    <option value="">Chọn loại thuê bao</option>
+                    <option value="Trả trước">Trả trước</option>
+                    <option value="Trả sau">Trả sau</option>
+                </select>
+            </div>
+    
             <!-- Nút Tìm Kiếm -->
-            <button @click="searchPackages"
-                class="w-full flex items-center justify-center px-6 py-2 text-white bg-blue-500 rounded-lg shadow-md hover:bg-blue-600 transition transform hover:scale-105">
+            <button @click="searchPackages" class="btn btn-primary">
                 🔍 TÌM KIẾM
             </button>
         </div>
+    
+        <div class="max-w-5xl mx-auto mt-6 p-6 bg-white rounded-lg shadow-md">
+            <table class="table-auto w-full border-collapse border border-gray-300">
+                <thead>
+                    <tr class="bg-gray-200">
+                        <th class="border border-gray-300 px-4 py-2">Nhà Khai Thác</th>
+                        <th class="border border-gray-300 px-4 py-2">Gọi Trong Mạng</th>
+                        <th class="border border-gray-300 px-4 py-2">Gọi về VN</th>
+                        <th class="border border-gray-300 px-4 py-2">Gọi Quốc Tế</th>
+                        <th class="border border-gray-300 px-4 py-2">Gọi Vệ Tinh</th>
+                        <th class="border border-gray-300 px-4 py-2">Nhận Cuộc Gọi</th>
+                        <th class="border border-gray-300 px-4 py-2">Gửi SMS</th>
+                        <th class="border border-gray-300 px-4 py-2">Data (MB)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="row in tableData" :key="row.id" class="text-center">
+                        <td class="border border-gray-300 px-4 py-2" v-text="row.nha_khai_thac"></td>
+                        <td class="border border-gray-300 px-4 py-2" v-text="row.cuoc_goi_trong_mang"></td>
+                        <td class="border border-gray-300 px-4 py-2" v-text="row.cuoc_goi_ve_vn"></td>
+                        <td class="border border-gray-300 px-4 py-2" v-text="row.cuoc_quoc_te"></td>
+                        <td class="border border-gray-300 px-4 py-2" v-text="row.cuoc_ve_tinh"></td>
+                        <td class="border border-gray-300 px-4 py-2" v-text="row.cuoc_nhan_goi"></td>
+                        <td class="border border-gray-300 px-4 py-2" v-text="row.cuoc_sms"></td>
+                        <td class="border border-gray-300 px-4 py-2" v-text="row.cuoc_data"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
+    
 
+
+    
 
 </div>
 

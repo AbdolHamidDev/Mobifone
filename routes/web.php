@@ -22,6 +22,10 @@ use App\Http\Controllers\DichVuController;
 use App\Http\Controllers\DichvuChitietController;
 use App\Http\Controllers\SoThueBaoController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\QuocGiaController;
+use App\Http\Controllers\NhaKhaiThacController;
+use App\Http\Controllers\GiaCuocQuocTeController;
+
 
 
 
@@ -149,7 +153,8 @@ Route::name('frontend.')->group(function () {
     Route::get('/get-coordinates', [StoreController::class, 'getCoordinates'])->name('get.coordinates');
 
 
-    
+ 
+
 
 });
 
@@ -276,9 +281,19 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::post('/orders/{id}/toggle-delivery', [OrderController::class, 'toggleDeliveryStatus']);
 
 
+    // Dịch vụ quốc tế
+    Route::resource('quoc-gia', QuocGiaController::class);
+    Route::resource('nha-khai-thac', NhaKhaiThacController::class);
+    Route::resource('cuoc-quoc-te', GiaCuocQuocTeController::class);
+    Route::get('/get-quoc-gia', [NhaKhaiThacController::class, 'getQuocGia']);
+    Route::get('/get-quoc-gia-nha-khai-thac', [GiaCuocQuocTeController::class, 'getQuocGiaNhaKhaiThac']);
+      
 
 });
 
+
+Route::get('/api/quoc-gia', [GiaCuocQuocTeController::class, 'getQuocGia']);
+Route::get('/api/cuoc-quoc-te', [GiaCuocQuocTeController::class, 'getCuocQuocTe']);
 
 
 
