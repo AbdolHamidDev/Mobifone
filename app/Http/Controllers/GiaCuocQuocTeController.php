@@ -95,9 +95,55 @@ public function getCuocQuocTe(Request $request)
         $query->where('loai_thue_bao', $request->loai_thue_bao);
     }
 
-    return response()->json($query->get());
+    if ($request->has('ma_nha_khai_thac')) {
+        $query->whereHas('nhaKhaiThac', function ($q) use ($request) {
+            $q->where('ma_nha_khai_thac', $request->ma_nha_khai_thac);
+        });
+    }
+
+    // Lấy danh sách kết quả từ database
+    $giaCuoc = $query->get();
+
+    // Chỉnh sửa dữ liệu trước khi trả về Vue
+    $giaCuoc = $giaCuoc->map(function ($item) {
+        return [
+            'nha_khai_thac' => [
+                'ten_nha_khai_thac' => $item->nhaKhaiThac->ten_nha_khai_thac ?? 'N/A',
+                'ma_nha_khai_thac' => $item->nhaKhaiThac->ma_nha_khai_thac ?? 'N/A'
+            ],
+           'loai_thue_bao' => $this->chuanHoaLoaiThueBao($item->loai_thue_bao),
+            'dau_so_thuc_hien_cuoc_goi' => $item->dau_so_thuc_hien_cuoc_goi ?? '+ / 00',
+            'thuc_hien_cuoc_goi' => rand(0, 1) ? 'x' : '',
+            'nhan_cuoc_goi' => rand(0, 1) ? 'x' : '',
+            'dich_vu_sms' => rand(0, 1) ? 'x' : '',
+            'data_3g' => rand(0, 1) ? 'x' : '',
+            'data_4g' => rand(0, 1) ? 'x' : '',
+            'data_5g' => rand(0, 1) ? 'x' : '',
+            'cuoc_goi_trong_mang' => $item->cuoc_goi_trong_mang ?? 'N/A',
+            'cuoc_goi_ve_vn' => $item->cuoc_goi_ve_vn ?? 'N/A',
+            'cuoc_quoc_te' => $item->cuoc_quoc_te ?? 'N/A',
+            'cuoc_ve_tinh' => $item->cuoc_ve_tinh ?? 'N/A',
+            'cuoc_nhan_goi' => $item->cuoc_nhan_goi ?? 'N/A',
+            'cuoc_sms' => $item->cuoc_sms ?? 'N/A',
+            'cuoc_data' => $item->cuoc_data ?? 'N/A'
+        ];
+    });
+
+    return response()->json($giaCuoc);
 }
 
+
+/**
+ * Hàm sửa lỗi thiếu dấu tiếng Việt
+ */
+private function chuanHoaLoaiThueBao($loaiThueBao)
+{
+    $chuanHoa = [
+        'Tra truoc' => 'Trả trước',
+        'Tra sau' => 'Trả sau'
+    ];
+    return $chuanHoa[$loaiThueBao] ?? 'N/A';
+}
     
 
 }

@@ -53,3 +53,122 @@ button:hover {
     transform: scale(1.05);
 }
 
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #ddd;
+    background-color: white;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+th {
+    font-weight: normal; /* Loại bỏ chữ in đậm */
+    color: #0a3d62; /* Màu xanh đậm */
+    background-color: #f4f4f4; /* Giữ nền sáng để dễ đọc */
+    padding: 10px; /* Tạo khoảng cách đẹp */
+    text-align: center; /* Canh giữa nội dung */
+}
+
+
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Định dạng container chính */
+.w-full {
+    max-width: 100%;
+}
+
+/* Tiêu đề chính */
+.text-2xl {
+    font-size: 1.75rem;
+    font-weight: bold;
+    color: #0d47a1;
+}
+
+/* Định dạng từng mục */
+.block {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 12px;
+    transition: all 0.2s ease-in-out;
+}
+
+/* Khoảng cách giữa các mục */
+.flex.flex-col.gap-6 > .block {
+    border-bottom: 1px solid #e0e0e0;
+}
+
+/* Nút bấm mở dropdown */
+button.flex {
+    transition: background 0.2s ease-in-out;
+}
+
+/* Hiệu ứng hover nhẹ */
+button.flex:hover {
+    background: #f8f9fa;
+}
+
+/* Định dạng dropdown */
+.hidden {
+    display: none;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Khi mở dropdown */
+.hidden.show {
+    display: block;
+}
+
+/* Hiển thị danh sách gói cước */
+.flex.flex-wrap.gap-4 {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+/* Card từng gói cước */
+.flex.flex-wrap.gap-4 > a {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 220px;
+    transition: all 0.2s ease-in-out;
+}
+
+/* Hover nhẹ */
+.flex.flex-wrap.gap-4 > a:hover {
+    background: #f8f9fa;
+    transform: scale(1.02);
+}
+
+/* Icon trong gói cước */
+.flex.flex-wrap.gap-4 > a img {
+    width: 32px;
+    height: 32px;
+}
+/* Áp dụng hiệu ứng hover nhẹ cho tất cả phần tử */
+* {
+    transition: all 0.2s ease-in-out!important;
+}
+
+/* Hiệu ứng hover mặc định cho tất cả phần tử */
+*:hover {
+    background-color: rgba(0, 0, 0, 0.02)!important; /* Nhẹ nhàng */
+    transform: scale(1.01)!important;
+}
+#app {
+    max-width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
