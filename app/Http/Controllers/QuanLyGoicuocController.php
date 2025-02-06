@@ -11,36 +11,37 @@ class QuanLyGoicuocController extends Controller
 {
     
     public function api(Request $request)
-    {
-        $goicuocs = GoiCuoc::select(['id', 'ten_goicuoc', 'gia', 'thoi_gian', 'dung_luong', 'loai_goicuoc', 'status', 'created_at']);
-    
-        return DataTables::of($goicuocs)
-            ->addColumn('actions', function ($row) {
-                return '
-                    <div class="d-flex justify-content-center align-items-center">
-                        <a href="' . route('goicuocs.edit', $row->id) . '" 
-                            class="btn btn-outline-primary btn-sm d-flex align-items-center me-2" 
-                            title="Chỉnh sửa">
-                            <i class="fas fa-edit me-1"></i> Sửa
-                        </a>
-                        <button 
-                            onclick="confirmDelete(' . $row->id . ')" 
-                            class="btn btn-outline-danger btn-sm d-flex align-items-center" 
-                            title="Xóa">
-                            <i class="fas fa-trash-alt me-1"></i> Xóa
-                        </button>
-                        <form id="delete-form-' . $row->id . '" 
-                            action="' . route('goicuocs.destroy', $row->id) . '" 
-                            method="POST" 
-                            style="display: none;">
-                            ' . csrf_field() . '
-                            ' . method_field('DELETE') . '
-                        </form>
-                    </div>
-                ';
-            })
-            ->make(true);
-    }
+{
+    $goicuocs = GoiCuoc::select(['id', 'ten_goicuoc', 'gia', 'thoi_gian', 'dung_luong', 'don_vi_dung_luong', 'loai_goicuoc', 'status', 'created_at']);
+
+    return DataTables::of($goicuocs)
+        ->addColumn('actions', function ($row) {
+            return '
+                <div class="d-flex justify-content-center align-items-center">
+                    <a href="' . route('goicuocs.edit', $row->id) . '" 
+                        class="btn btn-outline-primary btn-sm d-flex align-items-center me-2" 
+                        title="Chỉnh sửa">
+                        <i class="fas fa-edit me-1"></i> Sửa
+                    </a>
+                    <button 
+                        onclick="confirmDelete(' . $row->id . ')" 
+                        class="btn btn-outline-danger btn-sm d-flex align-items-center" 
+                        title="Xóa">
+                        <i class="fas fa-trash-alt me-1"></i> Xóa
+                    </button>
+                    <form id="delete-form-' . $row->id . '" 
+                        action="' . route('goicuocs.destroy', $row->id) . '" 
+                        method="POST" 
+                        style="display: none;">
+                        ' . csrf_field() . '
+                        ' . method_field('DELETE') . '
+                    </form>
+                </div>
+            ';
+        })
+        ->make(true);
+}
+
     
     
     
@@ -62,7 +63,7 @@ class QuanLyGoicuocController extends Controller
             'gia' => 'required|numeric|min:0',
             'thoi_gian' => 'required|integer|min:1',
             'dung_luong' => 'required|numeric|min:0',
-            'don_vi_dung_luong' => 'required|string|in:MB,GB',
+            'don_vi_dung_luong' => 'required|in:MB,GB,phut_goi_quoc_te,phut_thoai_quoc_te_huong_han_quoc',
             'loai_goicuoc' => 'required|string|max:255',
         ]);
 
@@ -91,7 +92,7 @@ class QuanLyGoicuocController extends Controller
             'gia' => 'required|numeric|min:0',
             'thoi_gian' => 'required|integer|min:1',
             'dung_luong' => 'required|numeric|min:0',
-            'don_vi_dung_luong' => 'required|string|in:MB,GB',
+            'don_vi_dung_luong' => 'required|in:MB,GB,phut_goi_quoc_te,phut_thoai_quoc_te_huong_han_quoc',
             'loai_goicuoc' => 'required|string|max:255',
         ]);
     

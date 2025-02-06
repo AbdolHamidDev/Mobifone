@@ -9,7 +9,14 @@ document.addEventListener('DOMContentLoaded', function () {
             { data: 'ten_goicuoc', name: 'ten_goicuoc' },
             { data: 'gia', name: 'gia', render: $.fn.dataTable.render.number(',', '.', 0, '', ' VNĐ') },
             { data: 'thoi_gian', name: 'thoi_gian', render: (data) => `${data} ngày` },
-            { data: 'dung_luong', name: 'dung_luong', render: (data) => `${data} GB` },
+            {
+                data: 'dung_luong',
+                name: 'dung_luong',
+                render: function(data, type, row) {
+                    return `${data} ${row.don_vi_dung_luong || 'GB'}`; // Mặc định là GB nếu không có dữ liệu
+                }
+            }
+            ,
             { data: 'loai_goicuoc', name: 'loai_goicuoc' },
             {
                 data: 'status',

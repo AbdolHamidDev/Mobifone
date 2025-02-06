@@ -80,6 +80,8 @@
                         <select name="don_vi_dung_luong" id="don_vi_dung_luong" class="form-select" required>
                             <option value="MB">MB</option>
                             <option value="GB">GB</option>
+                            <option value="phut_goi_quoc_te">phút gọi quốc tế</option>
+                            <option value="phut_thoai_quoc_te_huong_han_quoc">phút thoại quốc tế hướng Hàn Quốc</option>
                         </select>
                     </div>
                 </div>

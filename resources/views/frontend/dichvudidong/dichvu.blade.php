@@ -69,143 +69,143 @@
 
 
 <style>
-    /* Tabs */
-    .nav-tabs {
-        flex-wrap: nowrap;
-        overflow-x: auto;
-        border-bottom: none;
+        /* Tabs */
+        .nav-tabs {
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            border-bottom: none;
+        }
+        
+        .nav-tabs .nav-link {
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 30px;
+            padding: 12px 20px;
+            color: #0a4584;
+            border: none;
+            background-color: #f8f9fa;
+            margin-right: 8px;
+            transition: all 0.3s ease-in-out;
+            white-space: nowrap;
+        }
+        
+        .nav-tabs .nav-link.active {
+            background-color: #007bff;
+            color: #fff;
+        }
+        
+        .nav-tabs .nav-link:hover {
+            background-color: #e9ecef;
+            color: #007bff;
+        }
+        
+        .arrow-btn {
+        border-radius: 50%;
+        margin: 0;
+        padding: 0.5rem; 
+        min-width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        position: absolute; /* Định vị tuyệt đối */
+        top: 50%; /* Giữa chiều cao container */
+        transform: translateY(-50%); /* Căn chỉnh giữa */
+        z-index: 2; /* Nút luôn ở trên cùng */
+        background-color: #ffffff; /* Thêm màu nền nếu cần */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Bóng nhẹ */
     }
-    
-    .nav-tabs .nav-link {
-        font-size: 0.95rem;
-        font-weight: 600;
-        border-radius: 30px;
-        padding: 12px 20px;
-        color: #0a4584;
-        border: none;
-        background-color: #f8f9fa;
-        margin-right: 8px;
-        transition: all 0.3s ease-in-out;
-        white-space: nowrap;
+
+    #prevCard {
+        left: -1px; /* Đẩy nút gần container hơn */
     }
-    
-    .nav-tabs .nav-link.active {
-        background-color: #007bff;
-        color: #fff;
+
+    #nextCard {
+        right: -1px; /* Đẩy nút gần container hơn */
     }
-    
-    .nav-tabs .nav-link:hover {
-        background-color: #e9ecef;
-        color: #007bff;
+
+
+
+
+        /* Cards */
+        .card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.125);
+            overflow: hidden;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+
+
+
+        
+        /* Button */
+        .btn-primary {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #0056b3, #003d80);
+            transform: scale(1.05);
+        }
+        
+        /* Spacing */
+        .container {
+            max-width: 1200px;
+        }
+        .tab-content .row {
+        display: flex; /* Sắp xếp ngang */
+        flex-wrap: nowrap; /* Không cho xuống dòng */
+        overflow-x: auto; /* Cho phép cuộn ngang */
+        gap: 1rem; /* Khoảng cách giữa các card */
     }
-    
+
+    .tab-content .col-lg-4 {
+        flex: 0 0 auto; /* Không cho card co lại hoặc chiếm toàn bộ không gian */
+        width: 30%; /* Đảm bảo chiều rộng card không bị giãn */
+    }
+
     .arrow-btn {
-    border-radius: 50%;
-    margin: 0;
-    padding: 0.5rem; 
-    min-width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    position: absolute; /* Định vị tuyệt đối */
-    top: 50%; /* Giữa chiều cao container */
-    transform: translateY(-50%); /* Căn chỉnh giữa */
-    z-index: 2; /* Nút luôn ở trên cùng */
-    background-color: #ffffff; /* Thêm màu nền nếu cần */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Bóng nhẹ */
-}
-
-#prevCard {
-    left: -1px; /* Đẩy nút gần container hơn */
-}
-
-#nextCard {
-    right: -1px; /* Đẩy nút gần container hơn */
-}
-
-
-
-
-    /* Cards */
-    .card {
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        border: 1px solid rgba(0, 0, 0, 0.125);
-        overflow: hidden;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 2;
     }
-    
-    .card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    @media (max-width: 1200px) {
+        .tab-content .col-lg-4 {
+            width: 45%; /* Hiển thị 2 card trên màn hình nhỏ hơn */
+        }
     }
-    
 
-
-
-    
-    /* Button */
-    .btn-primary {
-        background: linear-gradient(135deg, #007bff, #0056b3);
-        border: none;
-    }
-    
-    .btn-primary:hover {
-        background: linear-gradient(135deg, #0056b3, #003d80);
-        transform: scale(1.05);
-    }
-    
-    /* Spacing */
-    .container {
-        max-width: 1200px;
+    @media (max-width: 768px) {
+        .tab-content .col-lg-4 {
+            width: 80%; /* Hiển thị 1 card trên màn hình nhỏ hơn */
+        }
     }
     .tab-content .row {
-    display: flex; /* Sắp xếp ngang */
-    flex-wrap: nowrap; /* Không cho xuống dòng */
-    overflow-x: auto; /* Cho phép cuộn ngang */
-    gap: 1rem; /* Khoảng cách giữa các card */
-}
-
-.tab-content .col-lg-4 {
-    flex: 0 0 auto; /* Không cho card co lại hoặc chiếm toàn bộ không gian */
-    width: 30%; /* Đảm bảo chiều rộng card không bị giãn */
-}
-
-.arrow-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 2;
-}
-@media (max-width: 1200px) {
-    .tab-content .col-lg-4 {
-        width: 45%; /* Hiển thị 2 card trên màn hình nhỏ hơn */
+        overflow-x: hidden; /* Ẩn thanh cuộn mặc định */
+        position: relative;
     }
-}
-
-@media (max-width: 768px) {
-    .tab-content .col-lg-4 {
-        width: 80%; /* Hiển thị 1 card trên màn hình nhỏ hơn */
+    .avatar-wrapper {
+        width: 160px;
+        height: 160px;
+        border-radius: 50%;
+        overflow: hidden; /* Cắt phần dư bên ngoài */
+        background-color: #f8f9fa; /* Màu nền nếu ảnh không lấp đầy */
+        margin: 0 auto;
     }
-}
-.tab-content .row {
-    overflow-x: hidden; /* Ẩn thanh cuộn mặc định */
-    position: relative;
-}
-.avatar-wrapper {
-    width: 160px;
-    height: 160px;
-    border-radius: 50%;
-    overflow: hidden; /* Cắt phần dư bên ngoài */
-    background-color: #f8f9fa; /* Màu nền nếu ảnh không lấp đầy */
-    margin: 0 auto;
-}
 
-.avatar-wrapper img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
+    .avatar-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
 
     </style>
 
@@ -247,8 +247,5 @@ document.addEventListener('DOMContentLoaded', () => {
         updateArrowVisibility();
     });
 });
-
-
-
 </script>
     

@@ -1,7 +1,17 @@
 @extends('layouts.frontend')
-
+<link rel="stylesheet" href="{{ asset('frontends/main_dieuhuong.css') }}">
 @section('content')
 <div class="container" style="padding-top: 15vh;">
+
+        <!-- THANH ĐIỀU HƯỚNG -->
+        <div class="breadcrumb">
+            <a href="/"><i class="fas fa-home"></i> Trang chủ</a>
+            <span class="divider">/</span>
+            <a href="#">Dịch vụ di động</a>
+            <span class="divider">/</span>
+            <span class="current">Quốc tế</span>
+        </div>
+
     <h2 class="mb-4 fw-bold">Nhóm dịch vụ</h2>
     <div class="row">
         @php
@@ -57,10 +67,7 @@
         transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
     }
 
-    .service-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
-    }
+
 
     .service-content {
         background: rgba(255, 255, 255, 0.95);
@@ -86,8 +93,8 @@
         transition: background 0.3s;
     }
 
-    .btn-detail:hover {
-        background-color: #0056b3;
-    }
+
+
+
 </style>
 @endsection

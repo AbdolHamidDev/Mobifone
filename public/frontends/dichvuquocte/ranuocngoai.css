@@ -167,8 +167,103 @@ button.flex:hover {
     background-color: rgba(0, 0, 0, 0.02)!important; /* Nhẹ nhàng */
     transform: scale(1.01)!important;
 }
-#app {
-    max-width: 90%;
-    margin-left: auto;
-    margin-right: auto;
+
+#imageModal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s;
+    z-index: 9999; /* Ưu tiên cao nhất */
+
+}
+
+#imageModal.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Kích thước ảnh */
+#modalImg {
+    max-width: 90vw; /* Giữ kích thước tối đa theo viewport */
+    max-height: 90vh; /* Không cho ảnh vượt quá chiều cao màn hình */
+    width: auto; /* Đảm bảo không méo ảnh */
+    height: auto; /* Tự động điều chỉnh để giữ nguyên tỉ lệ */
+    border-radius: 8px;
+    box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.5);
+    object-fit: contain; /* Giữ nguyên tỉ lệ mà không cắt ảnh */
+}
+
+/* Hiệu ứng zoom */
+#imageModal.show #modalImg {
+    transform: scale(1);
+}
+
+
+/* Background mờ khi mở modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+/* Nội dung modal */
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 600px;
+    width: 90%;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+    z-index: 9999;
+}
+
+/* Nút đóng modal */
+.close {
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Header */
+.modal-header {
+    background-color: #dbeafe;
+    padding: 10px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+/* Bảng trong modal */
+.modal-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.modal-table th,
+.modal-table td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+}
+
+.modal-table th {
+    background-color: #dbeafe;
 }

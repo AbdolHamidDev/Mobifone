@@ -52,6 +52,8 @@
                     <select name="don_vi_dung_luong" id="don_vi_dung_luong" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
                         <option value="MB" {{ $goicuoc->don_vi_dung_luong == 'MB' ? 'selected' : '' }}>MB</option>
                         <option value="GB" {{ $goicuoc->don_vi_dung_luong == 'GB' ? 'selected' : '' }}>GB</option>
+                        <option value="phut_goi_quoc_te" {{ $goicuoc->don_vi_dung_luong == 'phut_goi_quoc_te' ? 'selected' : '' }}>phút gọi quốc tế</option>
+                        <option value="phut_thoai_quoc_te_huong_han_quoc" {{ $goicuoc->don_vi_dung_luong == 'phut_thoai_quoc_te_huong_han_quoc' ? 'selected' : '' }}>phút thoại quốc tế hướng Hàn Quốc</option>
                     </select>
                 </div>
             </div>

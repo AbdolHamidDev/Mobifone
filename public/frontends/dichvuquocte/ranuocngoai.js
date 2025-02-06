@@ -77,3 +77,145 @@ const app = Vue.createApp({
 });
 
 app.mount("#app");
+
+
+
+
+
+
+// Js các modals
+document.addEventListener("DOMContentLoaded", function () {
+    const modal = document.getElementById("modal2G3G");
+    const openModals = document.querySelectorAll("#open2G3GModal"); // Chọn tất cả phần tử có ID này
+    const closeModal = document.getElementById("close2G3GModal");
+
+    // Lặp qua tất cả phần tử có ID "open2G3GModal" và gán sự kiện click
+    openModals.forEach(button => {
+        button.addEventListener("click", function () {
+            modal.classList.remove("hidden");
+        });
+    });
+
+    closeModal.addEventListener("click", function () {
+        modal.classList.add("hidden");
+    });
+
+    window.addEventListener("click", function (event) {
+        if (event.target === modal) {
+            modal.classList.add("hidden");
+        }
+    });
+});
+document.addEventListener("DOMContentLoaded", function () {
+    /*** Modal 1: Danh sách thiết bị hỗ trợ VoLTE ***/
+    const voLTE_Modal = document.getElementById("voLTE-Modal");
+    const openVoLTE_Modal = document.getElementById("openVoLTEModal");
+    const closeVoLTE_Modal = document.querySelector("#voLTE-Modal .close");
+
+    if (openVoLTE_Modal && voLTE_Modal && closeVoLTE_Modal) {
+        openVoLTE_Modal.addEventListener("click", function () {
+            closeAllModals(); // Đóng tất cả các modal khác trước khi mở modal này
+            voLTE_Modal.style.display = "flex";
+        });
+
+        closeVoLTE_Modal.addEventListener("click", function () {
+            voLTE_Modal.style.display = "none";
+        });
+
+        voLTE_Modal.addEventListener("click", function (e) {
+            if (e.target === voLTE_Modal) {
+                voLTE_Modal.style.display = "none";
+            }
+        });
+    }
+
+    /*** Modal 2: Phóng to ảnh ***/
+    document.querySelectorAll('.zoomable').forEach(img => {
+        img.addEventListener('click', function () {
+            const imageModal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImg');
+
+            if (!imageModal || !modalImg) return;
+
+            closeAllModals(); // Đóng tất cả modal trước khi mở cái mới
+            modalImg.style.opacity = "0"; // Ẩn ảnh trong lúc load
+            modalImg.src = "";
+
+            const tempImage = new Image();
+            tempImage.src = this.src;
+            tempImage.onload = () => {
+                modalImg.src = tempImage.src;
+                imageModal.classList.add("show");
+                modalImg.style.opacity = "1"; // Hiển thị ảnh khi đã load xong
+            };
+        });
+    });
+
+    const closeImageModal = document.getElementById('closeModal');
+    const imageModal = document.getElementById('imageModal');
+
+    if (closeImageModal && imageModal) {
+        closeImageModal.addEventListener('click', function () {
+            imageModal.classList.remove("show");
+        });
+
+        imageModal.addEventListener('click', function (e) {
+            if (e.target === imageModal) {
+                imageModal.classList.remove("show");
+            }
+        });
+    }
+
+    /*** Hàm đóng tất cả modal nhưng **không ảnh hưởng đến các modal khác** ***/
+    function closeAllModals() {
+        document.querySelectorAll(".modal").forEach(modal => {
+            if (modal.style.display === "flex") {
+                modal.style.display = "none";
+            }
+        });
+
+        document.querySelectorAll(".show").forEach(modal => {
+            modal.classList.remove("show");
+        });
+    }
+});
+
+
+
+
+
+// js các tab
+function showTab(tab) {
+    document.getElementById('condition-content').classList.add('hidden');
+    document.getElementById('setup-content').classList.add('hidden');
+    document.getElementById('tab-condition').classList.remove('font-bold', 'border-b-2', 'border-blue-700', 'text-blue-700');
+    document.getElementById('tab-setup').classList.remove('font-bold', 'border-b-2', 'border-blue-700', 'text-blue-700');
+
+    if (tab === 'condition') {
+        document.getElementById('condition-content').classList.remove('hidden');
+        document.getElementById('tab-condition').classList.add('font-bold', 'border-b-2', 'border-blue-700', 'text-blue-700');
+    } else {
+        document.getElementById('setup-content').classList.remove('hidden');
+        document.getElementById('tab-setup').classList.add('font-bold', 'border-b-2', 'border-blue-700', 'text-blue-700');
+    }
+}
+
+
+// js các nút dropdown
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".dropdown-btn").forEach((button) => {
+        button.addEventListener("click", function () {
+            const parent = this.parentElement;
+            const content = parent.querySelector(".dropdown-content");
+            const icon = this.querySelector(".dropdown-icon");
+
+            content.classList.toggle("hidden");
+            icon.textContent = content.classList.contains("hidden") ? "🔽" : "🔼";
+        });
+    });
+});
+
+function toggleDropdown(id) {
+    const dropdown = document.getElementById(id);
+    dropdown.classList.toggle("hidden");
+}

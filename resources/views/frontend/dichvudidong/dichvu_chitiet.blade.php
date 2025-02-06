@@ -2,9 +2,9 @@
 
 @section('content')
 <div class="container" style="padding-top: 15vh;">
-    <div class="row">
-        <!-- Cột trái: Dịch vụ chính -->
-        <div class="col-md-8">
+        <div class="row">
+            <!-- Cột trái: Dịch vụ chính -->
+            <div class="col-md-8">
             @if ($dichvu)
                 <div class="card mb-4 shadow-sm">
                     <div class="row g-0">
