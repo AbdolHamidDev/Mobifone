@@ -1,0 +1,140 @@
+/* 🌟 Tổng quan giao diện */
+body {
+    background-color: #f8fafc;
+    font-family: 'Inter', sans-serif;
+}
+
+/* 🌟 Khung chứa chính */
+.max-w-6xl {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 24px;
+    margin-top: 20px;
+}
+
+/* 🌟 Tiêu đề chính */
+h2 {
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+    color: #1e293b;
+}
+
+/* 🌟 Tabs */
+.tab-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #4b5563;
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.tab-button:hover,
+.tab-button:focus,
+.tab-button.text-blue-500 {
+    color: #2563eb;
+    border-bottom: 2px solid #2563eb;
+}
+
+/* 🌟 Nội dung Tabs */
+.tab-section {
+    display: none;
+}
+
+.tab-section.active {
+    display: block;
+}
+
+/* 🌟 Chỉnh sửa khung chứa gói cước */
+.carousel {
+    display: flex;
+    overflow-x: auto;
+    gap: 16px;
+    padding: 10px;
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 #f1f5f9;
+}
+
+/* 🌟 Ô hiển thị gói cước với chiều cao đồng nhất */
+.carousel div {
+    min-width: 220px;
+    max-width: 220px;
+    height: 180px; /* Đặt chiều cao cố định */
+    background: #f1f5f9;
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* 🌟 Đảm bảo nội dung không bị lệch */
+.carousel div h3 {
+    flex: 1; /* Chiếm toàn bộ khoảng trống có thể */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.carousel div p {
+    font-size: 14px;
+    color: #333;
+}
+
+/* 🌟 Căn chỉnh nút Đăng ký ở dưới cùng */
+.btn-register {
+    margin-top: auto;
+    padding: 8px 16px;
+    background: #2563eb;
+    color: white;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: background 0.3s;
+}
+
+.btn-register:hover {
+    background: #1d4ed8;
+}
+
+.carousel div:hover {
+    transform: translateY(-5px);
+    background: #e2e8f0;
+}
+
+
+/* 🌟 Tùy chỉnh thanh cuộn (Scrollbar) */
+.carousel::-webkit-scrollbar {
+    height: 6px;
+}
+
+.carousel::-webkit-scrollbar-thumb {
+    background-color: #94a3b8;
+    border-radius: 10px;
+}
+
+.carousel::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+
+.btn-detail {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 8px 16px;
+    background: #2563eb;
+    color: white;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: background 0.3s;
+    text-decoration: none;
+}
+
+.btn-detail:hover {
+    background: #1d4ed8;
+}

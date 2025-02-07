@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\DichVu;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use Illuminate\Pagination\Paginator;
@@ -38,6 +39,14 @@ class AppServiceProvider extends ServiceProvider
         
             // Chia sẻ dữ liệu cho view
             $view->with('dichvuKhac', $dichvuKhac);
+        });
+
+        View::composer(['frontend.dichvudidong.quoc-te-khac'], function ($view) {
+            // Lấy danh sách dịch vụ có loai_dich_vu là 'Khác'
+            $dichvusKhac = DichVu::where('loai_dich_vu', 'Khác')->get();
+    
+            // Truyền dữ liệu vào view
+            $view->with('dichvusKhac', $dichvusKhac);
         });
         
     }

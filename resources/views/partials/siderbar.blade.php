@@ -266,6 +266,14 @@
             </a>
         </li>
 
+
+         <!-- Gọi VoIP 131 -->
+         <li class="nav-item">
+            <a href="{{ route('goi-voip-cuoc-phi.index') }}" class="nav-link ajax-link">
+                <i class="fas fa-tools" style="color:#EF3054;"></i> <!-- Màu đỏ tươi -->
+                <p> Gọi VoIP 131</p>
+            </a>
+        </li>
     </ul>
 </li>
 

@@ -16,7 +16,7 @@
                           <a href="javascript:void(0)">Dịch vụ di động</a>
                           <ul class="sub-menu">
                             <li>
-                              <a href="{{ route('frontend.dichvudidong.loaithuebao') }}">Loại thuê bao</a>
+                              <a href="{{ url('/dich-vu-di-dong/loai-thue-bao') }}">Loại thuê bao</a>
                           </li>
                           
                             <li><a href="{{ route('frontend.dichvudidong.goicuoc') }}">Gói cước</a></li>
@@ -31,10 +31,10 @@
                             <a href="javascript:void(0)">Hỗ trợ khách hàng</a>
                             <ul class="sub-menu">
                               <li><a href="#">Kết nối dài lâu</a></li>
-                              <li><a href="#">Câu hỏi thường gặp</a></li>
-                              <li><a href="#">Gửi phản ánh</a></li>
-                              <li><a href="#">Tìm kiếm cửa hàng</a></li>
-                              <li><a href="#">Chuyển mạng giữ số</a></li>                          
+                              <li><a href="{{ url('/cauhoi-thuonggap') }}">Câu hỏi thường gặp</a></li>
+                              <li><a href="#calculator">Gửi phản ánh</a></li>
+                              <li><a href="{{ url('/store-search') }}">Tìm kiếm cửa hàng</a></li>
+                              <li><a href="{{ url('/chuyendoi-mang') }}">Chuyển mạng giữ số</a></li>                       
                             </ul>
                           </li>
                           <li class="has-sub">

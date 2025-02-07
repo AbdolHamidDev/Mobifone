@@ -11,10 +11,10 @@
                 <p><em><span class="blue-text">Mobi</span><span class="red-text">fone</span></em> cung cấp các dịch vụ viễn thông chất lượng cao, giúp kết nối doanh nghiệp của bạn với thế giới. Hãy tận hưởng những gói cước viễn thông đa dạng và dịch vụ chăm sóc khách hàng vượt trội.</p>
                 <div class="buttons">
                   <div class="blue-button">
-                    <a href="#">Khám Phá Thêm</a>
+                    <a href="#dichvudidong">Khám Phá Thêm</a>
                   </div>
                   <div class="red-button">
-                    <a href="#">Liên Hệ Với Chúng Tôi</a>
+                    <a href="#calculator">Liên Hệ Với Chúng Tôi</a>
                   </div>
                 </div>
               </div>
@@ -34,10 +34,10 @@
                 <p><em><span class="blue-text">Mobi</span><span class="red-text">fone</span></em> luôn dẫn đầu trong việc cung cấp các dịch vụ viễn thông tiên tiến. Chúng tôi cam kết mang đến cho doanh nghiệp bạn những giải pháp tối ưu trong mọi lĩnh vực viễn thông và công nghệ.</p>
                 <div class="buttons">
                   <div class="blue-button">
-                    <a href="#">Khám Phá Thêm</a>
+                    <a href="#dichvudidong">Khám Phá Thêm</a>
                   </div>
                   <div class="red-button">
-                    <a href="#">Liên Hệ Với Chúng Tôi</a>
+                    <a href="#calculator">Liên Hệ Với Chúng Tôi</a>
                   </div>
                 </div>
               </div>
@@ -57,10 +57,10 @@
                 <p>Khi bạn sử dụng các dịch vụ của <em><span class="blue-text">Mobi</span><span class="red-text">fone</span></em>, doanh nghiệp bạn sẽ trải nghiệm những tiện ích tuyệt vời, từ kết nối di động đến các dịch vụ internet tốc độ cao. Hãy chia sẻ trải nghiệm của bạn với <em><span class="blue-text">Mobi</span><span class="red-text">fone</span></em> cùng đồng nghiệp!</p>
                 <div class="buttons">
                   <div class="blue-button">
-                    <a href="#">Khám Phá Thêm</a>
+                    <a href="#dichvudidong">Khám Phá Thêm</a>
                   </div>
                   <div class="red-button">
-                    <a href="#">Liên Hệ Với Chúng Tôi</a>
+                    <a href="#calculator">Liên Hệ Với Chúng Tôi</a>
                   </div>
                 </div>
               </div>

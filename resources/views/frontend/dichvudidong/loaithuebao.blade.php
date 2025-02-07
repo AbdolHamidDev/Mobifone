@@ -8,12 +8,15 @@
             <h4 class="text-primary">Danh mục</h4>
             <ul class="list-group shadow-sm">
                 @foreach ($categories as $category)
-                    <li class="list-group-item {{ $selectedCategory == $category ? 'active' : '' }}">
-                        <a href="{{ route('frontend.dichvudidong.loaithuebao', ['category' => $category]) }}" class="text-decoration-none text-dark {{ $selectedCategory == $category ? 'text-white' : '' }}">
-                            {{ $category }}
-                        </a>
-                    </li>
-                @endforeach
+    <li class="list-group-item {{ $selectedCategory == $category ? 'active' : '' }}"
+    data-filter=".{{ \Illuminate\Support\Str::slug($category, '-') }}">
+        <a href="{{ route('frontend.dichvudidong.loaithuebao', ['category' => $category]) }}"
+           class="text-decoration-none text-dark {{ $selectedCategory == $category ? 'text-white' : '' }}">
+            {{ $category }}
+        </a>
+    </li>
+@endforeach
+
             </ul>
         </div>
 

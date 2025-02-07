@@ -25,8 +25,28 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\QuocGiaController;
 use App\Http\Controllers\NhaKhaiThacController;
 use App\Http\Controllers\GiaCuocQuocTeController;
+use App\Http\Controllers\GoiVoipCuocPhiController;
+use App\Models\Goicuoc;
+use App\Models\Goidata;
+use App\Models\DichVu;
+use App\Models\LoaiThueBao;
 
 
+Route::get('/api/goicuoc', function () {
+    return response()->json(Goicuoc::all());
+});
+
+Route::get('/api/goidata', function () {
+    return response()->json(Goidata::all());
+});
+
+Route::get('/api/dichvu', function () {
+    return response()->json(DichVu::all());
+});
+
+Route::get('/api/loaithuebao', function () {
+    return response()->json(LoaiThueBao::all());
+});
 
 
 // Google OAuth 
@@ -287,13 +307,24 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::resource('cuoc-quoc-te', GiaCuocQuocTeController::class);
     Route::get('/get-quoc-gia', [NhaKhaiThacController::class, 'getQuocGia']);
     Route::get('/get-quoc-gia-nha-khai-thac', [GiaCuocQuocTeController::class, 'getQuocGiaNhaKhaiThac']);
+
+    // Gọi VoIP 131
+    Route::resource('goi-voip-cuoc-phi', GoiVoipCuocPhiController::class);
+    
+
       
 
 });
 
 
+
+
+// khu vực API
 Route::get('/api/quoc-gia', [GiaCuocQuocTeController::class, 'getQuocGia']);
 Route::get('/api/cuoc-quoc-te', [GiaCuocQuocTeController::class, 'getCuocQuocTe']);
+
+Route::get('/api/get-countries', [GoiVoipCuocPhiController::class, 'getCountries']);
+Route::get('/api/get-rates', [GoiVoipCuocPhiController::class, 'getRatesByCountry']);
 
 
 

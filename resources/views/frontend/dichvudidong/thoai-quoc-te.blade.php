@@ -29,7 +29,141 @@
             </div>
         </div>
 
-        <div class="max-w-2xl mx-auto bg-white shadow-md rounded-lg p-4">
+    <!-- Chọn Quốc Gia 🌍 -->
+    <h3 class="text-2xl font-bold text-gray-700 text-center mt-6">Bạn muốn gọi đến đâu?</h3>
+
+    <div id="app" class="max-w-9xl mx-auto mt-6 p-6 bg-white rounded-lg shadow-md">
+        <div class="grid grid-cols-5 gap-4 items-center">
+            <div class="relative w-64">
+                <!-- Hiển thị quốc gia đã chọn -->
+                <div class="flex items-center space-x-2 p-2 border border-gray-300 rounded-lg cursor-pointer"
+                    @click="dropdownOpen = !dropdownOpen">
+                    <img v-if="selectedCountry" :src="'https://flagcdn.com/w40/' + selectedCountry.code + '.png'"
+                        class="w-6 h-4 rounded border border-gray-300">
+                    <span v-if="selectedCountry">@{{ selectedCountry.name }}</span>
+                    <span v-else class="text-gray-500">-- Chọn quốc gia --</span>
+                </div>
+
+                <!-- Dropdown danh sách quốc gia -->
+                <ul v-if="dropdownOpen"
+                    class="absolute z-10 w-full bg-white border border-gray-300 rounded-lg mt-1 shadow-md max-h-60 overflow-y-auto">
+                    <li v-for="country in countries" :key="country.id" @click="selectCountry(country)"
+                        class="flex items-center space-x-2 p-2 hover:bg-gray-100 cursor-pointer">
+                        <img :src="'https://flagcdn.com/w40/' + country.code + '.png'"
+                            class="w-6 h-4 rounded border border-gray-300">
+                        <span>@{{ country.name }}</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Nút Tìm Kiếm -->
+            <button @click="searchPackages" class="btn btn-primary">
+                🔍 TÌM KIẾM
+            </button>
+        </div>
+
+        <!-- Tabs -->
+        <div class="max-w-5xl mx-auto mt-12">
+            <div class="flex border-b border-gray-300">
+                <button v-for="(tab, index) in tabs" :key="index" @click="activeTab = index"
+                    class="px-4 py-2 text-gray-600 hover:text-blue-600 focus:outline-none"
+                    :class="{'border-b-2 border-blue-600 font-bold text-black': activeTab === index}">
+                    @{{ tab.label }}
+                </button>
+            </div>
+
+        <!-- Nội dung của Tabs -->
+            <div class="mt-4 p-4 bg-white border rounded-lg shadow">
+                <div v-for="(tab, index) in tabs" :key="index" v-show="activeTab === index">
+                    <div v-if="tab.hasData">
+                        <!-- Tiêu đề thay đổi dựa trên tab -->
+                        <p v-if="index === 0">Thông tin Gọi trực tiếp IDD...</p>
+                        <p v-if="index === 1">Thông tin Gọi VoIP 131...</p>
+                        <p v-if="index === 2">Thông tin Các gói cước ưu đãi...</p>
+
+                            <!-- Tab chứa bảng Gọi VoIP 1313 -->
+                            <div v-if="index === 3 && (voip1313Data.applied.length > 0 || voip1313Data.notApplied.length > 0)"
+                                class="max-w-9xl mx-auto mt-6 p-6 bg-white rounded-lg shadow-md">
+                                <table class="table-auto border border-gray-300 shadow-lg rounded-lg w-full">
+                                    <thead class="bg-gray-100 border border-gray-300 text-center">
+                                        <tr>
+                                            <th class="px-4 py-2 border border-gray-300">STT</th>
+                                            <th class="px-4 py-2 border border-gray-300">Mã vùng/mã mạng áp dụng 1313</th>
+                                            <th class="px-4 py-2 border border-gray-300">Mã vùng/mã mạng KHÔNG áp dụng 1313</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="(rate, index) in voip1313Data.applied" :key="index" class="hover:bg-gray-200 text-center">
+                                            <td class="px-4 py-2 border border-gray-300">@{{ index + 1 }}</td>
+                                            <td class="px-4 py-2 border border-gray-300">@{{ rate.ma_vung }}</td>
+                                            <td class="px-4 py-2 border border-gray-300">
+                                                <span v-if="index < voip1313Data.notApplied.length">@{{ voip1313Data.notApplied[index].ma_vung }}</span>
+                                                <span v-else>-</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+
+                        <!-- Bảng dữ liệu dùng chung cho cả IDD (0) và VoIP 131 (1) -->
+                            <div v-if="(index === 0 || index === 1) && tableData.length > 0"
+                                class="max-w-9xl mx-auto mt-6 p-6 bg-white rounded-lg shadow-md">
+                                <table class="table-auto border border-gray-300 shadow-lg rounded-lg w-full">
+                                    <thead class="bg-gray-100 border border-gray-300 text-center">
+                                        <tr>
+                                            <th class="px-4 py-2 border border-gray-300" rowspan="2">STT</th>
+                                            <th class="px-4 py-2 border border-gray-300" colspan="2">Nơi đến</th>
+                                            <th class="px-4 py-2 border border-gray-300" colspan="5">
+                                                Mức cước (Đã bao gồm VAT) - @{{ index === 0 ? 'Gọi trực tiếp IDD' : 'Gọi VoIP 131' }}
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <th class="px-4 py-2 border border-gray-300">Nước/Vùng lãnh thổ (Tiếng Anh)</th>
+                                            <th class="px-4 py-2 border border-gray-300">Mã nước</th>
+                                            <th class="px-4 py-2 border border-gray-300">Mã vùng, mã dịch vụ</th>
+                                            <th class="px-4 py-2 border border-gray-300">Block 6s đầu</th>
+                                            <th class="px-4 py-2 border border-gray-300">01 giây tiếp theo</th>
+                                            <th class="px-4 py-2 border border-gray-300">Quy đổi 1 phút đầu</th>
+                                            <th class="px-4 py-2 border border-gray-300">Gọi @{{ index === 0 ? 'IDD' : 'VoIP 131' }} Nhóm 2</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="(rate, index) in (index === 0 ? iddRates : rates)" :key="rate.stt" class="hover:bg-gray-200 text-center">
+                                            <td class="px-4 py-2 border border-gray-300">@{{ rate.stt }}</td>
+                                            <td class="px-4 py-2 border border-gray-300">@{{ rate.ten_quoc_gia }}</td>
+                                            <td class="px-4 py-2 border border-gray-300">@{{ rate.ma_quoc_gia }}</td>
+                                            <td class="px-4 py-2 border border-gray-300">@{{ rate.ma_vung }}</td>
+                                            <td class="px-4 py-2 border border-gray-300">@{{ rate.block_6s_dau }} VNĐ</td>
+                                            <td class="px-4 py-2 border border-gray-300">@{{ rate.gia_moi_giay }} VNĐ</td>
+                                            <td class="px-4 py-2 border border-gray-300">@{{ rate.gia_1_phut_dau }} VNĐ</td>
+                                            <td class="px-4 py-2 border border-gray-300">@{{ rate.goi_voip_nhom2 }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+            
+
+                            </div>
+
+                        <!-- Chỉ hiển thị ảnh "Không có dữ liệu" nếu đã nhấn tìm kiếm -->
+                            <div v-else-if="hasSearched" class="text-center flex flex-col items-center space-y-2">
+                                <img src="https://www.mobifone.vn/assets/source/icons/employ-nodata.png" 
+                                    alt="Không có dữ liệu" 
+                                    class="w-40 h-auto"> <!-- Điều chỉnh kích thước ảnh nhỏ hơn -->
+                                <p class="text-gray-500 text-sm">MobiFone hiện chưa cung cấp gói cước ưu đãi tại quốc gia này.</p>
+                            </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    <!-- GIỚI THIỆU DỊCH VỤ VÀ CÁC GÓI CƯỚC ƯU ĐÃI -->
+            <div class="max-w-2xl mx-auto bg-white shadow-md rounded-lg p-4 mt-12">
+
                 <h2 class="text-xl font-semibold mb-2">Giới thiệu dịch vụ</h2>
                 
                 <div class="space-y-2">
@@ -98,8 +232,6 @@
                     </div>
                 </div>
             </div>
-
-
 
             <div class="max-w-2xl mx-auto bg-white shadow-md rounded-lg p-4">
                 <h2 class="text-xl font-semibold mb-2">Các gói cước ưu đãi</h2>
@@ -232,14 +364,12 @@
                             </div>
                     </div>
                 </div>
-            </div>
-            
-            <script>
-                function toggleDropdown(id) {
-                    const element = document.getElementById(id);
-                    element.classList.toggle('hidden');
-                }
-            </script>
-   
-    </div>
+            </div>       
+          
+</div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.2.37/dist/vue.global.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="{{ asset('frontends/dichvuquocte/thoaiquocte.js') }}"></script>
 @endsection

@@ -12,15 +12,15 @@ class LoaiThueBaoController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index($subscriptionTypeId)
+    public function index(Request $request)
     {
-        $subscriptionType = SubscriptionType::with(['loaithuebao' => function ($query) use ($subscriptionTypeId) {
-            $query->where('subscription_type_id', $subscriptionTypeId);
-        }])->findOrFail($subscriptionTypeId);
-        
-
-        return view('admin.dichvu_didong.loaithuebao_chitiet.index', compact('subscriptionType'));
+        $categories = LoaiThueBao::distinct()->pluck('category'); 
+        $selectedCategory = $request->query('category', ''); // Lấy từ query hoặc để trống
+        $items = LoaiThueBao::where('category', $selectedCategory)->get();
+    
+        return view('frontend.dichvudidong.loaithuebao', compact('categories', 'items', 'selectedCategory'));
     }
+    
     
 
     /**

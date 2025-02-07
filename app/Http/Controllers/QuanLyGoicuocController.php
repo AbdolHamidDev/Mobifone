@@ -163,13 +163,16 @@ public function register(Request $request)
         $validated = $request->validate([
             'phoneNumber' => 'required|digits:10',
             'package_id' => 'required|exists:goicuocs,id',
+            'type' => 'required|in:goi-cuoc', // Bắt buộc type là "goi-cuoc"
         ]);
 
         // Lưu thông tin đăng ký
         PackageRegistration::create([
             'phone_number' => $validated['phoneNumber'],
             'package_id' => $validated['package_id'],
+            'type' => $validated['type'], // Lưu đúng loại gói
         ]);
+
 
         // Trả về phản hồi JSON
         return response()->json([

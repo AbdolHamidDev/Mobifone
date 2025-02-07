@@ -6,7 +6,7 @@
           <i class="fas fa-phone"></i>
           <h4>Loại Thuê Bao</h4>
           <p>Các loại thuê bao phong phú, phù hợp với nhu cầu cá nhân và doanh nghiệp.</p>
-          <a href="#loai-thue-bao" class="subtle-link">Xem tất cả &rarr;</a>
+          <a href="{{ url('/dich-vu-di-dong/loai-thue-bao') }}" class="subtle-link">Xem tất cả &rarr;</a>
         </div>
       </div>
       <div class="col-lg-6">
@@ -14,7 +14,7 @@
           <i class="fas fa-list-alt"></i>
           <h4>Gói Cước</h4>
           <p>Các gói cước đa dạng, tiết kiệm chi phí và tối ưu hóa tiện ích.</p>
-          <a href="#goi-cuoc" class="subtle-link">Xem tất cả &rarr;</a>
+          <a href="{{ route('frontend.dichvudidong.goicuoc') }}" class="subtle-link">Xem tất cả &rarr;</a>
         </div>
       </div>
       <div class="col-lg-6">
@@ -22,7 +22,7 @@
           <i class="fas fa-signal"></i>
           <h4>Gói Data</h4>
           <p>Nhiều gói data linh hoạt, phù hợp với nhu cầu truy cập internet.</p>
-          <a href="#goi-data" class="subtle-link">Xem tất cả &rarr;</a>
+          <a href="{{ route('frontend.dichvudidong.goidata') }}" class="subtle-link">Xem tất cả &rarr;</a>
         </div>
       </div>
       <div class="col-lg-6">
@@ -30,7 +30,7 @@
           <i class="fas fa-cogs"></i>
           <h4>Dịch Vụ</h4>
           <p>Các dịch vụ hỗ trợ toàn diện giúp khách hàng an tâm sử dụng.</p>
-          <a href="#dich-vu" class="subtle-link">Xem tất cả &rarr;</a>
+          <a href="{{ route('frontend.dichvudidong.dichvu') }}" class="subtle-link">Xem tất cả &rarr;</a>
         </div>
       </div>
       <div class="col-lg-6">
@@ -38,7 +38,7 @@
           <i class="fas fa-user-plus"></i>
           <h4>Đăng Ký Hòa Mạng</h4>
           <p>Quy trình nhanh chóng, dễ dàng cho khách hàng mới.</p>
-          <a href="#dang-ky" class="subtle-link">Xem tất cả &rarr;</a>
+          <a href="{{ route('frontend.dichvudidong.sothuebao') }}" class="subtle-link">Xem tất cả &rarr;</a>
         </div>
       </div>
       <div class="col-lg-6">
@@ -46,7 +46,7 @@
           <i class="fas fa-globe"></i>
           <h4>Dịch Vụ Quốc Tế</h4>
           <p>Hỗ trợ các dịch vụ quốc tế chất lượng cao, kết nối toàn cầu.</p>
-          <a href="#dich-vu-quoc-te" class="subtle-link">Xem tất cả &rarr;</a>
+          <a href="{{ url('/dich-vu-quoc-te') }}" class="subtle-link">Xem tất cả &rarr;</a>
         </div>
       </div>
     </div>
