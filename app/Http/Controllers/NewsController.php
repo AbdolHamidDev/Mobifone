@@ -110,5 +110,12 @@ class NewsController extends Controller
         return redirect()->route('news.index')->with('success', 'Trạng thái kích hoạt đã được cập nhật.');
     }
 
+
+    public function showchitiet($id)
+    {
+        $news = News::findOrFail($id);
+        return view('frontend.tintuc.tintuc_chitiet', compact('news'));
+    }
+
 }
 

@@ -54,7 +54,6 @@
                     <li><a href="{{ url('/cauhoi-thuonggap') }}">Câu hỏi thường gặp</a></li>
                     <li><a href="{{ url('/store-search') }}">Tìm kiếm cửa hàng</a></li>
                     <li><a href="{{ url('/chuyendoi-mang') }}">Chuyển mạng giữ số</a></li>
-                    <li><a href="">Sitmap</a></li>
                     <li><a href=" https://tttb.mobifone.vn">Đăng ký thông tin</a></li>
 
                 </ul>

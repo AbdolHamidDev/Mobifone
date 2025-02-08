@@ -2,64 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Conversation;
 use App\Models\DichVu;
-use App\Models\User;
 use App\Models\Goicuoc;
 use App\Models\Goidata;
 use App\Models\LoaiThueBao;
-use Illuminate\Http\Request;
 use App\Models\News;
-use App\Models\PackageRegistration;
 use App\Models\Store;
-use Illuminate\Support\Facades\Auth; 
-use Illuminate\Support\Facades\Hash; 
-use Illuminate\Support\Str; 
 use Laravel\Socialite\Facades\Socialite;
 
 class HomeController extends Controller
 {
-    public function getGoogleLogin() 
-    { 
-        return Socialite::driver('google')->redirect(); 
-    } 
+  
      
-    public function getGoogleCallback() 
-    { 
-        try 
-        { 
-            $user = Socialite::driver('google') 
-                ->setHttpClient(new \GuzzleHttp\Client(['verify' => false])) 
-                ->stateless() 
-                ->user(); 
-        } 
-        catch(Exception $e) 
-        { 
-            return redirect()->route('user.dangnhap')->with('warning', 'Lỗi xác thực. Xin vui lòng thử lại!'); 
-        } 
-         
-        $existingUser = User::where('email', $user->email)->first(); 
-        if($existingUser) 
-        { 
-            // Nếu người dùng đã tồn tại thì đăng nhập 
-            Auth::login($existingUser, true); 
-            return redirect()->route('user.home'); 
-        } 
-        else 
-        { 
-            // Nếu chưa tồn tại người dùng thì thêm mới 
-            $newUser = User::create([ 
-                'name' => $user->name, 
-                'email' => $user->email, 
-                'username' => Str::before($user->email, '@'), 
-                'password' => Hash::make('mobifone@2025'), // Gán mật khẩu tự do 
-            ]); 
-             
-            // Sau đó đăng nhập 
-            Auth::login($newUser, true); 
-            return redirect()->route('user.home'); 
-        } 
-    } 
-
+  
 
     public function index()
 {
@@ -107,7 +63,14 @@ class HomeController extends Controller
 
     
 
+ // Hiển thị danh sách cuộc hội thoại dựa vào số điện thoại (dành cho người dùng)
+ public function chat()
+ {
+     $phone = session('phone'); // Lấy số điện thoại từ session OTP
+     $conversations = Conversation::where('phone', $phone)->with('messages')->get();
 
+     return view('chat.index', compact('conversations', 'phone'));
+ }
 
 
 

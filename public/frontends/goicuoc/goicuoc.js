@@ -89,7 +89,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 },
                 body: JSON.stringify({
                     package_id: packageId,
-                    phoneNumber: phoneNumber
+                    phoneNumber: phoneNumber,
+                    type: "goi-cuoc" // ✅ Thêm type để Laravel nhận diện đúng
                 })
             })
                 .then(response => response.json())
@@ -126,6 +127,7 @@ document.addEventListener('DOMContentLoaded', function () {
         console.error('#submitRegisterForm không tồn tại trong DOM.');
     }
 });
+
 
 
 document.addEventListener('DOMContentLoaded', function () {

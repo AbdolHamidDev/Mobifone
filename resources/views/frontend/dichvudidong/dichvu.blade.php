@@ -1,7 +1,17 @@
 @extends('layouts.frontend')
-
+<link rel="stylesheet" href="{{ asset('frontends/main_dieuhuong.css') }}">
 @section('content')
 <div class="container" style="padding-top: 15vh;">
+
+     <!-- THANH ĐIỀU HƯỚNG -->
+     <div class="breadcrumb">
+        <a href="/"><i class="fas fa-home"></i> Trang chủ</a>
+        <span class="divider">/</span>
+        <a href="#">Dịch vụ di động</a>
+        <span class="divider">/</span>
+        <span class="current">Dịch vụ</span>
+    </div>
+
     <h2 class="mb-4 text-center fw-bold" style="color: #003366;">
         Khám phá các gói dịch vụ
     </h2>

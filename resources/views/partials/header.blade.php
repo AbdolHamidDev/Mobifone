@@ -94,39 +94,48 @@
             <a href="#" class="dropdown-item">No messages available</a>
         @endif
 
-        <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
-    </div>
-</li>
-
-<!-- Notifications Dropdown Menu -->
+<!-- Chat Messages Dropdown -->
 <li class="nav-item dropdown">
-    <a class="nav-link text-white" data-toggle="dropdown" href="#">
-        <i class="far fa-bell"></i>
-        <span class="badge badge-warning navbar-badge">
-            {{ isset($contacts) && $contacts->count() > 0 ? $contacts->count() : 0 }}
+    <a class="nav-link text-dark" data-toggle="dropdown" href="#">
+        <i class="far fa-comments"></i>
+        <span class="badge badge-info navbar-badge">
+            {{ $conversations->sum('unread_count') > 0 ? $conversations->sum('unread_count') : '' }}
         </span>
     </a>
     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
         <span class="dropdown-header">
-            {{ isset($contacts) && $contacts->count() > 0 ? $contacts->count() : 0 }} Notifications
+            {{ $conversations->sum('unread_count') > 0 ? $conversations->sum('unread_count') . ' Tin nhắn mới' : 'Không có tin nhắn mới' }}
         </span>
         <div class="dropdown-divider"></div>
 
-        @if(isset($contacts) && $contacts->count() > 0)
-            @foreach ($contacts as $contact)
-                <a href="#" class="dropdown-item">
-                    <i class="fas fa-envelope mr-2"></i> {{ $contact->message }} <!-- Hiển thị nội dung thông báo -->
-                    <span class="float-right text-muted text-sm">{{ $contact->created_at->diffForHumans() }}</span>
-                </a>
-                <div class="dropdown-divider"></div>
+        @if(isset($conversations) && $conversations->count() > 0)
+            @foreach ($conversations->take(5) as $conversation)
+                @php
+                    $latestMessage = $conversation->messages()->latest()->first();
+                @endphp
+                @if($latestMessage)
+                    <a href="{{ route('chat.admin.messages', $conversation->id) }}" class="dropdown-item">
+                        <i class="fas fa-user mr-2"></i> {{ $conversation->phone }}
+                        <span class="badge badge-danger">{{ $conversation->unread_count > 0 ? $conversation->unread_count : '' }}</span>
+                        <p class="text-sm text-muted">
+                            {{ \Illuminate\Support\Str::limit($latestMessage->message, 40) }}
+                        </p>
+                        <span class="float-right text-muted text-sm">
+                            {{ $latestMessage->created_at->diffForHumans() }}
+                        </span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                @endif
             @endforeach
         @else
-            <a href="#" class="dropdown-item">No notifications available</a>
+            <a href="#" class="dropdown-item">Không có tin nhắn mới</a>
         @endif
 
-        <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+        <a href="{{ route('chat.admin') }}" class="dropdown-item dropdown-footer">Xem tất cả</a>
     </div>
 </li>
+
+
 
 
 
@@ -143,13 +152,9 @@
             </a>
         </li>
 
-        <!-- Sidebar Toggle -->
-        <li class="nav-item">
-            <a class="nav-link text-white" data-widget="control-sidebar" data-slide="true" href="#" role="button">
-                <i class="fas fa-th-large"></i>
-            </a>
-        </li>
+     
     </ul>
+  
 
 
 </nav>

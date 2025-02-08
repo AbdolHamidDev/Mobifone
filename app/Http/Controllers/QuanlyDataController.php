@@ -163,6 +163,7 @@ class QuanlyDataController extends Controller
                 'package_id' => 'required|exists:goidatas,id', // Chỉ cho phép id của gói data
                 'type' => 'required|in:goidata', // Chỉ cho phép loại goidata
             ]);
+            
     
             PackageRegistration::create([
                 'phone_number' => $validated['phoneNumber'],

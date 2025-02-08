@@ -2,14 +2,24 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Sidebar -->
     <div class="sidebar">
-        <!-- Sidebar user panel -->
-        <div class="user-panel mt-3 pb-3 mb-3 d-flex align-items-center">
-            <div class="image">
-                <img src="{{ asset('adminlte/dist/img/hamidkin.jpg') }}" class="img-circle elevation-2" alt="User Image"
-                    style="border: 2px solid #00aaff;">
-            </div>
-          
-        </div>
+ <!-- Sidebar user panel -->
+<div class="user-panel mt-3 pb-3 mb-3 d-flex flex-column align-items-center">
+    <div class="image">
+        <img src="{{ asset('adminlte/dist/img/hamidkin.jpg') }}" class="img-circle elevation-2" alt="User Image"
+            style="border: 2px solid #00aaff;">
+    </div>
+    <div class="info text-center mt-2">
+        @auth
+            <a href="#" class="d-block font-weight-bold">{{ auth()->user()->name }}</a>
+        @else
+            <a href="{{ route('login') }}" class="d-block mt-2">Đăng nhập</a>
+        @endauth
+    </div>
+</div>
+
+
+
+
 
         <!-- SidebarSearch Form -->
         <div class="form-inline">
@@ -274,9 +284,44 @@
                 <p> Gọi VoIP 131</p>
             </a>
         </li>
+
+
     </ul>
 </li>
 
+<!-- Chat -->
+<li class="nav-item">
+    <a href="{{ route('chat.admin') }}" class="nav-link ajax-link">
+        <i class="fas fa-envelope" style="color:#F4D03F;"></i> <!-- Màu vàng chanh -->
+        <p>Chat</p>
+    </a>
+</li>
+
+<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+    @csrf
+</form>
+
+<button type="button" class="btn btn-sm btn-danger w-100" onclick="confirmLogout()">Đăng xuất</button>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function confirmLogout() {
+        Swal.fire({
+            title: "Bạn có chắc muốn đăng xuất?",
+            text: "Bạn sẽ cần đăng nhập lại để tiếp tục.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Đăng xuất",
+            cancelButtonText: "Hủy"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById("logout-form").submit();
+            }
+        });
+    }
+</script>
 
                 
             </ul>

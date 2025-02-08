@@ -9,7 +9,7 @@
     @include('frontend.banner')
 
     <!-- Services Section -->
-    @include('frontend.services')
+    @include('frontend.dichvudidong')
 
     <!-- Simple CTA Section -->
     @include('frontend.simple-cta')
@@ -18,15 +18,18 @@
     @include('frontend.dangkynhanh')
 
     <!-- About Section -->
-    @include('frontend.about')
+    @include('frontend.khuyenmai')
 
     <!-- Calculator Section -->
-    @include('frontend.calculator')
+    @include('frontend.lienhe')
 
     @include('frontend.map')
     <!-- Testimonials Section -->
     @include('frontend.testimonials')
- 
+    
+
+        <!-- Testimonials Section -->
+        @include('frontend.chat')
 @endsection
 
 

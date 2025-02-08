@@ -42,38 +42,16 @@ async function loadData(apiUrl, containerId) {
         let container = document.getElementById(containerId);
 
         container.innerHTML = data.map(item => {
-            let isBlogType = containerId.includes("dich-vu") || containerId.includes("loai-thuebao");
-
-            if (isBlogType) {
-                // Xác định nội dung mô tả dựa vào bảng tương ứng
-                let description = containerId.includes("dich-vu") 
-                    ? item.noi_dung || "Không có mô tả" // Lấy từ cột noi_dung của bảng dichvus
-                    : item.title || "Không có mô tả";  // Lấy từ cột title của bảng subscription_types
-
-                // Xây dựng đường dẫn chính xác
-                let detailUrl = containerId.includes('dich-vu') 
-                    ? `/dich-vu-di-dong/dich-vu/${item.id}` 
-                    : `/dich-vu-di-dong/loai-thue-bao/${item.id}/chi-tiet`;
-
-                return `
-                    <div class="min-w-[220px] bg-gray-100 p-4 rounded-lg shadow-md text-center flex flex-col justify-between">
-                        <h3 class="font-bold text-lg">${truncateText(item.ten_dich_vu || item.ten_loai_thuebao || "Nội dung", 20)}</h3>
-                        <p>${truncateText(description, 50)}</p>
-                        <a href="${detailUrl}" class="btn-detail">Xem chi tiết</a>
-                    </div>
-                `;
-            } else {
-                return `
-                    <div class="min-w-[220px] bg-gray-100 p-4 rounded-lg shadow-md text-center flex flex-col justify-between">
-                        <h3 class="font-bold text-lg">${item.ten_goicuoc || item.ten_data || "Gói thuê bao"}</h3>
-                        <p>💰 ${item.gia ? item.gia.toLocaleString() + " đ" : "Không có giá"} / ${item.thoi_gian ? item.thoi_gian + " Ngày" : "Không giới hạn"}</p>
-                        <p>📦 ${item.dung_luong ? item.dung_luong + " " + (item.don_vi_dung_luong || "GB") : "Không có dung lượng"}</p>
-                        <button class="btn-register" onclick="openRegisterModal('${item.id}', '${item.ten_goicuoc || item.ten_data}', '${containerId.includes('goi-cuoc') ? 'goi-cuoc' : 'goi-data'}')">
-                            Đăng ký
-                        </button>
-                    </div>
-                `;
-            }
+            return `
+                <div class="min-w-[220px] bg-gray-100 p-4 rounded-lg shadow-md text-center flex flex-col justify-between">
+                    <h3 class="font-bold text-lg">${item.ten_goicuoc || item.ten_data || "Gói thuê bao"}</h3>
+                    <p>💰 ${item.gia ? item.gia.toLocaleString() + " đ" : "Không có giá"} / ${item.thoi_gian ? item.thoi_gian + " Ngày" : "Không giới hạn"}</p>
+                    <p>📦 ${item.dung_luong ? item.dung_luong + " " + (item.don_vi_dung_luong || "GB") : "Không có dung lượng"}</p>
+                    <button class="btn-register" onclick="openRegisterModal('${item.id}', '${item.ten_goicuoc || item.ten_data}', '${containerId.includes('goi-cuoc') ? 'goi-cuoc' : 'goidata'}')">
+                        Đăng ký
+                    </button>
+                </div>
+            `;
         }).join("");
 
     } catch (error) {
@@ -81,10 +59,6 @@ async function loadData(apiUrl, containerId) {
     }
 }
 
-// Hàm rút gọn văn bản
-function truncateText(text, maxLength) {
-    return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
-}
 
 
 
@@ -94,8 +68,8 @@ function truncateText(text, maxLength) {
 
 function openRegisterModal(packageId, packageName, type) {
     document.getElementById("packageId").value = packageId;
+    document.getElementById("packageType").value = type; // Gán type vào input hidden
     document.getElementById("selectedPackage").textContent = `Bạn đang đăng ký gói: ${packageName}`;
-    document.getElementById("registerModal").setAttribute("data-package-type", "goidata");
 
     const modal = new bootstrap.Modal(document.getElementById("registerModal"));
     modal.show();
@@ -109,7 +83,8 @@ document.addEventListener("DOMContentLoaded", function () {
     submitButton.addEventListener("click", function () {
         const packageId = document.getElementById("packageId").value;
         const phoneNumber = document.getElementById("phoneNumber").value;
-        const packageType = document.getElementById("registerModal").getAttribute("data-package-type");
+        const packageType = document.getElementById("packageType").value;
+
 
         if (!packageId || !phoneNumber) {
             Swal.fire({

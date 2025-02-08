@@ -344,7 +344,21 @@ class OrderController extends Controller
         }
     }
 
+    public function tracuu()
+    {
+        // Kiểm tra nếu session có lưu số điện thoại OTP
+        if (!session()->has('phone')) {
+            return redirect()->route('otp.login')->with('error', 'Vui lòng đăng nhập bằng OTP để tra cứu đơn hàng.');
+        }
 
+        // Lấy số điện thoại từ session OTP
+        $phone = session('phone');
+
+        // Lọc danh sách đơn hàng theo số điện thoại trong session
+        $orders = Order::where('phone', $phone)->orderBy('created_at', 'desc')->get();
+
+        return view('frontend.hosokhachhang.tracuu', compact('orders'));
+    }
 
 
 }

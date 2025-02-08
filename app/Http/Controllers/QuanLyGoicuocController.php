@@ -165,6 +165,7 @@ public function register(Request $request)
             'package_id' => 'required|exists:goicuocs,id',
             'type' => 'required|in:goi-cuoc', // Bắt buộc type là "goi-cuoc"
         ]);
+        $validated['type'] = str_replace('-', '', strtolower($validated['type'])); // Loại bỏ dấu '-'
 
         // Lưu thông tin đăng ký
         PackageRegistration::create([

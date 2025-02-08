@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\QuanLyGoicuocController;
@@ -28,31 +27,91 @@ use App\Http\Controllers\GiaCuocQuocTeController;
 use App\Http\Controllers\GoiVoipCuocPhiController;
 use App\Models\Goicuoc;
 use App\Models\Goidata;
-use App\Models\DichVu;
-use App\Models\LoaiThueBao;
+use App\Http\Controllers\Auth\CustomLoginController;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Mail\Message;
+use App\Http\Controllers\Auth\PasswordResetLinkController;
+use App\Http\Controllers\Auth\NewPasswordController;
+use App\Http\Controllers\Auth\OTPLoginController;
+use Illuminate\Support\Facades\Session;
+use App\Http\Controllers\ChatController;
 
 
-Route::get('/api/goicuoc', function () {
-    return response()->json(Goicuoc::all());
-});
 
-Route::get('/api/goidata', function () {
-    return response()->json(Goidata::all());
-});
+// KHU VỰC ADMIN ĐĂNG NHẬP ĐĂNG XUẤT & GỬI MAIL QUÊN MẬT KHẨU
 
-Route::get('/api/dichvu', function () {
-    return response()->json(DichVu::all());
-});
+    // Hiển thị form quên mật khẩu
+    Route::get('/forgot-password', [PasswordResetLinkController::class, 'create'])
+        ->middleware('guest')
+        ->name('password.request');
 
-Route::get('/api/loaithuebao', function () {
-    return response()->json(LoaiThueBao::all());
-});
+    // Xử lý gửi email đặt lại mật khẩu
+    Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])
+        ->middleware('guest')
+        ->name('password.email');
+
+    // Hiển thị form đặt lại mật khẩu
+    Route::get('/reset-password/{token}', [NewPasswordController::class, 'create'])
+        ->middleware('guest')
+        ->name('password.reset');
+
+    // Xử lý đặt lại mật khẩu
+    Route::post('/reset-password', [NewPasswordController::class, 'store'])
+        ->middleware('guest')
+        ->name('password.update');
+
+        Route::post('/forgot-password', function (Request $request) {
+            $request->validate(['email' => 'required|email']);
+        
+            // Gửi email đặt lại mật khẩu
+            $status = Password::sendResetLink($request->only('email'));
+        
+            return $status === Password::RESET_LINK_SENT
+                ? back()->with('status', __($status))
+                : back()->withErrors(['email' => __($status)]);
+        })->middleware('guest')->name('password.email');
+    
+    // xử lý đăng nhập & đăng xuất
+    Route::get('/login', [CustomLoginController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [CustomLoginController::class, 'login']);
+    Route::post('/logout', [CustomLoginController::class, 'logout'])->name('logout');
+    Route::post('/logout', function () {
+        Auth::logout();
+        request()->session()->invalidate();
+        request()->session()->regenerateToken();
+        return redirect('/login');
+    })->name('logout');
 
 
-// Google OAuth 
-Route::get('/login/google', [HomeController::class, 'getGoogleLogin'])->name('google.login'); 
-Route::get('/login/google/callback', [HomeController::class, 'getGoogleCallback'])->name('google.callback');
 
+
+  
+   
+    
+    // Hiển thị form nhập số điện thoại
+    Route::get('/login-otp', [OTPLoginController::class, 'showPhoneForm'])->name('otp.login');
+    
+    // Xử lý gửi OTP
+    Route::post('/send-otp', [OTPLoginController::class, 'sendOTP'])->name('otp.send');
+    
+    // Hiển thị form nhập OTP
+    Route::get('/verify-otp', [OTPLoginController::class, 'showOTPForm'])->name('otp.verify');
+    
+    // Xác thực OTP
+    Route::post('/verify-otp', [OTPLoginController::class, 'verifyOTP'])->name('otp.check');
+    
+    // Đăng xuất
+    Route::post('/logout-otp', [OTPLoginController::class, 'logout'])->name('otp.logout');
+    
+    Route::post('/logout-otp', function () {
+        Session::forget('authenticated');
+        Session::forget('phone');
+        return redirect('/')->with('success', 'Bạn đã đăng xuất thành công.');
+    })->name('otp.logout');
+    
 
 
 
@@ -68,6 +127,10 @@ Route::name('frontend.')->group(function () {
         return view('frontend.gioithieu.hoptac');
     });
 
+    Route::get('/khuyen-mai', function () {
+        return view('frontend.tintuc.tintuc');
+    });
+
     Route::get('/gioi-thieu', function () {
         return view('frontend.gioithieu.gioithieu');
     });
@@ -79,6 +142,9 @@ Route::name('frontend.')->group(function () {
     Route::get('/chuyendoi-mang', function () {
         return view('frontend.chuyenmang.home');
     });
+
+    Route::get('/tra-cuu-don-hang', [OrderController::class, 'tracuu'])->name('order.search');
+
 
     // dịch vụ quốc tế
     Route::get('/dich-vu-quoc-te', function () {
@@ -127,7 +193,7 @@ Route::name('frontend.')->group(function () {
     Route::get('/dich-vu-di-dong/goi-data', [QuanlyDataController::class, 'show'])
     ->name('dichvudidong.goidata');
     
-    Route::get('/dich-vu-di-dong/goi-cuoc/{id}', [GoicuocDetailController::class, 'show'])->name('dichvudidong.chitiet');
+    Route::get('/dich-vu-di-dong/goi-cuoc/{id}', [GoicuocDetailController::class, 'show'])->name('dichvudidong1.chitiet');
     Route::post('/dich-vu-di-dong/goi-cuoc/register', [QuanLyGoicuocController::class, 'register'])->name('goicuoc.register');
 
     Route::get('/dich-vu-di-dong/goi-data/{id}', [GoiDataDetailController::class, 'show'])->name('dichvudidong2.chitiet');
@@ -172,7 +238,7 @@ Route::name('frontend.')->group(function () {
     Route::get('/store-search', [StoreController::class, 'search'])->name('store.search');
     Route::get('/get-coordinates', [StoreController::class, 'getCoordinates'])->name('get.coordinates');
 
-
+    Route::get('/news/{id}', [NewsController::class, 'showchitiet'])->name('news.detail');
  
 
 
@@ -188,8 +254,24 @@ Route::name('frontend.')->group(function () {
 
 
 
+// Người dùng (tra cứu theo số điện thoại từ session OTP)
+
+Route::get('/chat', function () {
+    if (!session()->has('phone')) {
+        return redirect('/login-otp')->with('error', 'Bạn cần xác thực OTP trước.');
+    }
+    return app()->call('App\Http\Controllers\ChatController@index');
+})->name('chat.index');
+
+    Route::post('/chat/send', [ChatController::class, 'sendMessage'])->name('chat.send');
+    Route::get('/chat/messages', [ChatController::class, 'getUserMessages'])->name('chat.get');
 
 
+// 🟢 Admin
+Route::get('/admin/chat', [ChatController::class, 'adminIndex'])->name('chat.admin');
+Route::get('/admin/chat/messages/{conversation_id}', [ChatController::class, 'getMessages'])->name('chat.admin.messages');
+Route::post('/admin/chat/send', [ChatController::class, 'adminSendMessage'])->name('chat.admin.send');
+Route::get('/admin/chat/load/{conversation_id}', [ChatController::class, 'getAdminMessages'])->name('chat.admin.load');
 
 
 // Phần Admin
@@ -326,17 +408,15 @@ Route::get('/api/cuoc-quoc-te', [GiaCuocQuocTeController::class, 'getCuocQuocTe'
 Route::get('/api/get-countries', [GoiVoipCuocPhiController::class, 'getCountries']);
 Route::get('/api/get-rates', [GoiVoipCuocPhiController::class, 'getRatesByCountry']);
 
-
-
-// trang mặc định hệ thống
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+Route::get('/api/goicuoc', function () {
+    return response()->json(Goicuoc::all());
 });
 
-require __DIR__.'/auth.php';
+Route::get('/api/goidata', function () {
+    return response()->json(Goidata::all());
+});
+Route::get('/news', [NewsController::class, 'index']);
+
+
+
+

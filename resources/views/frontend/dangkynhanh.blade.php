@@ -22,19 +22,7 @@
                         data-api="/api/goicuoc"
                         data-container="goi-cuoc-list">
                     💰 GÓI CƯỚC
-                </button>
-                <button onclick="switchTab(event, 'tab-dich-vu', '/api/dichvu', 'dich-vu-list')" 
-                        class="tab-button" 
-                        data-api="/api/dichvu"
-                        data-container="dich-vu-list">
-                    🎁 DỊCH VỤ
-                </button>
-                <button onclick="switchTab(event, 'tab-loai-thuebao', '/api/loaithuebao', 'loai-thuebao-list')" 
-                        class="tab-button" 
-                        data-api="/api/loaithuebao"
-                        data-container="loai-thuebao-list">
-                    🔖 LOẠI THUÊ BAO
-                </button>
+                </button>             
             </div>
         
             <!-- Nội dung từng Tab -->
@@ -46,16 +34,6 @@
             <div id="tab-goi-cuoc" class="tab-section">
                 <h3 class="text-xl font-semibold mb-4 text-gray-800">💰 Danh sách gói cước</h3>
                 <div class="carousel flex overflow-x-auto space-x-4 p-2" id="goi-cuoc-list"></div>
-            </div>
-        
-            <div id="tab-dich-vu" class="tab-section">
-                <h3 class="text-xl font-semibold mb-4 text-gray-800">🎁 Danh sách dịch vụ</h3>
-                <div class="carousel flex overflow-x-auto space-x-4 p-2" id="dich-vu-list"></div>
-            </div>
-        
-            <div id="tab-loai-thuebao" class="tab-section">
-                <h3 class="text-xl font-semibold mb-4 text-gray-800">🔖 Danh sách loại thuê bao</h3>
-                <div class="carousel flex overflow-x-auto space-x-4 p-2" id="loai-thuebao-list"></div>
             </div>
         </div>
 
@@ -71,6 +49,8 @@
                 <div class="modal-body">
                     <p id="selectedPackage" class="fw-bold"></p>
                     <input type="hidden" id="packageId" name="package_id">
+                    <input type="hidden" id="packageType" name="type"> <!-- Chuyển vào form -->
+            
                     <div class="form-group mb-3">
                         <label for="phoneNumber">Nhập số điện thoại</label>
                         <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="Số điện thoại" required>
@@ -81,9 +61,11 @@
                     <button type="button" class="btn btn-primary" id="submitRegisterForm">Xác nhận</button>
                 </div>
             </form>
+            
         </div>
     </div>
 </div>
+
 
         
     <script src="{{ asset('frontends/dangkynhanh/dangkynhanh.js') }}"></script>

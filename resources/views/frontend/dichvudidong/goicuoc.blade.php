@@ -1,12 +1,21 @@
 @extends('layouts.frontend')
 
 <link rel="stylesheet" href="{{ asset('frontends/goicuoc/goicuoc.css') }}">
-
+<link rel="stylesheet" href="{{ asset('frontends/main_dieuhuong.css') }}">
 @section('content')
 <div class="container" style="padding-top: 15vh;">
 
 
+   <!-- THANH ĐIỀU HƯỚNG -->
+   <div class="breadcrumb">
+    <a href="/"><i class="fas fa-home"></i> Trang chủ</a>
+    <span class="divider">/</span>
+    <a href="#">Dịch vụ di động</a>
+    <span class="divider">/</span>
+    <span class="current">Gói cước</span>
 
+ 
+</div>
 
     <!-- Phần Tạo Gói Cước -->
     <div class="card shadow-sm mb-5">
@@ -55,7 +64,7 @@
                         <div class="row g-4 justify-content-center">
                             @foreach ($chunk as $goi)
                                 <div class="col-md-4">
-                                    <div class="card goi-cuoc-card shadow-sm h-100" onclick="window.location.href='{{ route('frontend.dichvudidong.chitiet', $goi->id) }}'">
+                                    <div class="card goi-cuoc-card shadow-sm h-100" onclick="window.location.href='{{ route('frontend.dichvudidong1.chitiet', $goi->id) }}'">
                                         <div class="card-header text-center bg-primary text-white fw-bold">
                                             {{ $goi->ten_goicuoc }}
                                         </div>
@@ -143,7 +152,7 @@
                                     <div class="row g-4">
                                         @foreach ($chunk as $goi)
                                             <div class="col-md-3">
-                                                <div class="card goi-cuoc-card shadow-sm h-100" onclick="window.location.href='{{ route('frontend.dichvudidong.chitiet', $goi->id) }}'">
+                                                <div class="card goi-cuoc-card shadow-sm h-100" onclick="window.location.href='{{ route('frontend.dichvudidong1.chitiet', $goi->id) }}'">
                                                     <div class="card-header text-center bg-primary text-white fw-bold">
                                                         {{ $goi->ten_goicuoc }}
                                                     </div>

@@ -66,7 +66,7 @@
   position: absolute;
   bottom: 5px; /* Cố định cách đáy thẻ chứa 10px */
   left: 20px; /* Cố định cách cạnh trái 10px */
-  color: #CC0000;
+  color: #524f4f;
   font-weight: bold;
   font-size: 14px;
   text-decoration: none;
@@ -78,7 +78,7 @@
   display: block;
   height: 2px;
   width: 0;
-  background: #CC0000;
+  background: #524f4f;
   transition: width 0.3s ease;
   position: absolute;
   left: 0;
@@ -86,7 +86,7 @@
 }
 
 .subtle-link:hover {
-  color: #990000;
+  color: #272525;
 }
 
 .subtle-link:hover::after {
