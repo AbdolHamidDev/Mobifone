@@ -1,27 +1,35 @@
 @extends('layouts.admin')
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 @section('content')
 @include('partials.content-header', ['name' => 'Danh sách', 'key' => 'Gói Cước'])
 
+
+<div class="chart-container">
+    <canvas id="goicuocChart"></canvas>
+</div>
+
+
 <div class="container mx-auto mt-4">
     <!-- Nút thêm gói cước -->
-    <button class="btn btn-primary mb-4" data-bs-toggle="modal" data-bs-target="#addGoiCuocModal">
+    <button class="btn btn-primary btn-shadow" data-bs-toggle="modal" data-bs-target="#addGoiCuocModal">
         <i class="fas fa-plus"></i> Thêm Gói Cước
     </button>
+    
 
     <!-- Bảng DataTables -->
     <div class="table-responsive shadow-lg">
         <table id="goicuocsTable" class="table table-bordered table-hover align-middle">
-            <thead class="table-light">
+            <thead class="table-dark text-white text-center">
                 <tr>
                     <th>#</th>
                     <th>Tên gói cước</th>
-                    <th>Giá</th>
-                    <th>Thời gian</th>
-                    <th>Dung lượng</th>
+                    <th class="text-end">Giá</th>
+                    <th class="text-center">Thời gian</th>
+                    <th class="text-end">Dung lượng</th>
                     <th>Loại gói</th>
                     <th>Trạng thái</th>
-                    <th>Hành động</th>
+                    <th class="text-center">Hành động</th>
                 </tr>
             </thead>
             <tbody>
@@ -29,11 +37,12 @@
             </tbody>
         </table>
     </div>
+    
 </div>
 
 <!-- Modal Thêm Gói Cước -->
 <div class="modal fade" id="addGoiCuocModal" tabindex="-1" aria-labelledby="addGoiCuocModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+   <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <form id="goicuocForm">
                 <div class="modal-header">
@@ -42,14 +51,17 @@
                 </div>
                 <div class="modal-body">
                     @csrf
-                    <div class="mb-3">
-                        <label for="ten_goicuoc" class="form-label">Tên Gói Cước</label>
-                        <input type="text" name="ten_goicuoc" id="ten_goicuoc" class="form-control" required>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="ten_goicuoc" class="form-label">Tên Gói Cước</label>
+                            <input type="text" name="ten_goicuoc" id="ten_goicuoc" class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="gia" class="form-label">Giá (VND)</label>
+                            <input type="number" name="gia" id="gia" class="form-control" required>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="gia" class="form-label">Giá (VND)</label>
-                        <input type="number" name="gia" id="gia" class="form-control" required>
-                    </div>
+                    
                     <div class="mb-3">
                         <label for="loai_goicuoc" class="form-label">Loại Gói Cước</label>
                         <select name="loai_goicuoc" id="loai_goicuoc" class="form-select" required>
@@ -172,4 +184,42 @@ function confirmDelete(goicuocId) {
         }
     });
 }
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    fetch('/admin/api/goicuocs-stats')
+        .then(response => response.json())
+        .then(data => {
+            const ctx = document.getElementById('goicuocChart');
+            if (!ctx) {
+                console.error("Canvas không tồn tại!");
+                return;
+            }
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: data.labels,
+                    datasets: [{
+                        label: 'Số lượng gói cước',
+                        data: data.counts,
+                        backgroundColor: 'rgba(54, 162, 235, 0.5)'
+                    }]
+                }
+            });
+        })
+        .catch(error => console.error("Lỗi khi gọi API:", error));
+});
+
+
 </script>
+<style>
+    .chart-container {
+    max-width: 900px; /* Giới hạn chiều rộng */
+    margin: auto; /* Căn giữa */
+    padding: 20px;
+    background: #fff; /* Tạo nền trắng */
+    border-radius: 10px; /* Bo góc */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Tạo hiệu ứng nổi */
+}
+</style>

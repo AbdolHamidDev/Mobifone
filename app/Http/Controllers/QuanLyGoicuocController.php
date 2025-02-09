@@ -6,6 +6,8 @@ use App\Models\Goicuoc;
 use Illuminate\Http\Request;
 use App\Models\PackageRegistration;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\DB;
+
 
 class QuanLyGoicuocController extends Controller
 {
@@ -190,6 +192,28 @@ public function register(Request $request)
 
 
 
+public function getStats()
+{
+    try {
+        // Lấy danh sách gói cước từ database (Giả sử model là GoiCuoc)
+        $goicuocs = GoiCuoc::select('loai_goicuoc', DB::raw('count(*) as count'))
+            ->groupBy('loai_goicuoc')
+            ->get();
+
+        // Chuyển đổi dữ liệu thành định dạng JSON
+        $labels = $goicuocs->pluck('loai_goicuoc');
+        $counts = $goicuocs->pluck('count');
+
+        return response()->json([
+            'labels' => $labels,
+            'counts' => $counts,
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'error' => 'Có lỗi xảy ra: ' . $e->getMessage()
+        ], 500);
+    }
+}
 
 
 }

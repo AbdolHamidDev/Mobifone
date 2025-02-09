@@ -69,6 +69,30 @@ class KhachhangController extends Controller
             })
             ->make(true);
     }
+
+
+
+    public function apiSummary()
+{
+    $totalGoiCuoc = PackageRegistration::where('type', 'goicuoc')->count();
+    $totalGoiData = PackageRegistration::where('type', 'goidata')->count();
+
+    $totalRevenueGoiCuoc = PackageRegistration::where('type', 'goicuoc')->with('goicuoc')->get()->sum(function ($item) {
+        return $item->goicuoc->gia ?? 0;
+    });
+
+    $totalRevenueGoiData = PackageRegistration::where('type', 'goidata')->with('goiData')->get()->sum(function ($item) {
+        return $item->goiData->gia ?? 0;
+    });
+
+    return response()->json([
+        'totalGoiCuoc' => $totalGoiCuoc,
+        'totalGoiData' => $totalGoiData,
+        'totalRevenueGoiCuoc' => $totalRevenueGoiCuoc,
+        'totalRevenueGoiData' => $totalRevenueGoiData
+    ]);
+}
+
     
     
 }

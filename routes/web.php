@@ -352,7 +352,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
         //gói cước
         Route::get('/subscriptions', [KhachhangController::class, 'index'])->name('subscriptions.index');
         Route::get('/api/subscriptions', [KhachhangController::class, 'apiSubscriptions'])->name('subscriptions.api');
-
+        
         
        // Gói data
         Route::get('/goidata', [KhachhangController::class, 'data'])->name('subscriptions.data');
@@ -402,6 +402,8 @@ Route::prefix('admin')->middleware('auth')->group(function () {
 
 
 // khu vực API
+Route::get('/admin/api/goicuocs-stats', [QuanLyGoicuocController::class, 'getStats']);
+
 Route::get('/api/quoc-gia', [GiaCuocQuocTeController::class, 'getQuocGia']);
 Route::get('/api/cuoc-quoc-te', [GiaCuocQuocTeController::class, 'getCuocQuocTe']);
 
@@ -415,6 +417,19 @@ Route::get('/api/goicuoc', function () {
 Route::get('/api/goidata', function () {
     return response()->json(Goidata::all());
 });
+
+Route::get('/api/package-summary', [KhachhangController::class, 'apiSummary']);
+use Illuminate\Support\Facades\Cache;
+
+Route::get('/api/otp-users', function () {
+    $otpUsers = Cache::get('otp_users', []);
+
+    // Đảo ngược danh sách để lấy người mới nhất lên trước
+    $otpUsers = array_reverse($otpUsers);
+
+    return response()->json(array_values($otpUsers)); // Chuyển thành mảng đúng định dạng
+});
+
 Route::get('/news', [NewsController::class, 'index']);
 
 

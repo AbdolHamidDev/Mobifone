@@ -1,11 +1,11 @@
-/* Sidebar Styles */
+/* 🎨 Sidebar Styles */
 .main-sidebar {
     background: linear-gradient(180deg, #1c1c28, #2e2e44);
     color: #ffffff;
-    box-shadow: 0px 4px 15px rgba(58, 58, 84, 0.8), 
-                inset 0px 2px 5px rgba(255, 255, 255, 0.1);
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.3);
 }
 
+/* 🌟 Logo Sidebar */
 .brand-link {
     text-align: center;
     font-family: 'Poppins', sans-serif;
@@ -13,167 +13,124 @@
     background: #1c1c28;
     color: #ffffff;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0px 2px 5px rgba(0, 195, 255, 0.6);
 }
 
+/* 📌 Sidebar Items */
 .nav-sidebar .nav-link {
-    color: #d9d9e0 !important;
-    transition: background 0.3s ease, box-shadow 0.3s ease;
+    color: #d9d9e0;
+    transition: background 0.3s ease, transform 0.2s ease-in-out;
+    border-radius: 6px;
+    padding: 10px 15px;
 }
 
-.nav-sidebar .nav-link:hover {
-    background: #3a3a54;
-    box-shadow: 0px 4px 10px rgba(0, 195, 255, 0.6);
-    color: #00c3ff !important;
+/* 🎯 Hover & Active */
+.nav-sidebar .nav-link:hover, 
+.nav-sidebar .nav-link.active {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(4px);
 }
 
+/* 🎨 Icon Styling */
 .nav-sidebar .nav-icon {
-    color: #00c3ff;
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
+    transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
 }
 
 .nav-sidebar .nav-link:hover .nav-icon {
-    transform: rotate(10deg);
-    box-shadow: 0px 4px 10px rgba(0, 195, 255, 0.5);
+    transform: rotate(8deg);
 }
 
-
-
-/* Thanh tìm kiếm VIP */
+/* 🔎 Thanh tìm kiếm Sidebar */
 .form-control-sidebar {
-    background: linear-gradient(90deg, #252535, #3a3a54);
+    background: #252535;
     color: #ffffff;
     border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 25px; /* Bo tròn góc */
-    padding: 10px 15px;
+    border-radius: 20px;
+    padding: 8px 12px;
     font-size: 14px;
     transition: all 0.3s ease-in-out;
-    box-shadow: inset 0px 2px 5px rgba(0, 0, 0, 0.5);
 }
 
 .form-control-sidebar:focus {
-    outline: none;
-    border-color: #00c3ff; /* Viền sáng khi focus */
-    box-shadow: 0px 0px 8px rgba(0, 195, 255, 0.8); /* Ánh sáng xung quanh */
+    border-color: #00c3ff;
+    box-shadow: 0px 0px 8px rgba(0, 195, 255, 0.6);
 }
 
-/* Nút tìm kiếm */
+/* 🔘 Nút tìm kiếm */
 .btn-sidebar {
     background: linear-gradient(90deg, #00c3ff, #005f99);
-    border: none;
-    border-radius: 50%; /* Nút tròn */
+    border-radius: 50%;
     padding: 8px 12px;
     color: #ffffff;
     transition: all 0.3s ease-in-out;
-    box-shadow: 0px 4px 10px rgba(0, 195, 255, 0.5);
 }
 
 .btn-sidebar:hover {
     background: linear-gradient(90deg, #005f99, #00c3ff);
-    transform: scale(1.1); /* Tăng kích thước nhẹ khi hover */
-    box-shadow: 0px 6px 12px rgba(0, 195, 255, 0.8);
+    transform: scale(1.1);
 }
 
-/* Icon tìm kiếm */
-.btn-sidebar i {
-    transition: transform 0.3s ease-in-out, color 0.3s ease-in-out;
-}
-
-.btn-sidebar:hover i {
-    transform: rotate(20deg); /* Xoay nhẹ icon khi hover */
-    color: #ffffff;
-}
-
-/* Gợi ý tìm kiếm */
+/* 💬 Gợi ý tìm kiếm */
 .ui-menu {
-    display: none; /* Ẩn khi không có dữ liệu */
-    background: #2c3e50; /* Màu nền tối đẹp mắt */
-    color: #ecf0f1; /* Chữ sáng dễ đọc */
-    border-radius: 8px; /* Bo tròn góc */
-    box-shadow: 0 4px 12px rgba(0, 195, 255, 0.3); /* Đổ bóng nhẹ tạo cảm giác nổi bật */
-    max-height: 300px; /* Giới hạn chiều cao */
-    overflow-y: auto; /* Cho phép cuộn nếu gợi ý dài */
-    opacity: 0; /* Ẩn khi không có dữ liệu */
-    transition: opacity 0.3s ease-in-out; /* Hiệu ứng mượt mà khi hiển thị */
+    display: none;
+    background: #2c3e50;
+    color: #ecf0f1;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 195, 255, 0.3);
+    max-height: 300px;
+    overflow-y: auto;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
 }
 
-/* Hiển thị gợi ý khi có dữ liệu */
+/* Hiển thị khi có dữ liệu */
 .ui-menu.ui-menu-open {
-    opacity: 1; /* Hiển thị khi có dữ liệu */
+    opacity: 1;
 }
 
 /* Các mục gợi ý */
 .ui-menu-item {
-    padding: 10px 15px;
+    padding: 8px 12px;
     cursor: pointer;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Font chữ hiện đại */
-    font-size: 14px; /* Cỡ chữ vừa phải */
-    transition: background-color 0.3s ease, color 0.3s ease; /* Hiệu ứng chuyển màu nền khi hover */
+    font-size: 14px;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Hiệu ứng khi hover vào một mục gợi ý */
 .ui-menu-item:hover {
-    background-color: #1abc9c; /* Màu nền tươi sáng khi hover */
-    color: #fff; /* Màu chữ trắng khi hover */
-    border-left: 5px solid #00c3ff; /* Đường viền trái giúp mục gợi ý nổi bật hơn */
+    background-color: #1abc9c;
+    color: #fff;
 }
 
-/* Khi người dùng chọn một mục gợi ý */
-.ui-menu-item.selected {
-    background-color: #00c3ff; /* Màu nền khi chọn */
-    color: #ffffff; /* Chữ trắng khi chọn */
-    font-weight: bold; /* Chữ đậm khi chọn */
-}
-
-
-/* Đảm bảo dropdown hiển thị trên các phần tử khác */
+/* 🏆 Dropdown Menu */
 .nav-item.dropdown:hover .dropdown-menu {
     display: block;
     opacity: 1;
-    z-index: 9999; /* Đặt z-index cao để đảm bảo nó không bị chặn bởi các phần tử khác */
-    position: absolute; /* Đảm bảo dropdown được hiển thị chính xác */
-    top: 100%; /* Đặt dropdown xuất hiện ngay bên dưới menu cha */
+    z-index: 9999;
+    position: absolute;
+    top: 100%;
 }
 
-
-/* Đảm bảo sidebar cho phép dropdown mở rộng ra ngoài */
+/* ⚡ Sidebar Overflow Fix */
 .sidebar {
-    overflow: visible !important; /* Cho phép dropdown mở rộng ra ngoài sidebar */
+    overflow: visible !important;
 }
 
+/* 🎨 Icon Màu Sắc */
+.text-primary { color: #007bff; }
+.text-success { color: #28a745; }
+.text-danger { color: #dc3545; }
+.text-warning { color: #ffc107; }
+.text-pink { color: #e83e8c; }
 
-/* Tùy chỉnh màu sắc cho icon */
-.text-primary {
-    color: #007bff; /* Màu xanh lam */
-}
-
-.text-success {
-    color: #28a745; /* Màu xanh lá */
-}
-
-.text-danger {
-    color: #dc3545; /* Màu đỏ */
-}
-
-.text-warning {
-    color: #ffc107; /* Màu vàng */
-}
-
-.text-pink {
-    color: #e83e8c; /* Màu hồng */
-}
-
-/* Hiệu ứng hover cho icon */
+/* 🎯 Hiệu ứng Hover cho icon */
 .nav-link i {
-    transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
+    transition: transform 0.2s ease-in-out;
 }
 
 .nav-link:hover i {
-    transform: scale(1.2); /* Phóng to icon khi hover */
-    color: #ff511a; /* Tạo màu nổi bật khi hover */
+    transform: scale(1.15);
 }
 
-/* Ripple Effect (nếu cần thêm hiệu ứng nền khi click) */
+/* 🔘 Ripple Effect (Hiệu ứng click) */
 .ripple-effect {
     position: relative;
     overflow: hidden;
@@ -186,7 +143,7 @@
     height: 100%;
     top: 0;
     left: 0;
-    background: rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.1);
     opacity: 0;
     border-radius: 50%;
     transform: scale(0);
@@ -199,4 +156,57 @@
     transition: 0s;
 }
 
+/* 🌟 Mục Dropdown Khi Được Mở */
+.nav-sidebar .nav-item.menu-open > .nav-link {
+    background: #1E2A38 !important; /* Màu tối hơn khi dropdown mở */
+    color: #ffffff !important;
+    font-weight: bold;
+    border-left: 4px solid #007bff; /* Viền xanh nhấn mạnh */
+}
 
+/* 🌟 Mục Con Trong Dropdown */
+.nav-sidebar .nav-treeview .nav-item .nav-link {
+    background: #262c3a; /* Màu nền tối nhẹ hơn */
+    color: #d9d9e0;
+    padding-left: 30px; /* Dịch sang phải để phân biệt */
+    border-radius: 4px;
+}
+
+/* 🌟 Khi Hover Vào Mục Con */
+.nav-sidebar .nav-treeview .nav-item .nav-link:hover {
+    background: #334f6d; /* Xanh nổi bật khi hover */
+    color: #ffffff !important;
+}
+
+/* 🌟 Khi Mục Con Đang Được Chọn */
+.nav-sidebar .nav-treeview .nav-item .nav-link.active {
+    background: rgba(0, 123, 255, 0.2) !important;
+    color: #ffffff !important;
+    font-weight: bold;
+}
+
+
+/* 🌟 Mục Active trong Sidebar */
+.nav-sidebar .nav-link.active {
+    background: rgba(255, 255, 255, 0.1) !important; /* Nền xám xanh nhẹ, không quá sáng */
+    color: #dcdde1 !important; /* Màu chữ nhẹ hơn */
+    font-weight: bold;
+    border-left: 4px solid #3498db; /* Viền xanh nhẹ tạo nhấn mạnh */
+    border-radius: 4px;
+}
+
+/* 🌟 Khi Hover Vào Mục Active */
+.nav-sidebar .nav-link.active:hover {
+    background: rgba(255, 255, 255, 0.15) !important; /* Sáng hơn khi hover */
+}
+
+
+.nav-sidebar .nav-item {
+    margin-bottom: 6px; /* Thêm khoảng cách nhỏ */
+}
+.nav-sidebar .menu-open .nav-treeview .nav-link {
+    background: rgba(255, 255, 255, 0.08);
+}
+.nav-sidebar .nav-link i {
+    font-size: 14px; /* Nhỏ hơn một chút để cân đối */
+}

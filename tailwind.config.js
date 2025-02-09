@@ -17,5 +17,6 @@ export default {
         },
     },
 
+    darkMode: 'class', // 🌙 Bật Dark Mode bằng class "dark"
     plugins: [forms],
 };
