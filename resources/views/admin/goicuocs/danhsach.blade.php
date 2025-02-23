@@ -4,18 +4,26 @@
 @section('content')
 @include('partials.content-header', ['name' => 'Danh sách', 'key' => 'Gói Cước'])
 
-
 <div class="chart-container">
     <canvas id="goicuocChart"></canvas>
 </div>
 
-
 <div class="container mx-auto mt-4">
-    <!-- Nút thêm gói cước -->
-    <button class="btn btn-primary btn-shadow" data-bs-toggle="modal" data-bs-target="#addGoiCuocModal">
-        <i class="fas fa-plus"></i> Thêm Gói Cước
-    </button>
-    
+    <!-- Nút thêm, import và export gói cước -->
+    <div class="d-flex justify-content-between mb-3">
+        <button class="btn btn-primary btn-shadow" data-bs-toggle="modal" data-bs-target="#addGoiCuocModal">
+            <i class="fas fa-plus"></i> Thêm Gói Cước
+        </button>
+        <div>
+            <button class="btn btn-success btn-shadow" onclick="document.getElementById('importFileInput').click();">
+                <i class="fas fa-file-import"></i> Thêm excel
+            </button>
+            <button class="btn btn-secondary btn-shadow" onclick="exportGoiCuocs();">
+                <i class="fas fa-file-export"></i> Xuất excel
+            </button>
+            <input type="file" id="importFileInput" style="display: none;" onchange="importGoiCuocs(event)">
+        </div>
+    </div>
 
     <!-- Bảng DataTables -->
     <div class="table-responsive shadow-lg">
@@ -37,7 +45,6 @@
             </tbody>
         </table>
     </div>
-    
 </div>
 
 <!-- Modal Thêm Gói Cước -->
@@ -106,13 +113,13 @@
     </div>
 </div>
 
-
-
 @endsection
 <script>
     const routes = {
         api: '{{ route('goicuocs.api') }}',
         store: '{{ route('goicuocs.store') }}',
+        import: '{{ route('goicuocs.import') }}',
+        export: '{{ route('goicuocs.export') }}',
         changeStatus: (id) => `/admin/goicuocs/${id}/change-status`,
     };
     const csrfToken = '{{ csrf_token() }}';
@@ -139,27 +146,71 @@
         });
     @endif
 
-   
+    function importGoiCuocs(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('_token', csrfToken);
 
-    // Xác nhận xóa
-function confirmDelete(goicuocId) {
-    Swal.fire({
-        title: 'Bạn có chắc chắn muốn xóa?',
-        text: "Hành động này không thể hoàn tác!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#3085d6',
-        confirmButtonText: 'Xóa',
-        cancelButtonText: 'Hủy'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            fetch(`/admin/goicuocs/${goicuocId}`, {
-                method: 'DELETE',
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            fetch(routes.import, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Thành công!',
+                        text: data.message,
+                        confirmButtonText: 'OK'
+                    });
+                    // Cập nhật bảng dữ liệu
+                    $('#goicuocsTable').DataTable().ajax.reload();
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Thất bại!',
+                        text: data.message,
+                        confirmButtonText: 'OK'
+                    });
                 }
             })
+            .catch(error => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi hệ thống!',
+                    text: 'Không thể import gói cước. Vui lòng thử lại sau.',
+                    confirmButtonText: 'OK'
+                });
+            });
+        }
+    }
+
+    function exportGoiCuocs() {
+        window.location.href = routes.export;
+    }
+
+    // Xác nhận xóa
+    function confirmDelete(goicuocId) {
+        Swal.fire({
+            title: 'Bạn có chắc chắn muốn xóa?',
+            text: "Hành động này không thể hoàn tác!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Xóa',
+            cancelButtonText: 'Hủy'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch(`/admin/goicuocs/${goicuocId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    }
+                })
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
@@ -181,45 +232,42 @@ function confirmDelete(goicuocId) {
                         confirmButtonText: 'OK'
                     });
                 });
-        }
-    });
-}
-
-
-document.addEventListener("DOMContentLoaded", function () {
-    fetch('/admin/api/goicuocs-stats')
-        .then(response => response.json())
-        .then(data => {
-            const ctx = document.getElementById('goicuocChart');
-            if (!ctx) {
-                console.error("Canvas không tồn tại!");
-                return;
             }
+        });
+    }
 
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: data.labels,
-                    datasets: [{
-                        label: 'Số lượng gói cước',
-                        data: data.counts,
-                        backgroundColor: 'rgba(54, 162, 235, 0.5)'
-                    }]
+    document.addEventListener("DOMContentLoaded", function () {
+        fetch('/admin/api/goicuocs-stats')
+            .then(response => response.json())
+            .then(data => {
+                const ctx = document.getElementById('goicuocChart');
+                if (!ctx) {
+                    console.error("Canvas không tồn tại!");
+                    return;
                 }
-            });
-        })
-        .catch(error => console.error("Lỗi khi gọi API:", error));
-});
 
-
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: data.labels,
+                        datasets: [{
+                            label: 'Số lượng gói cước',
+                            data: data.counts,
+                            backgroundColor: 'rgba(54, 162, 235, 0.5)'
+                        }]
+                    }
+                });
+            })
+            .catch(error => console.error("Lỗi khi gọi API:", error));
+    });
 </script>
 <style>
     .chart-container {
-    max-width: 900px; /* Giới hạn chiều rộng */
-    margin: auto; /* Căn giữa */
-    padding: 20px;
-    background: #fff; /* Tạo nền trắng */
-    border-radius: 10px; /* Bo góc */
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Tạo hiệu ứng nổi */
-}
+        max-width: 900px; /* Giới hạn chiều rộng */
+        margin: auto; /* Căn giữa */
+        padding: 20px;
+        background: #fff; /* Tạo nền trắng */
+        border-radius: 10px; /* Bo góc */
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Tạo hiệu ứng nổi */
+    }
 </style>

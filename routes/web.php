@@ -36,9 +36,11 @@ use Illuminate\Mail\Message;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\OTPLoginController;
+use App\Http\Controllers\CancellationController;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\ChatController;
-
+use App\Models\PackageCancellation;
+use Illuminate\Support\Facades\Cache;
 
 
 // KHU VỰC ADMIN ĐĂNG NHẬP ĐĂNG XUẤT & GỬI MAIL QUÊN MẬT KHẨU
@@ -246,6 +248,28 @@ Route::name('frontend.')->group(function () {
 
 
 
+// API Tra cứu gói cước (dùng trong DataTable)
+Route::get('/api/khachhang/goicuoc', [KhachhangController::class, 'apiSubscriptions'])
+    ->name('khachhang.apiSubscriptions');
+
+// API Tra cứu gói data (dùng trong DataTable)
+Route::get('/api/khachhang/goidata', [KhachhangController::class, 'apiSubscriptions2'])
+    ->name('khachhang.apiSubscriptions2');
+
+// Tra cứu gói cước
+Route::get('/hosokhachhang/tracuu-goicuoc', [KhachhangController::class, 'traCuuGoiCuoc'])
+    ->name('khachhang.tracuuGoicuoc');
+
+// Tra cứu gói data
+Route::get('/hosokhachhang/tracuu-goidata', [KhachhangController::class, 'traCuuGoiData'])
+    ->name('khachhang.tracuuGoidata');
+
+
+// Route lưu lịch sử hủy bằng store()
+Route::post('/khachhang/goicuoc/store', [CancellationController::class, 'store'])
+    ->name('khachhang.storeCancellation');
+
+
 
 
 
@@ -285,7 +309,9 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::post('/goicuocs/{id}/change-status', [QuanLyGoicuocController::class, 'changeStatus'])->name('goicuocs.changeStatus');
     Route::get('/api', [QuanLyGoicuocController::class, 'api'])->name('goicuocs.api');
 
-
+    
+    Route::get('/goicuocs/export', [QuanLyGoicuocController::class, 'export'])->name('goicuocs.export');
+    Route::post('/goicuocs/import', [QuanLyGoicuocController::class, 'import'])->name('goicuocs.import');
    
     // quản lý gói data
     Route::resource('Goidatas', QuanlyDataController::class);
@@ -394,7 +420,19 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::resource('goi-voip-cuoc-phi', GoiVoipCuocPhiController::class);
     
 
-      
+      // Giao diện xem lịch sử hủy
+Route::get('/lich-su-huy-goi', [CancellationController::class, 'index'])->name('cancellations.index');
+
+// API DataTables lịch sử hủy
+Route::get('/api/lich-su-huy-goi', [CancellationController::class, 'apiIndex'])->name('cancellations.apiIndex');
+// hiệu lực thời gian gói cước
+Route::get('/api/lich-su-huy-goi/subscriptions', [CancellationController::class, 'apiSubscriptions'])->name('khachhang.apiSubscriptions');
+
+
+
+
+
+   
 
 });
 
@@ -419,7 +457,7 @@ Route::get('/api/goidata', function () {
 });
 
 Route::get('/api/package-summary', [KhachhangController::class, 'apiSummary']);
-use Illuminate\Support\Facades\Cache;
+
 
 Route::get('/api/otp-users', function () {
     $otpUsers = Cache::get('otp_users', []);

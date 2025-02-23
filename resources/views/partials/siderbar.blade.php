@@ -291,6 +291,17 @@
                     </a>
                 </li>
 
+
+                <!-- Hủy gói -->
+                <li class="nav-item">
+                    <a href="{{ route('cancellations.index') }}" class="nav-link ajax-link">
+                        <i class="fas fa-ban" style="color:#FF4757;"></i> 
+                        <p>Khách hàng hủy gói</p>
+                    </a>
+                </li>
+
+
+
             </ul>
         </nav>
 

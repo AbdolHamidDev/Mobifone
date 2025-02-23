@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\PackageRegistration;
 use Yajra\DataTables\DataTables;
 
+
+
+
 class KhachhangController extends Controller
 {
     // Phần gói cước
@@ -92,7 +95,22 @@ class KhachhangController extends Controller
         'totalRevenueGoiData' => $totalRevenueGoiData
     ]);
 }
+// app/Http/Controllers/KhachhangController.php
+
+public function traCuuGoiCuoc()
+{
+    return view('frontend.hosokhachhang.tracuu_goicuoc');
+}
+
+public function traCuuGoiData()
+{
+    return view('frontend.hosokhachhang.tracuu_goidata');
+}
 
     
-    
+
+
+
+
+
 }

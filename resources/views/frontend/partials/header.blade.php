@@ -37,30 +37,32 @@
                       <li class="scroll-to-section"><a href="{{ url('/khuyen-mai') }}">Khuyến mãi</a></li>
                       <li class="scroll-to-section"><a href="{{ url('/tuyen-dung') }}">Tuyển dụng</a></li>
 
-                    <!-- User Dropdown -->
-                    <li class="has-sub user-dropdown">
-                      <a href="javascript:void(0)">
-                          <span class="user-name">Xin chào, <strong>{{ session('phone') }}</strong></span>
-                
-                      </a>
-                      @if(session('authenticated'))
-                      <ul class="sub-menu user-menu">
-                          <li class="user-info">
-                              <img src="{{ asset('assets/images/default-avatar.png') }}" alt="Avatar">
-                              <span class="phone-number">{{ session('phone') }}</span>
-                          </li>
-                          <li><a href="{{ url('/tra-cuu-don-hang') }}">Tra Cứu Đơn Hàng</a></li>
-                          <li>
-                              <form action="{{ route('otp.logout') }}" method="POST">
-                                  @csrf
-                                  <button type="submit" class="logout-button">Đăng xuất</button>
-                              </form>
-                          </li>
-                      </ul>
-                      @else
-<li class="scroll-to-section"><a href="{{ url('/login-otp') }}">Đăng nhập OTP</a></li>
-@endif
-                  </li>
+                  <!-- User Dropdown -->
+<li class="has-sub user-dropdown">
+    <a href="javascript:void(0)">
+      <span class="user-name">Xin chào, <strong>{{ session('phone') }}</strong></span>
+    </a>
+    @if(session('authenticated'))
+    <ul class="sub-menu user-menu">
+      <li class="user-info">
+        <img src="{{ asset('assets/images/default-avatar.png') }}" alt="Avatar">
+        <span class="phone-number">{{ session('phone') }}</span>
+      </li>
+      <li><a href="{{ url('/tra-cuu-don-hang') }}">Tra Cứu Đơn Hàng</a></li>
+      <li><a href="{{ url('/hosokhachhang/tracuu-goicuoc') }}">Tra Cứu Gói Cước</a></li>
+      <li><a href="{{ url('/hosokhachhang/tracuu-data') }}">Tra Cứu Gói Data</a></li>
+      <li>
+        <form action="{{ route('otp.logout') }}" method="POST">
+          @csrf
+          <button type="submit" class="logout-button">Đăng xuất</button>
+        </form>
+      </li>
+    </ul>
+    @else
+      <li class="scroll-to-section"><a href="{{ url('/login-otp') }}">Đăng nhập OTP</a></li>
+    @endif
+  </li>
+  
                   
 
                       <!-- Search Button -->

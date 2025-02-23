@@ -7,10 +7,42 @@ use Illuminate\Http\Request;
 use App\Models\PackageRegistration;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\GoiCuocsExport;
+use App\Imports\GoiCuocsImport;
+
 
 
 class QuanLyGoicuocController extends Controller
 {
+
+     // Phương thức export
+    public function export()
+    {
+        return Excel::download(new GoiCuocsExport, 'goicuocs.xlsx', \Maatwebsite\Excel\Excel::XLSX);
+    }
+ 
+     // Phương thức import
+     public function import(Request $request)
+     {
+         $request->validate([
+             'file' => 'required|mimes:xlsx,xls'
+         ]);
+ 
+         try {
+             Excel::import(new GoiCuocsImport, $request->file('file'));
+ 
+             return response()->json([
+                 'success' => true,
+                 'message' => 'Import gói cước thành công!'
+             ]);
+         } catch (\Exception $e) {
+             return response()->json([
+                 'success' => false,
+                 'message' => 'Lỗi khi import gói cước: ' . $e->getMessage()
+             ]);
+         }
+     }
     
     public function api(Request $request)
 {
@@ -214,6 +246,9 @@ public function getStats()
         ], 500);
     }
 }
+
+
+
 
 
 }
