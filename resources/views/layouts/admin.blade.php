@@ -8,7 +8,8 @@
 
     @yield('title')
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-    
+    <link href="{{ asset('css/tailwind.css') }}" rel="stylesheet">
+
     <!-- Thêm Bootstrap 5 từ CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
     
@@ -37,7 +38,15 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="{{ asset('admins/main.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+   
+  
 
+    <style>
+
+
+
+</style>
     <!-- Các tùy chỉnh CSS nếu có -->   
     @yield('css')
 
@@ -81,7 +90,18 @@
 
     
     <!-- Thông báo sweet alert -->
+<style>
+    @layer utilities {
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
 
+    .animate-fadeInUp {
+        animation: fadeInUp 0.5s ease-out;
+    }
+}
+</style>
 
     @if(session('success'))
     <script>

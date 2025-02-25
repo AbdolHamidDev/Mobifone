@@ -4,9 +4,14 @@
 @section('content')
 @include('partials.content-header', ['name' => 'Danh sách', 'key' => 'Gói Cước'])
 
+<!-- Nhúng file incomplete.blade.php -->
+@include('admin.goicuocs.incomplete', ['incompleteGoiCuocs' => $incompleteGoiCuocs])
+
 <div class="chart-container">
     <canvas id="goicuocChart"></canvas>
 </div>
+
+
 
 <div class="container mx-auto mt-4">
     <!-- Nút thêm, import và export gói cước -->
@@ -28,7 +33,7 @@
     <!-- Bảng DataTables -->
     <div class="table-responsive shadow-lg">
         <table id="goicuocsTable" class="table table-bordered table-hover align-middle">
-            <thead class="table-dark text-white text-center">
+            <thead class="table-white text-white text-center">
                 <tr>
                     <th>#</th>
                     <th>Tên gói cước</th>

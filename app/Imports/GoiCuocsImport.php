@@ -3,20 +3,45 @@
 namespace App\Imports;
 
 use App\Models\GoiCuoc;
-use Maatwebsite\Excel\Concerns\ToModel;
+use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithValidation;
+use Maatwebsite\Excel\Concerns\Importable;
 
-class GoiCuocsImport implements ToModel, WithHeadingRow
+class GoiCuocsImport implements ToCollection, WithHeadingRow, WithValidation
 {
-    public function model(array $row)
+    use Importable;
+
+    public function collection(Collection $rows)
     {
-        return new GoiCuoc([
-            'ten_goicuoc' => $row['ten_goicuoc'],
-            'gia' => $row['gia'],
-            'thoi_gian' => $row['thoi_gian'],
-            'dung_luong' => $row['dung_luong'],
-            'loai_goicuoc' => $row['loai_goicuoc'],
-            'trang_thai' => $row['trang_thai'],
-        ]);
+        foreach ($rows as $row) {
+            GoiCuoc::updateOrCreate(
+                ['id' => $row['id']], // Điều kiện xác định bản ghi đã tồn tại
+                [
+                    'ten_goicuoc' => $row['ten_goicuoc'],
+                    'gia' => $row['gia'],
+                    'thoi_gian' => $row['thoi_gian'],
+                    'dung_luong' => $row['dung_luong'],
+                    'don_vi_dung_luong' => $row['don_vi_dung_luong'],
+                    'loai_goicuoc' => $row['loai_goicuoc'],
+                    'status' => $row['status'],
+                ]
+            );
+        }
+    }
+
+    public function rules(): array
+    {
+        return [
+            '*.id' => 'required|integer',
+            '*.ten_goicuoc' => 'required|string',
+            '*.gia' => 'required|numeric',
+            '*.thoi_gian' => 'required|integer',
+            '*.dung_luong' => 'required|numeric',
+            '*.don_vi_dung_luong' => 'required|string',
+            '*.loai_goicuoc' => 'required|string',
+            '*.status' => 'required|string',
+        ];
     }
 }

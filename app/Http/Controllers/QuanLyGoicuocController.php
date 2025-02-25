@@ -17,10 +17,12 @@ class QuanLyGoicuocController extends Controller
 {
 
      // Phương thức export
-    public function export()
-    {
-        return Excel::download(new GoiCuocsExport, 'goicuocs.xlsx', \Maatwebsite\Excel\Excel::XLSX);
-    }
+     public function export()
+     {
+         $currentDateTime = now()->format('Y-m-d_H-i-s');
+         $fileName = 'goicuocs_' . $currentDateTime . '.xlsx';
+         return Excel::download(new GoiCuocsExport, $fileName, \Maatwebsite\Excel\Excel::XLSX);
+     }
  
      // Phương thức import
      public function import(Request $request)
@@ -82,14 +84,17 @@ class QuanLyGoicuocController extends Controller
     // Danh sách gói cước
     public function index()
     {
-        return view('admin.goicuocs.danhsach');
+        // Lấy danh sách gói cước
+        $goicuocs = GoiCuoc::all();
+
+        // Lấy danh sách id gói cước chưa có chi tiết trong goicuoc_details
+        $incompleteGoiCuocs = GoiCuoc::whereDoesntHave('details')->count();
+
+        return view('admin.goicuocs.danhsach', compact('goicuocs', 'incompleteGoiCuocs'));
     }
 
 
-    
-
- 
-
+   
     public function store(Request $request)
     {
         $validated = $request->validate([

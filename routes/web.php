@@ -308,11 +308,13 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::resource('goicuocs', QuanLyGoicuocController::class);
     Route::post('/goicuocs/{id}/change-status', [QuanLyGoicuocController::class, 'changeStatus'])->name('goicuocs.changeStatus');
     Route::get('/api', [QuanLyGoicuocController::class, 'api'])->name('goicuocs.api');
+    //file excel
+    Route::get('/export', [QuanLyGoicuocController::class, 'export'])->name('goicuocs.export');
+    Route::post('/import', [QuanLyGoicuocController::class, 'import'])->name('goicuocs.import');
 
+     // gói cước chưa hoàn thiện
+     Route::get('/incomplete-goicuocs', [QuanLyGoicuocController::class, 'incomplete'])->name('goicuocs.incomplete');
     
-    Route::get('/goicuocs/export', [QuanLyGoicuocController::class, 'export'])->name('goicuocs.export');
-    Route::post('/goicuocs/import', [QuanLyGoicuocController::class, 'import'])->name('goicuocs.import');
-   
     // quản lý gói data
     Route::resource('Goidatas', QuanlyDataController::class);
     Route::post('/goidatas/{id}/change-status', [QuanlyDataController::class, 'changeStatus'])->name('goidatas.changeStatus');
@@ -323,6 +325,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::resource('goicuocs_detail', GoicuocDetailController::class);
     Route::get('/goicuocs/{id}/details', [GoicuocDetailController::class, 'showDetails'])->name('goicuocs.details');
 
+    
     // quản lý data chi tiết
     Route::resource('goidatas_detail', GoiDataDetailController::class);
     Route::get('/goidatas/{id}/details', [GoiDataDetailController::class, 'showDetails'])->name('goidatas.details');

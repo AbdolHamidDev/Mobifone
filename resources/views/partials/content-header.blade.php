@@ -1,25 +1,33 @@
 <div class="content-wrapper">
-  <div class="content-header">
-      <div class="container-fluid">
-          <div class="row mb-2 justify-between"> <!-- Sử dụng justify-between để căn giữa tiêu đề và breadcrumb -->
-              <div class="col-sm-12 text-center">
-                  <h1 class="m-0 font-bold text-xl text-gray-800 mt-4">{{ $name . ' ' . $key }}</h1> <!-- Tăng kích thước chữ cho tiêu đề và xích xuống một chút -->
-              </div>
-          </div>
-          <div class="row mb-2">
-              <div class="col-sm-6 ml-auto"> <!-- Thêm ml-auto để breadcrumb căn phải -->
-                  <ol class="breadcrumb float-right space-x-2"> <!-- Thêm khoảng cách giữa các mục breadcrumb -->
-                      <li class="breadcrumb-item">
-                          <a href="#" class="text-blue-600 hover:text-blue-800"> <!-- Thêm hiệu ứng hover cho link -->
-                              {{ $name }}
-                          </a>
-                      </li>
-                      <li class="breadcrumb-item active text-gray-600"> <!-- Đổi màu cho breadcrumb active -->
-                          {{ $key }}
-                      </li>
-                  </ol>
-              </div>
-          </div>
-      </div>
-  </div>
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="flex justify-end items-center gap-2 text-sm text-gray-200 animate-fadeInUp pr-6">
+                        <!-- Icon Name -->
+                        <a href="#" class="no-underline font-semibold flex items-center px-4 py-2 rounded-full bg-blue-500/40 backdrop-blur-md shadow-md transition hover:bg-blue-500/60 hover:shadow-lg">
+                            <i class="fas fa-home mr-2"></i> {{ $name }}
+                        </a>
+                        <span>/</span>
+                        
+                        <!-- Icon Key -->
+                        @php
+                            $icons = [
+                                'users' => 'fas fa-users',       // Quản lý người dùng
+                                'settings' => 'fas fa-cog',      // Cài đặt
+                                'dashboard' => 'fas fa-chart-bar', // Bảng điều khiển
+                                'orders' => 'fas fa-shopping-cart', // Đơn hàng
+                                'reports' => 'fas fa-file-alt',  // Báo cáo
+                                'support' => 'fas fa-life-ring', // Hỗ trợ
+                            ];
+                            $iconKey = $icons[$key] ?? 'fas fa-folder'; // Mặc định là folder nếu không có
+                        @endphp
+                        <span class="text-gray-600 flex items-center">
+                            <i class="{{ $iconKey }} mr-2"></i> {{ $key }}
+                        </span>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
 
