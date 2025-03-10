@@ -6,9 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    @yield('title')
+    <title>@yield('title', 'Hệ thống')</title>
+    <link rel="shortcut icon" href="{{ asset('favicon1.ico') }}">
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon1.ico') }}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-    <link href="{{ asset('css/tailwind.css') }}" rel="stylesheet">
+    @vite('resources/css/app.css')
 
     <!-- Thêm Bootstrap 5 từ CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">

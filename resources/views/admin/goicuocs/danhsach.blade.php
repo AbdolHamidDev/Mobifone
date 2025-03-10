@@ -7,10 +7,18 @@
 <!-- Nhúng file incomplete.blade.php -->
 @include('admin.goicuocs.incomplete', ['incompleteGoiCuocs' => $incompleteGoiCuocs])
 
-<div class="chart-container">
+<div class="d-flex justify-content-between flex-wrap">
+    <div class="chart-container" style="flex: 1; max-width: 80%; height: 50vh;">
     <canvas id="goicuocChart"></canvas>
 </div>
 
+<div class="chart-container">
+    <div class="chart-wrapper">
+        <canvas id="statusChart"></canvas>
+    </div>
+</div>
+
+</div>
 
 
 <div class="container mx-auto mt-4">
@@ -241,38 +249,229 @@
         });
     }
 
-    document.addEventListener("DOMContentLoaded", function () {
-        fetch('/admin/api/goicuocs-stats')
-            .then(response => response.json())
-            .then(data => {
-                const ctx = document.getElementById('goicuocChart');
-                if (!ctx) {
-                    console.error("Canvas không tồn tại!");
-                    return;
-                }
+    document.addEventListener("DOMContentLoaded", async function () {
+    try {
+        const response = await fetch('/admin/api/goicuocs-stats');
+        const data = await response.json();
 
-                new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: data.labels,
-                        datasets: [{
-                            label: 'Số lượng gói cước',
-                            data: data.counts,
-                            backgroundColor: 'rgba(54, 162, 235, 0.5)'
-                        }]
+        const ctx = document.getElementById('goicuocChart');
+        if (!ctx) {
+            console.error("Canvas không tồn tại!");
+            return;
+        }
+
+        // Tạo gradient màu sắc
+        const ctxCanvas = ctx.getContext('2d');
+        const gradient = ctxCanvas.createLinearGradient(0, 0, 0, 400);
+        gradient.addColorStop(0, 'rgba(54, 162, 235, 0.8)');
+        gradient.addColorStop(1, 'rgba(54, 162, 235, 0.2)');
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: data.labels,
+                datasets: [{
+                    label: 'Số lượng gói cước',
+                    data: data.counts,
+                    backgroundColor: gradient,
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1,
+                    borderRadius: 10, // Bo góc thanh bar
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Thống kê số lượng gói cước', // 🎯 Tiêu đề biểu đồ
+                        font: {
+                            size: 20, // Kích thước chữ
+                            weight: 'bold',
+                        },
+                        padding: {
+                            top: 10,
+                            bottom: 20
+                        },
+                        color: '#333' // Màu chữ
+                    },
+                    legend: {
+                        display: false, // Ẩn legend để giao diện gọn hơn
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                let value = context.raw || 0;
+                                return `Số lượng: ${value}`;
+                            }
+                        },
+                        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                        titleFont: { size: 14 },
+                        bodyFont: { size: 12 },
+                        padding: 10,
+                        cornerRadius: 8,
                     }
-                });
-            })
-            .catch(error => console.error("Lỗi khi gọi API:", error));
-    });
-</script>
-<style>
-    .chart-container {
-        max-width: 900px; /* Giới hạn chiều rộng */
-        margin: auto; /* Căn giữa */
-        padding: 20px;
-        background: #fff; /* Tạo nền trắng */
-        border-radius: 10px; /* Bo góc */
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Tạo hiệu ứng nổi */
+                },
+                scales: {
+                    x: {
+                        grid: { display: false }, // Ẩn grid dọc
+                    },
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(200, 200, 200, 0.2)' // Màu grid nhẹ hơn
+                        }
+                    }
+                },
+                animation: {
+                    duration: 1500, // Tăng thời gian animation
+                    easing: 'easeOutBounce', // Hiệu ứng nhảy nhẹ khi load
+                }
+            }
+        });
+
+    } catch (error) {
+        console.error("Lỗi khi gọi API:", error);
     }
+});
+
+
+</script>
+
+<script>
+ document.addEventListener('DOMContentLoaded', function () {
+    const statusCtx = document.getElementById('statusChart').getContext('2d');
+
+    fetch(routes.api, {
+        headers: { 'X-CSRF-TOKEN': csrfToken }
+    })
+    .then(response => response.json())
+    .then(result => {
+        console.log('Dữ liệu trạng thái:', result);
+
+        const data = result.data;
+        if (!Array.isArray(data)) throw new Error('Dữ liệu không hợp lệ');
+
+        // Đếm số lượng trạng thái active & inactive
+        const activeCount = data.filter(item => item.status === 'active').length;
+        const inactiveCount = data.filter(item => item.status === 'inactive').length;
+        const total = activeCount + inactiveCount;
+
+        // Tạo gradient màu sắc cho biểu đồ
+        const greenGradient = statusCtx.createLinearGradient(0, 0, 0, 300);
+        greenGradient.addColorStop(0, '#2ecc71');
+        greenGradient.addColorStop(1, '#27ae60');
+
+        const redGradient = statusCtx.createLinearGradient(0, 0, 0, 300);
+        redGradient.addColorStop(0, '#e74c3c');
+        redGradient.addColorStop(1, '#c0392b');
+
+        // Cấu hình dữ liệu biểu đồ tròn
+        const statusChartData = {
+            labels: ['Kích hoạt', 'Tạm dừng'],
+            datasets: [{
+                data: [activeCount, inactiveCount],
+                backgroundColor: [greenGradient, redGradient], // Gradient màu sắc
+                borderColor: ['#27ae60', '#c0392b'],
+                borderWidth: 2,
+                hoverOffset: 8 // Hiệu ứng hover
+            }]
+        };
+
+        // Hiển thị biểu đồ tròn (Pie Chart)
+        new Chart(statusCtx, {
+            type: 'doughnut', // Thay 'pie' thành 'doughnut' để có vòng tròn đẹp hơn
+            data: statusChartData,
+            options: {
+                responsive: true,
+                cutout: '50%', // Độ rỗng của biểu đồ Doughnut
+                animation: {
+                    animateScale: true,
+                    animateRotate: true
+                },
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: {
+                                size: 14
+                            },
+                            color: '#333'
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: 'Tỷ lệ trạng thái Gói cước',
+                        font: { size: 18, weight: 'bold' },
+                        color: '#2c3e50'
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                        titleFont: { size: 14 },
+                        bodyFont: { size: 12 },
+                        padding: 12,
+                        cornerRadius: 10,
+                        callbacks: {
+                            label: function (tooltipItem) {
+                                const value = tooltipItem.raw;
+                                const percentage = ((value / total) * 100).toFixed(2);
+                                return `${tooltipItem.label}: ${value} (${percentage}%)`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    })
+    .catch(error => console.error('Lỗi tải dữ liệu trạng thái:', error));
+});
+
+  
+  </script>
+<style>
+.chart-container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1); /* Hiệu ứng nổi */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.chart-container h2 {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+
+.chart-container:hover {
+    transform: scale(1.0);
+}
+
+canvas {
+    max-width: 100%;
+    max-height: 400px;
+}
+
+
+.chart-wrapper {
+    max-width: 400px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 12px;
+ 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
 </style>

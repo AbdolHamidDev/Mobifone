@@ -2,36 +2,39 @@
 
 
 
-<!-- Nút chat icon -->
-<div id="chat-icon" class="chat-icon">
-    <i class="fas fa-comment-dots"></i>
-</div>
+@auth
+    <!-- Nút chat icon -->
+    <div id="chat-icon" class="chat-icon">
+        <i class="fas fa-comment-dots"></i>
+    </div>
 
-<!-- Hộp chat -->
-<div id="chat-box" class="chat-box hidden">
-    <div class="chat-header">
-        <h4>Chat với Admin</h4>
-        <button id="close-chat" class="close-chat">&times;</button>
-    </div>
-    <div class="messages" id="messages">
-        @if(isset($conversations) && $conversations->isNotEmpty())
-            @foreach ($conversations as $conversation)
-                @foreach ($conversation->messages as $message)
-                    <div class="message {{ $message->sender_phone == $phone ? 'user-message' : 'admin-message' }}">
-                        <p><strong>{{ $message->sender_phone == $phone ? 'Bạn' : 'Admin' }}:</strong> {{ $message->message }}</p>
-                    </div>
+    <!-- Hộp chat -->
+    <div id="chat-box" class="chat-box hidden">
+        <div class="chat-header">
+            <h4>Chat với Admin</h4>
+            <button id="close-chat" class="close-chat">&times;</button>
+        </div>
+        <div class="messages" id="messages">
+            @if(isset($conversations) && $conversations->isNotEmpty())
+                @foreach ($conversations as $conversation)
+                    @foreach ($conversation->messages as $message)
+                        <div class="message {{ $message->sender_phone == $phone ? 'user-message' : 'admin-message' }}">
+                            <p><strong>{{ $message->sender_phone == $phone ? 'Bạn' : 'Admin' }}:</strong> {{ $message->message }}</p>
+                        </div>
+                    @endforeach
                 @endforeach
-            @endforeach
-        @else
-            <p class="text-center text-muted">Chưa có tin nhắn nào.</p>
-        @endif
+            @else
+                <p class="text-center text-muted">Chưa có tin nhắn nào.</p>
+            @endif
+        </div>
+
+        <div class="chat-input">
+            <textarea id="messageInput" class="form-control" placeholder="Nhập tin nhắn..."></textarea>
+            <button id="sendButton" class="btn btn-primary"><i class="fas fa-paper-plane"></i></button>
+        </div>
     </div>
-    
-    <div class="chat-input">
-        <textarea id="messageInput" class="form-control" placeholder="Nhập tin nhắn..."></textarea>
-        <button id="sendButton" class="btn btn-primary"><i class="fas fa-paper-plane"></i></button>
-    </div>
-</div>
+@endauth
+
 
 
 
@@ -44,7 +47,11 @@
 <script>
     $(document).ready(function() {
         let phone = "{{ session('phone') }}"; // Lấy số điện thoại từ session
-
+// Ẩn chat nếu không đăng nhập
+if (!phone) {
+        $('#chat-icon').hide();
+        $('#chat-box').hide();
+    }
         // 🟢 Mở cửa sổ chat khi nhấn vào icon
         $('#chat-icon').on('click', function() {
             $('#chat-box').removeClass('hidden');
@@ -117,35 +124,32 @@
         // 🟢 Cập nhật tin nhắn mỗi 3 giây
         setInterval(loadMessages, 3000);
     });
+
+
+    $(document).ready(function() {
+    $('#chat-icon').on('click', function() {
+        $('#chat-box').toggle(); // Hiện hoặc ẩn hộp chat
+    });
+
+    $('#close-chat').on('click', function() {
+        $('#chat-box').hide(); // Ẩn hộp chat khi nhấn nút đóng
+    });
+});
+
 </script>
 
 
 
 <!-- CSS -->
 <style>
-    /* Nút chat icon */
-  /* Điều chỉnh vị trí của hộp chat */
-.chat-box {
+ /* Nút chat icon */
+ #chat-icon {
     position: fixed;
-    bottom: 90px; /* Điều chỉnh khoảng cách từ dưới lên */
-    right: 40px;  /* Đẩy hộp chat ra xa mép phải */
-    width: 320px;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    z-index: 1000;
-}
-
-/* Điều chỉnh vị trí nút chat icon */
-.chat-icon {
-    position: fixed;
-    bottom: 20px; 
-    right: 40px; /* Đẩy nút chat ra xa mép phải */
+    top: 70vh; /* Đặt icon chat ở 70% chiều cao màn hình */
+    right: 20px; /* Căn sát mép phải */
     width: 50px;
     height: 50px;
-    background: #007bff;
+    background-color: #007bff;
     color: white;
     border-radius: 50%;
     display: flex;
@@ -153,88 +157,109 @@
     justify-content: center;
     font-size: 24px;
     cursor: pointer;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s;
+}
+
+#chat-icon:hover {
+    background-color: #0056b3;
+}
+
+/* Hộp chat (nhỏ gọn hơn) */
+#chat-box {
+    position: fixed;
+    bottom: 80px;
+    right: 0; /* Căn lề phải */
+    width: 25vw; /* Giảm chiều rộng từ 30% → 25% */
+    height: 60vh; /* Giảm chiều cao từ 80% → 60% */
+    background: white;
+    border-radius: 10px 0 0 10px; /* Bo góc bên trái */
+    box-shadow: -4px 4px 8px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    display: none; /* Ẩn mặc định */
+    z-index: 1001;
 }
 
 
-    /* Ẩn hộp chat */
-    .hidden {
-        display: none;
-    }
+/* Tiêu đề hộp chat */
+.chat-header {
+    background: #007bff;
+    color: white;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+}
 
-    /* Header chat */
-    .chat-header {
-        background: #007bff;
-        color: white;
-        padding: 10px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-top-left-radius: 10px;
-        border-top-right-radius: 10px;
-    }
+/* Nút đóng chat */
+.close-chat {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+}
 
-    /* Đóng chat */
-    .close-chat {
-        background: none;
-        border: none;
-        font-size: 18px;
-        cursor: pointer;
-        color: white;
-    }
+/* Nội dung chat */
+.messages {
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 10px;
+    background: #f8f9fa;
+}
 
-    /* Tin nhắn */
-    .messages {
-        padding: 10px;
-        max-height: 300px;
-        overflow-y: auto;
-    }
+/* Tin nhắn */
+.message {
+    padding: 5px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
 
-    /* Kiểu tin nhắn */
-    .message {
-        padding: 8px 12px;
-        margin: 5px 0;
-        border-radius: 5px;
-    }
+.user-message {
+    background: #007bff;
+    color: white;
+    align-self: flex-end;
+    text-align: right;
+}
 
-    /* Tin nhắn của user */
-    .user-message {
-        background: #007bff;
-        color: white;
-        text-align: right;
-    }
+.admin-message {
+    background: #e9ecef;
+    color: black;
+    text-align: left;
+}
 
-    /* Tin nhắn của admin */
-    .admin-message {
-        background: #f1f1f1;
-        text-align: left;
-    }
+/* Ô nhập tin nhắn */
+.chat-input {
+    display: flex;
+    padding: 10px;
+    background: #fff;
+    border-top: 1px solid #ccc;
+}
 
-    /* Ô nhập tin nhắn */
-    .chat-input {
-        display: flex;
-        padding: 10px;
-        border-top: 1px solid #ddd;
-    }
+.chat-input textarea {
+    flex: 1;
+    resize: none;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+}
 
-    .chat-input textarea {
-        flex: 1;
-        border: none;
-        padding: 10px;
-        resize: none;
-        border-radius: 5px;
-    }
+.chat-input button {
+    margin-left: 10px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
 
-    .chat-input button {
-        margin-left: 10px;
-        background: #007bff;
-        color: white;
-        border: none;
-        padding: 10px;
-        border-radius: 5px;
-        cursor: pointer;
-    }
+.chat-input button:hover {
+    background: #0056b3;
+}
+
 </style>
 
 @endsection

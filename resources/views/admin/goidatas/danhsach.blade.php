@@ -1,7 +1,22 @@
 @extends('layouts.admin')
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 @section('content')
-@include('partials.content-header', ['name' => 'Danh sách', 'key' => 'Gói data'])
+@include('partials.content-header', ['name' => 'Danh sách', 'key' => 'Gói Data'])
+
+<div class="d-flex justify-content-between flex-wrap">
+    <!-- Biểu đồ tròn (Thống kê loại gói data) -->
+    <div class="chart-container" style="flex: 1; max-width: 48%; height: 50vh;">
+        <canvas id="goidataChart"></canvas>
+    </div>
+
+    <!-- Biểu đồ cột (Thống kê trạng thái active/inactive) -->
+    <div class="chart-container" style="flex: 1; max-width: 48%; height: 50vh;">
+        <canvas id="statusChart"></canvas>
+    </div>
+</div>
+
+
 
 <div class="container mx-auto mt-4">
     <!-- Nút thêm Gói data -->
@@ -87,9 +102,8 @@
     </div>
 </div>
 
-
-
 @endsection
+
 <script>
     const routes = {
         api: '{{ route('Goidatas.api') }}',
@@ -100,69 +114,161 @@
 </script>
 
 <script src="{{ asset('admins/goidata/goidata.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-    @if (session('success'))
-        Swal.fire({
-            icon: 'success',
-            title: 'Thành công',
-            text: "{{ session('success') }}",
-            confirmButtonText: 'OK'
-        });
-    @endif
+  document.addEventListener('DOMContentLoaded', function () {
+    const ctx = document.getElementById('goidataChart').getContext('2d');
 
-    @if (session('error'))
-        Swal.fire({
-            icon: 'error',
-            title: 'Thất bại',
-            text: "{{ session('error') }}",
-            confirmButtonText: 'OK'
-        });
-    @endif
+    fetch(routes.api, {
+        headers: { 'X-CSRF-TOKEN': csrfToken }
+    })
+    .then(response => response.json())
+    .then(result => {
+        console.log('Dữ liệu trả về:', result); // Debug dữ liệu API
 
-   
+        const data = result.data;
+        if (!Array.isArray(data)) throw new Error('Dữ liệu không hợp lệ');
 
-    // Xác nhận xóa
-function confirmDelete(GoidataId) {
-    Swal.fire({
-        title: 'Bạn có chắc chắn muốn xóa?',
-        text: "Hành động này không thể hoàn tác!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#3085d6',
-        confirmButtonText: 'Xóa',
-        cancelButtonText: 'Hủy'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            fetch(`/admin/Goidatas/${GoidataId}`, {
-                method: 'DELETE',
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                }
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Thành công!',
-                            text: data.message,
-                            confirmButtonText: 'OK'
-                        });
-                        // Cập nhật bảng dữ liệu
-                        $('#goidatasTable').DataTable().ajax.reload();
+        // Xử lý dữ liệu thành số lượng gói data theo từng loại
+        const goidataCounts = data.reduce((acc, goidata) => {
+            acc[goidata.loai_data] = (acc[goidata.loai_data] || 0) + 1;
+            return acc;
+        }, {});
+
+        // Màu sắc chuyên nghiệp hơn
+        const colors = [
+            'rgba(75, 192, 192, 0.7)', 'rgba(255, 99, 132, 0.7)',
+            'rgba(54, 162, 235, 0.7)', 'rgba(255, 206, 86, 0.7)',
+            'rgba(153, 102, 255, 0.7)', 'rgba(255, 159, 64, 0.7)'
+        ];
+
+        // Chuẩn bị dữ liệu cho biểu đồ
+        const chartData = {
+            labels: Object.keys(goidataCounts),
+            datasets: [{
+                label: 'Số lượng Gói data',
+                data: Object.values(goidataCounts),
+                backgroundColor: colors,
+                borderColor: colors.map(color => color.replace('0.7', '1')), // Tăng độ nét
+                borderWidth: 2,
+                hoverOffset: 10 // Hiệu ứng nổi bật khi hover
+            }]
+        };
+
+        // Khởi tạo biểu đồ tròn với hiệu ứng animation
+        new Chart(ctx, {
+            type: 'pie',
+            data: chartData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: {
+                            font: { size: 14 },
+                            color: '#333'
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: 'Thống kê số lượng Gói data',
+                        font: { size: 18 }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function (tooltipItem) {
+                                let value = tooltipItem.raw;
+                                let label = tooltipItem.label;
+                                return `${label}: ${value} gói`;
+                            }
+                        }
                     }
-                })
-                .catch(error => {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Lỗi hệ thống!',
-                        text: 'Không thể xóa Gói data. Vui lòng thử lại sau.',
-                        confirmButtonText: 'OK'
-                    });
-                });
-        }
+                },
+                animation: {
+                    animateRotate: true,
+                    animateScale: true
+                }
+            }
+        });
+    })
+    .catch(error => {
+        console.error('Lỗi khi tải dữ liệu:', error);
+        ctx.font = "16px Arial";
+        ctx.fillText("Không thể tải dữ liệu", 50, 50);
     });
-}
+});
+
 </script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const statusCtx = document.getElementById('statusChart').getContext('2d');
+
+    fetch(routes.api, {
+        headers: { 'X-CSRF-TOKEN': csrfToken }
+    })
+    .then(response => response.json())
+    .then(result => {
+        console.log('Dữ liệu trạng thái:', result);
+
+        const data = result.data;
+        if (!Array.isArray(data)) throw new Error('Dữ liệu không hợp lệ');
+
+        // Đếm số lượng trạng thái active & inactive
+        const statusCounts = {
+            "Kích hoạt": data.filter(item => item.status === 'active').length,
+            "Tạm dừng": data.filter(item => item.status === 'inactive').length
+        };
+
+        // Cấu hình dữ liệu biểu đồ cột
+        const statusChartData = {
+            labels: Object.keys(statusCounts),
+            datasets: [{
+                label: 'Số lượng Gói Data',
+                data: Object.values(statusCounts),
+                backgroundColor: ['#2ecc71', '#95a5a6'], // Xanh (Active) & Xám (Inactive)
+                borderColor: ['#27ae60', '#7f8c8d'],
+                borderWidth: 2
+            }]
+        };
+
+        // Hiển thị biểu đồ cột (Bar Chart)
+        new Chart(statusCtx, {
+            type: 'bar',
+            data: statusChartData,
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { stepSize: 1 }
+                    }
+                },
+                plugins: {
+                    legend: { display: false },
+                    title: {
+                        display: true,
+                        text: 'Thống kê trạng thái Gói Data',
+                        font: { size: 18 }
+                    }
+                }
+            }
+        });
+    })
+    .catch(error => console.error('Lỗi tải dữ liệu trạng thái:', error));
+});
+
+</script>
+
+<style>
+    .chart-container {
+        max-width: 900px; /* Giới hạn chiều rộng */
+        margin: auto; /* Căn giữa */
+        padding: 20px;
+        background: #fff; /* Tạo nền trắng */
+        border-radius: 10px; /* Bo góc */
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Tạo hiệu ứng nổi */
+    }
+</style>

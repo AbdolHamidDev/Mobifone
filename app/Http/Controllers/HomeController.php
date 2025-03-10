@@ -10,11 +10,13 @@ use App\Models\LoaiThueBao;
 use App\Models\News;
 use App\Models\Store;
 use Laravel\Socialite\Facades\Socialite;
+use App\Http\Middleware\AutoTranslate;
+
 
 class HomeController extends Controller
 {
   
-     
+   
   
 
     public function index()
