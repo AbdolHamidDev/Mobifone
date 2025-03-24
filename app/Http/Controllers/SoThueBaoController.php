@@ -6,16 +6,43 @@ use App\Models\Goicuoc;
 use Illuminate\Http\Request;
 use App\Models\SoThueBao;
 use Illuminate\Support\Facades\Cache;
-
-
+use App\Exports\SoThueBaoExport;
+use App\Imports\SoThueBaoImport;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Log;
 
 class SoThueBaoController extends Controller
 {
+    public function export()
+    {
+        return Excel::download(new SoThueBaoExport, 'so_thue_bao.xlsx');
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx'
+        ]);
+
+        try {
+            Excel::import(new SoThueBaoImport, $request->file('file'));
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            Log::error('Import error: ' . $e->getMessage());
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
     public function index()
     {
         $soThueBaos = SoThueBao::with('orders')->get(); // Nạp quan hệ nếu cần thiết
-
-        return view('admin.dichvu_didong.sothuebao.index', compact('soThueBaos'));
+        $trangThaiCounts = [
+            'giu_so' => $soThueBaos->where('trang_thai', 'giu_so')->count(),
+            'chua_su_dung' => $soThueBaos->where('trang_thai', 'chua_su_dung')->count(),
+            'hoa_mang' => $soThueBaos->where('trang_thai', 'hoa_mang')->count(),
+            'khong_xac_dinh' => $soThueBaos->where('trang_thai', 'khong_xac_dinh')->count(),
+        ];
+        return view('admin.dichvu_didong.sothuebao.index', compact('soThueBaos','trangThaiCounts'));
     }
 
 
@@ -36,7 +63,18 @@ class SoThueBaoController extends Controller
         return redirect()->route('so-thue-bao.index')->with('success', 'Thêm số thuê bao thành công!');
     }
 
+    public function destroy($id)
+    {
+        try {
+            $soThueBao = SoThueBao::findOrFail($id);
+            $soThueBao->delete();
 
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+    
 
     public function update(Request $request, $id)
     {

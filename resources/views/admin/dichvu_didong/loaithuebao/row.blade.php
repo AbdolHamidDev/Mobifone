@@ -11,7 +11,8 @@
         </span>
     </td>
     <td>
-        <a href="{{ route('loaithuebao.index', ['subscriptionTypeId' => $type->id]) }}" class="btn btn-link text-primary">
+        <a href="{{ url('/admin/subscription-types/' . $type->id . '/loaithuebao') }}" class="btn btn-link text-primary">
+
             <i class="fas fa-info-circle"></i> Xem
         </a>
     </td>

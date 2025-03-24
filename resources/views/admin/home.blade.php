@@ -5,7 +5,7 @@
 @include('partials.content-header', ['name' => 'Dashboard', 'key' => '🎯'])
 
  <!-- Khu vực Người Dùng Đăng Nhập OTP (Ticker) -->
- <div class="bg-white shadow-lg rounded-lg p-6 mt-6">
+
     <h3 class="text-lg font-bold text-gray-700 text-center">Người Dùng Đăng Nhập OTP 🚀</h3>
     <div class="relative overflow-hidden h-24">
         <ul id="otpTicker" class="absolute w-full space-y-2"></ul>
@@ -44,7 +44,7 @@
     </div>
 
     <!-- Gói cước đã bán -->
-    <div class="bg-white shadow-lg rounded-lg p-6 text-center hover:shadow-xl transition duration-300">
+    <div class="bg-white shadow-lg rounded-lg p-6 text-center  transition duration-300">
         <div class="flex items-center justify-center mb-2">
             <i class="fa-solid fa-file-invoice-dollar text-orange text-3xl"></i>
         </div>
@@ -57,7 +57,7 @@
 <!-- Thống kê doanh thu gói cước -->
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
     <!-- Doanh thu gói cước -->
-    <div class="bg-white shadow-lg rounded-lg p-6 text-center hover:shadow-xl transition duration-300 transform hover:scale-105">
+    <div class="bg-white shadow-lg rounded-lg p-6 text-center hover:shadow-xl transition duration-300 transform ">
         <div class="flex items-center justify-center mb-3">
             <i class="fa-solid fa-money-bill-wave text-blue-600 text-4xl"></i>
         </div>
@@ -66,7 +66,7 @@
     </div>
 
     <!-- Doanh thu gói data -->
-    <div class="bg-white shadow-lg rounded-lg p-6 text-center hover:shadow-xl transition duration-300 transform hover:scale-105">
+    <div class="bg-white shadow-lg rounded-lg p-6 text-center hover:shadow-xl transition duration-300 transform">
         <div class="flex items-center justify-center mb-3">
             <i class="fa-solid fa-chart-line text-green-600 text-4xl"></i>
         </div>
@@ -121,23 +121,23 @@
 </div>
 
 
-    <!-- Biểu đồ -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <!-- Biểu đồ doanh thu -->
-        <div class="bg-white shadow-lg rounded-lg p-6">
-            <h3 class="text-lg font-bold text-gray-700 text-center">Doanh Thu Theo Tháng 📈</h3>
-            <canvas id="revenueChart"></canvas>
-        </div>
-
-        <!-- Biểu đồ trạng thái đơn hàng -->
-        <div class="bg-white shadow-lg rounded-lg p-6">
-            <h3 class="text-lg font-bold text-gray-700 text-center">Trạng Thái Đơn Hàng ⚡</h3>
-            <div class="flex justify-center">
-                <canvas id="orderStatusChart" style="max-width: 250px; max-height: 250px;"></canvas>
-            </div>
-        </div>
-        
+   <!-- Biểu đồ -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <!-- Biểu đồ doanh thu -->
+    <div class="bg-white shadow-lg rounded-lg p-6 mt-8"> <!-- Tăng khoảng cách phía trên -->
+        <h3 class="text-lg font-bold text-gray-700 text-center">Doanh Thu Theo Tháng 📈</h3>
+        <canvas id="revenueChart"></canvas>
     </div>
+
+    <!-- Biểu đồ trạng thái đơn hàng -->
+    <div class="bg-white shadow-lg rounded-lg p-6 mt-8"> <!-- Tăng khoảng cách phía trên -->
+        <h3 class="text-lg font-bold text-gray-700 text-center">Trạng Thái Đơn Hàng ⚡</h3>
+        <div class="flex justify-center">
+            <canvas id="orderStatusChart" style="max-width: 250px; max-height: 250px;"></canvas>
+        </div>
+    </div>
+</div>
+
 
     <!-- Bảng đơn hàng gần đây -->
     <div class="bg-white shadow-lg rounded-lg p-6 mt-6">

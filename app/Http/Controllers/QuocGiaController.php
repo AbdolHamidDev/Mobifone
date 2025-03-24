@@ -49,4 +49,8 @@ class QuocGiaController extends Controller {
         QuocGia::findOrFail($id)->delete();
         return response()->json(['message' => 'Xóa quốc gia thành công!']);
     }
+
+
+ 
+
 }

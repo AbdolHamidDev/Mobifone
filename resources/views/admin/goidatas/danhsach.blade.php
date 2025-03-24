@@ -46,61 +46,93 @@
     </div>
 </div>
 
-<!-- Modal Thêm Gói data -->
+<!-- Modal Thêm Gói data - Phiên bản nâng cấp UX/UI -->
 <div class="modal fade" id="addGoidataModal" tabindex="-1" aria-labelledby="addGoidataModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <form id="goidataForm">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addGoidataModalLabel">Thêm Gói data</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <form id="goidataForm" class="needs-validation" novalidate>
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title fs-5" id="addGoidataModalLabel">
+                        <i class="bi bi-database-add me-2"></i>Thêm Gói Data Mới
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     @csrf
                     <div class="mb-3">
-                        <label for="ten_data" class="form-label">Tên Gói data</label>
-                        <input type="text" name="ten_data" id="ten_data" class="form-control" required>
+                        <label for="ten_data" class="form-label fw-semibold">Tên Gói data <span class="text-danger">*</span></label>
+                        <input type="text" name="ten_data" id="ten_data" class="form-control form-control-lg" placeholder="Nhập tên gói data" required>
+                        <div class="invalid-feedback">Vui lòng nhập tên gói data</div>
                     </div>
-                    <div class="mb-3">
-                        <label for="gia" class="form-label">Giá (VND)</label>
-                        <input type="number" name="gia" id="gia" class="form-control" required>
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="gia" class="form-label fw-semibold">Giá (VND) <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <input type="number" name="gia" id="gia" class="form-control" placeholder="0" required>
+                                    <span class="input-group-text">₫</span>
+                                </div>
+                                <div class="invalid-feedback">Vui lòng nhập giá gói data</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="loai_data" class="form-label fw-semibold">Loại Gói data <span class="text-danger">*</span></label>
+                                <select name="loai_data" id="loai_data" class="form-select" required>
+                                    <option value="" selected disabled>-- Chọn loại gói --</option>
+                                    <option value="mien_phi_mxh">Miễn phí MXH</option>
+                                    <option value="dai_ky">Dài kỳ</option>
+                                    <option value="data_bo_sung">Data bổ sung</option>
+                                    <option value="thang">Tháng</option>
+                                    <option value="data_thuong">Data thường</option>
+                                    <option value="ngay">Ngày</option>
+                                    <option value="data_fastconnect">Data Fastconnect</option>                
+                                </select>
+                                <div class="invalid-feedback">Vui lòng chọn loại gói data</div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="loai_data" class="form-label">Loại Gói data</label>
-                        <select name="loai_data" id="loai_data" class="form-select" required>
-                            <option value="mien_phi_mxh">Miễn phí MXH</option>
-                            <option value="dai_ky">Dài kỳ</option>
-                            <option value="data_bo_sung">Data bổ sung</option>
-                            <option value="thang">Tháng</option>
-                            <option value="data_thuong">Data thường</option>
-                            <option value="ngay">Ngày</option>
-                            <option value="data_fastconnect">Data Fastconnect</option>                
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="thoi_gian" class="form-label">Thời Gian (ngày)</label>
-                        <input type="number" name="thoi_gian" id="thoi_gian" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="dung_luong" class="form-label">Dung Lượng</label>
-                        <input type="number" name="dung_luong" id="dung_luong" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="don_vi_dung_luong" class="form-label">Đơn Vị Dung Lượng</label>
-                        <select name="don_vi_dung_luong" id="don_vi_dung_luong" class="form-select" required>
-                            <option value="MB">MB</option>
-                            <option value="GB">GB</option>
-                        </select>
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="thoi_gian" class="form-label fw-semibold">Thời Gian <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <input type="number" name="thoi_gian" id="thoi_gian" class="form-control" placeholder="30" required>
+                                    <span class="input-group-text">ngày</span>
+                                </div>
+                                <div class="invalid-feedback">Vui lòng nhập thời gian</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="dung_luong" class="form-label fw-semibold">Dung Lượng <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <input type="number" name="dung_luong" id="dung_luong" class="form-control" placeholder="1" required>
+                                    <select name="don_vi_dung_luong" id="don_vi_dung_luong" class="form-select" style="max-width: 100px">
+                                        <option value="MB">MB</option>
+                                        <option value="GB" selected>GB</option>
+                                    </select>
+                                </div>
+                                <div class="invalid-feedback">Vui lòng nhập dung lượng</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                    <button type="submit" class="btn btn-primary">Thêm</button>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x-lg me-1"></i> Đóng
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-lg me-1"></i> Lưu Gói Data
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
 
 @endsection
 
@@ -116,151 +148,7 @@
 <script src="{{ asset('admins/goidata/goidata.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const ctx = document.getElementById('goidataChart').getContext('2d');
 
-    fetch(routes.api, {
-        headers: { 'X-CSRF-TOKEN': csrfToken }
-    })
-    .then(response => response.json())
-    .then(result => {
-        console.log('Dữ liệu trả về:', result); // Debug dữ liệu API
-
-        const data = result.data;
-        if (!Array.isArray(data)) throw new Error('Dữ liệu không hợp lệ');
-
-        // Xử lý dữ liệu thành số lượng gói data theo từng loại
-        const goidataCounts = data.reduce((acc, goidata) => {
-            acc[goidata.loai_data] = (acc[goidata.loai_data] || 0) + 1;
-            return acc;
-        }, {});
-
-        // Màu sắc chuyên nghiệp hơn
-        const colors = [
-            'rgba(75, 192, 192, 0.7)', 'rgba(255, 99, 132, 0.7)',
-            'rgba(54, 162, 235, 0.7)', 'rgba(255, 206, 86, 0.7)',
-            'rgba(153, 102, 255, 0.7)', 'rgba(255, 159, 64, 0.7)'
-        ];
-
-        // Chuẩn bị dữ liệu cho biểu đồ
-        const chartData = {
-            labels: Object.keys(goidataCounts),
-            datasets: [{
-                label: 'Số lượng Gói data',
-                data: Object.values(goidataCounts),
-                backgroundColor: colors,
-                borderColor: colors.map(color => color.replace('0.7', '1')), // Tăng độ nét
-                borderWidth: 2,
-                hoverOffset: 10 // Hiệu ứng nổi bật khi hover
-            }]
-        };
-
-        // Khởi tạo biểu đồ tròn với hiệu ứng animation
-        new Chart(ctx, {
-            type: 'pie',
-            data: chartData,
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'right',
-                        labels: {
-                            font: { size: 14 },
-                            color: '#333'
-                        }
-                    },
-                    title: {
-                        display: true,
-                        text: 'Thống kê số lượng Gói data',
-                        font: { size: 18 }
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function (tooltipItem) {
-                                let value = tooltipItem.raw;
-                                let label = tooltipItem.label;
-                                return `${label}: ${value} gói`;
-                            }
-                        }
-                    }
-                },
-                animation: {
-                    animateRotate: true,
-                    animateScale: true
-                }
-            }
-        });
-    })
-    .catch(error => {
-        console.error('Lỗi khi tải dữ liệu:', error);
-        ctx.font = "16px Arial";
-        ctx.fillText("Không thể tải dữ liệu", 50, 50);
-    });
-});
-
-</script>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const statusCtx = document.getElementById('statusChart').getContext('2d');
-
-    fetch(routes.api, {
-        headers: { 'X-CSRF-TOKEN': csrfToken }
-    })
-    .then(response => response.json())
-    .then(result => {
-        console.log('Dữ liệu trạng thái:', result);
-
-        const data = result.data;
-        if (!Array.isArray(data)) throw new Error('Dữ liệu không hợp lệ');
-
-        // Đếm số lượng trạng thái active & inactive
-        const statusCounts = {
-            "Kích hoạt": data.filter(item => item.status === 'active').length,
-            "Tạm dừng": data.filter(item => item.status === 'inactive').length
-        };
-
-        // Cấu hình dữ liệu biểu đồ cột
-        const statusChartData = {
-            labels: Object.keys(statusCounts),
-            datasets: [{
-                label: 'Số lượng Gói Data',
-                data: Object.values(statusCounts),
-                backgroundColor: ['#2ecc71', '#95a5a6'], // Xanh (Active) & Xám (Inactive)
-                borderColor: ['#27ae60', '#7f8c8d'],
-                borderWidth: 2
-            }]
-        };
-
-        // Hiển thị biểu đồ cột (Bar Chart)
-        new Chart(statusCtx, {
-            type: 'bar',
-            data: statusChartData,
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: { stepSize: 1 }
-                    }
-                },
-                plugins: {
-                    legend: { display: false },
-                    title: {
-                        display: true,
-                        text: 'Thống kê trạng thái Gói Data',
-                        font: { size: 18 }
-                    }
-                }
-            }
-        });
-    })
-    .catch(error => console.error('Lỗi tải dữ liệu trạng thái:', error));
-});
-
-</script>
 
 <style>
     .chart-container {
@@ -271,4 +159,75 @@
         border-radius: 10px; /* Bo góc */
         box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Tạo hiệu ứng nổi */
     }
+       #goidatasTable {
+        width: 100% !important;
+    }
+    #goidatasTable th {
+        background-color: #f8f9fa;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+    #goidatasTable td {
+        vertical-align: middle;
+    }
+    .btn-action-group {
+        gap: 0.5rem;
+    }
+    .btn-action {
+        width: 32px;
+        height: 32px;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+    }
+    .btn-view {
+        color: #17a2b8;
+        border-color: #17a2b8;
+    }
+    .btn-view:hover {
+        background-color: rgba(23, 162, 184, 0.1);
+    }
+    .btn-edit {
+        color: #007bff;
+        border-color: #007bff;
+    }
+    .btn-edit:hover {
+        background-color: rgba(0, 123, 255, 0.1);
+    }
+    .btn-delete {
+        color: #dc3545;
+        border-color: #dc3545;
+    }
+    .btn-delete:hover {
+        background-color: rgba(220, 53, 69, 0.1);
+    }
+    .btn-status {
+        color: white !important;
+        min-width: 100px;
+    }
+    .data-capacity-badge {
+        background-color: #e9ecef;
+        padding: 0.25rem 0.5rem;
+        border-radius: 0.25rem;
+        font-family: monospace;
+    }
+    .bg-purple {
+        background-color: #6f42c1 !important;
+    }
+    .animate__animated {
+        --animate-duration: 0.5s;
+    }
+    .dataTables_wrapper .dataTables_paginate .paginate_button {
+        padding: 0.25rem 0.5rem;
+        margin: 0 2px;
+        border-radius: 0.25rem;
+    }
+    .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+        background: #0d6efd !important;
+        color: white !important;
+        border: none;
+    }
+`;
 </style>

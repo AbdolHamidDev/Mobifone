@@ -1,3 +1,4 @@
+<!-- filepath: c:\xampp\htdocs\mobifone\resources\views\layouts\admin.blade.php -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -21,37 +22,34 @@
     <!-- Thêm AdminLTE -->
     <link rel="stylesheet" href="{{ asset('adminlte/dist/css/adminlte.min.css') }}">
     <link rel="stylesheet" href="{{ asset('admins/header/header.css') }}">
+    
     <!-- Thêm Tailwind CSS -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 
     <!-- Thêm SweetAlert2 -->
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css" rel="stylesheet">
 
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-
     <!-- Select2 CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet">
    
     <!-- DataTables CSS -->
     <link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- AOS CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('admins/main.css') }}">
+    <link rel="stylesheet" href="{{ asset('admins/mode.css') }}">
+
+    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-   
-  
 
-    <style>
-
-
-
-</style>
     <!-- Các tùy chỉnh CSS nếu có -->   
     @yield('css')
-
 </head>
 
 <body class="hold-transition sidebar-mini">
@@ -62,49 +60,43 @@
         <div id="content-area">
             @yield('content')
         </div>
-        
-        
     </div>
     
     <!-- Các thư viện JS cần thiết -->
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
     <!-- DataTables JS -->
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-      
+    
+    <!-- AOS JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Axios JS -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    
+    <!-- AdminLTE JS -->
     <script src="{{ asset('adminlte/dist/js/adminlte.min.js') }}"></script>
-   
-    <!-- Thêm Alpine.js nếu cần -->
+    
+    <!-- Alpine.js -->
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js" defer></script>
+    
+    <!-- SweetAlert2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-   
     
     <!-- Select2 JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    
+    <!-- PJAX JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.pjax/2.0.1/jquery.pjax.min.js"></script>
+    
+    <!-- Custom JS -->
     <script src="{{ asset('admins/header/header.js') }}"></script>
-    
 
-
-
-
-
-    
     <!-- Thông báo sweet alert -->
-<style>
-    @layer utilities {
-    @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-
-    .animate-fadeInUp {
-        animation: fadeInUp 0.5s ease-out;
-    }
-}
-</style>
-
     @if(session('success'))
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -118,6 +110,31 @@
         });
     </script>
     @endif
+
+    @if(session('error'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi!',
+                text: '{{ session('error') }}',
+            });
+        });
+    </script>
+    @endif
+
+    @if(session('info'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
+                icon: 'info',
+                title: 'Thông tin!',
+                text: '{{ session('info') }}',
+            });
+        });
+    </script>
+    @endif
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const deleteButtons = document.querySelectorAll('.delete-button');
@@ -145,31 +162,8 @@
             });
         });
     </script>
-    @if(session('error'))
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            Swal.fire({
-                icon: 'error',
-                title: 'Lỗi!',
-                text: '{{ session('error') }}',
-            });
-        });
-    </script>
-    @endif
-    @if(session('info'))
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            Swal.fire({
-                icon: 'info',
-                title: 'Thông tin!',
-                text: '{{ session('info') }}',
-            });
-        });
-    </script>
-    @endif
-    
+
     @yield('js')
 </body>
-
 
 </html>

@@ -12,7 +12,7 @@ class LoaiThueBaoController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function show(Request $request)
     {
         $categories = LoaiThueBao::distinct()->pluck('category'); 
         $selectedCategory = $request->query('category', ''); // Lấy từ query hoặc để trống
@@ -20,7 +20,16 @@ class LoaiThueBaoController extends Controller
     
         return view('frontend.dichvudidong.loaithuebao', compact('categories', 'items', 'selectedCategory'));
     }
+    public function index()
+{
+    // Lấy danh sách các loại thuê bao từ bảng subscription_types
+    $subscriptionTypes = SubscriptionType::all();
+
+    return view('admin.dichvu_didong.loaithuebao.index', compact('subscriptionTypes'));
+}
+
     
+
     
 
     /**

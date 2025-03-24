@@ -31,17 +31,13 @@ use App\Http\Controllers\Auth\CustomLoginController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Mail\Message;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\OTPLoginController;
 use App\Http\Controllers\CancellationController;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\ChatController;
-use App\Models\PackageCancellation;
 use Illuminate\Support\Facades\Cache;
-
 
 
 
@@ -407,7 +403,9 @@ Route::prefix('admin')->middleware('auth')->group(function () {
 
     // số thuê bao
     Route::resource('so-thue-bao', SoThueBaoController::class);
-   
+   //file excel số thuê bao
+    Route::get('export-so-thue-bao', [SoThueBaoController::class, 'export'])->name('so-thue-bao.export');
+    Route::post('import-so-thue-bao', [SoThueBaoController::class, 'import'])->name('so-thue-bao.import');
 
     // oder
     Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
@@ -419,6 +417,8 @@ Route::prefix('admin')->middleware('auth')->group(function () {
 
     // Dịch vụ quốc tế
     Route::resource('quoc-gia', QuocGiaController::class);
+   
+
     Route::resource('nha-khai-thac', NhaKhaiThacController::class);
     Route::resource('cuoc-quoc-te', GiaCuocQuocTeController::class);
     Route::get('/get-quoc-gia', [NhaKhaiThacController::class, 'getQuocGia']);
@@ -477,7 +477,5 @@ Route::get('/api/otp-users', function () {
 });
 
 Route::get('/news', [NewsController::class, 'index']);
-
-
 
 

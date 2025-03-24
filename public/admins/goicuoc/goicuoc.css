@@ -1,0 +1,309 @@
+/* ================ Theme Variables ================ */
+:root {
+    --primary-gradient: linear-gradient(135deg, #3a7bd5 0%, #00d2ff 100%);
+    --secondary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --success-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    --danger-gradient: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+    --dark-gradient: linear-gradient(135deg, #2c3e50 0%, #4ca1af 100%);
+    
+    --primary-color: #3a7bd5;
+    --secondary-color: #6c757d;
+    --success-color: #28a745;
+    --danger-color: #dc3545;
+    --warning-color: #ffc107;
+    --info-color: #17a2b8;
+    --light-color: #f8f9fa;
+    --dark-color: #343a40;
+    
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+    --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+    --shadow-lg: 0 10px 30px rgba(0,0,0,0.1);
+    --shadow-xl: 0 20px 40px rgba(0,0,0,0.15);
+    
+    --transition-base: all 0.3s ease;
+    --transition-fade: opacity 0.15s linear;
+    --transition-collapse: height 0.35s ease;
+  }
+  
+  /* ================ Progress Steps ================ */
+  .progress-steps {
+    display: flex;
+    padding: 0;
+    margin: 0 0 2rem 0;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    position: relative;
+  }
+  
+  .progress-steps .step {
+    flex: 1;
+    text-align: center;
+    padding: 1rem 0;
+    position: relative;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--secondary-color);
+    transition: var(--transition-base);
+    cursor: pointer;
+  }
+  
+  .progress-steps .step:not(:last-child):after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 24px;
+    background: rgba(0,0,0,0.1);
+  }
+  
+  .progress-steps .step .step-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #e9ecef;
+    margin-right: 0.5rem;
+    transition: var(--transition-base);
+  }
+  
+  .progress-steps .step.active {
+    color: var(--primary-color);
+    font-weight: 600;
+  }
+  
+  .progress-steps .step.active .step-number {
+    background: var(--primary-color);
+    color: white;
+  }
+  
+  .progress-steps .step.completed {
+    color: var(--success-color);
+  }
+  
+  .progress-steps .step.completed .step-number {
+    background: var(--success-color);
+    color: white;
+  }
+  
+  .progress-steps .step.active:after,
+  .progress-steps .step.completed:after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--primary-color);
+    animation: progressGrow 0.5s ease-out forwards;
+  }
+  
+  .progress-steps .step.completed:after {
+    background: var(--success-color);
+  }
+  
+  @keyframes progressGrow {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+  }
+  
+  /* ================ Form Controls ================ */
+  .form-control-lg {
+    min-height: 48px;
+    padding: 0.75rem 1.25rem;
+    font-size: 1.05rem;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(0,0,0,0.1);
+    transition: var(--transition-base);
+  }
+  
+  .form-control-lg:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+  }
+  
+  /* ================ Custom Buttons ================ */
+  .btn-check:checked + .btn-outline-primary {
+    background-color: rgba(13, 110, 253, 0.1);
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+  }
+  
+  .btn-gradient {
+    background-image: var(--primary-gradient);
+    color: white;
+    border: none;
+    background-size: 200% auto;
+    transition: var(--transition-base);
+    box-shadow: var(--shadow-sm);
+  }
+  
+  .btn-gradient:hover {
+    background-position: right center;
+    color: white;
+    box-shadow: var(--shadow-md);
+  }
+  
+  .btn-gradient.btn-success {
+    background-image: var(--success-gradient);
+  }
+  
+  .btn-gradient.btn-danger {
+    background-image: var(--danger-gradient);
+  }
+  
+  /* ================ Chart Components ================ */
+  .chart-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 1rem;
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: var(--transition-base);
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .chart-container:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--primary-gradient);
+  }
+  
+  .chart-container h2 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: var(--dark-color);
+  }
+  
+  .chart-container:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-xl);
+  }
+  
+  .chart-wrapper {
+    max-width: 400px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    background: white;
+    border-radius: 1rem;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: var(--transition-base);
+  }
+  
+  .chart-wrapper:hover {
+    box-shadow: var(--shadow-md);
+  }
+  
+  /* ================ Card Components ================ */
+  .card-gradient {
+    border: none;
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    transition: var(--transition-base);
+  }
+  
+  .card-gradient .card-header {
+    background: var(--primary-gradient);
+    color: white;
+    padding: 1.25rem 1.5rem;
+    border-bottom: none;
+  }
+  
+  .card-gradient:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-xl);
+  }
+  
+  /* ================ Utility Classes ================ */
+  .bg-gradient-primary {
+    background: var(--primary-gradient);
+  }
+  
+  .bg-gradient-secondary {
+    background: var(--secondary-gradient);
+  }
+  
+  .bg-gradient-success {
+    background: var(--success-gradient);
+  }
+  
+  .bg-gradient-danger {
+    background: var(--danger-gradient);
+  }
+  
+  .bg-gradient-dark {
+    background: var(--dark-gradient);
+  }
+  
+  .text-gradient {
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+  
+  /* ================ Animations ================ */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .animate-fade {
+    animation: fadeIn 0.5s ease-out forwards;
+  }
+  
+  /* ================ Responsive Adjustments ================ */
+  @media (max-width: 768px) {
+    .progress-steps {
+      flex-direction: column;
+      border-bottom: none;
+    }
+    
+    .progress-steps .step {
+      text-align: left;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+    }
+    
+    .progress-steps .step:after {
+      display: none;
+    }
+    
+    .progress-steps .step.active:after,
+    .progress-steps .step.completed:after {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      height: auto;
+      animation: progressGrowVertical 0.5s ease-out forwards;
+    }
+    
+    @keyframes progressGrowVertical {
+      from { transform: scaleY(0); }
+      to { transform: scaleY(1); }
+    }
+    
+    .chart-container {
+      padding: 1.5rem;
+      margin: 1rem auto;
+    }
+  }

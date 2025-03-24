@@ -1,7 +1,4 @@
 
-
-
-
 <nav class="main-header navbar navbar-expand-lg navbar-dark"
     style="background: linear-gradient(180deg, #1c1c28, #2e2e44); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);">
     <!-- Left navbar links -->
@@ -13,18 +10,16 @@
         </li>
         <li class="nav-item d-none d-md-inline-block">
             <a href="/admin/home" class="nav-link text-white">
-                <i class="fas fa-home"></i> Home
+                <i class="fas fa-home"></i> Dasbroard
             </a>
         </li>
-        <button id="toggleDarkMode" class="btn btn-dark">
-            <i class="fas fa-moon"></i> Dark Mode
-        </button>
+     
 
     </ul>
 
 
      <!-- 🌟 LOGO MOBIFONE ở giữa -->
-     <div class="d-flex justify-content-end" style="width: 35%;">
+     <div class="d-flex justify-content-end" style="width: 40%;">
         <a href="/admin/home">
             <img src="{{ asset('assets/images/logo.png') }}" alt="Mobifone Logo" class="navbar-logo">
         </a>
@@ -160,30 +155,7 @@
         });
     });
 </script>
-<script>
- document.addEventListener("DOMContentLoaded", function() {
-    let darkModeButton = document.getElementById("toggleDarkMode");
-    let body = document.body;
 
-    // Kiểm tra trạng thái Dark Mode từ localStorage
-    if (localStorage.getItem("darkMode") === "enabled") {
-        body.classList.add("dark-mode");
-    }
-
-    // Khi click nút Dark Mode
-    darkModeButton.addEventListener("click", function() {
-        body.classList.toggle("dark-mode");
-
-        if (body.classList.contains("dark-mode")) {
-            localStorage.setItem("darkMode", "enabled");
-        } else {
-            localStorage.setItem("darkMode", "disabled");
-        }
-    });
-});
-
-
-</script>
 
 
         <!-- Fullscreen Toggle -->
@@ -209,25 +181,6 @@
     font-size: 24px; /* Hoặc 14px nếu cần nhỏ hơn */
 }
 
-
-/* 🌞 Chế độ sáng (Mặc định) */
-#content-area {
-    background-color: #ffffff;
-    color: #000000;
-    transition: all 0.3s ease-in-out;
-}
-
-/* 🌙 Chế độ tối - Đảo ngược màu */
-.dark-mode #content-area {
-    filter: invert(1) hue-rotate(180deg);
-    transition: all 0.3s ease-in-out;
-}
-
-/* 🔥 Giữ nguyên màu cho hình ảnh và icon */
-.dark-mode #content-area img,
-.dark-mode #content-area svg {
-    filter: invert(1) hue-rotate(180deg);
-}
 
 
 
