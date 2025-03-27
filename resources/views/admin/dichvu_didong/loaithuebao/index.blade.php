@@ -3,88 +3,141 @@
 @section('content')
 @include('partials.content-header', ['name' => 'Danh sách', 'key' => 'Loại thuê bao'])
 
-<div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <button class="btn btn-primary shadow-sm" id="create-new" data-bs-toggle="modal" data-bs-target="#subscriptionModal">
-            <i class="fas fa-plus"></i> Thêm Loại Thuê Bao
-        </button>
-
-    </div>
-
-    <!-- Bảng dữ liệu -->
-    <div class="table-responsive shadow-sm">
-        <table class="table table-bordered table-hover align-middle" id="subscription-table">
-            <thead class="table-dark">
-                <tr>
-                    <th>Hình Ảnh</th>
-                    <th>Tên Loại Thuê Bao</th>
-                    <th>Tiêu Đề</th>
-                    <th>Loại Thuê Bao</th>
-                    <th>Kiểm Duyệt</th>
-                    <th>Chi Tiết</th>
-                    <th>Hành Động</th>
-                </tr>
-            </thead>
-            <tbody id="subscription-table-body">
-                @foreach ($subscriptionTypes as $type)
-                    @include('admin.dichvu_didong.loaithuebao.row', ['type' => $type])
-                @endforeach
-            </tbody>
-            
-        </table>
+<div class="container-fluid mt-4">
+    <div class="card border-0 shadow-lg">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Quản lý Loại Thuê Bao</h5>
+            <button class="btn btn-light shadow-sm" id="create-new" data-bs-toggle="modal" data-bs-target="#subscriptionModal">
+                <i class="fas fa-plus-circle me-2"></i> Thêm Mới
+            </button>
+        </div>
+        
+        <div class="card-body">
+            <!-- Bảng dữ liệu -->
+            <div class="table-responsive">
+                <table class="table table-hover align-middle" id="subscription-table">
+                    <thead class="table-light">
+                        <tr>
+                            <th width="10%">Hình Ảnh</th>
+                            <th width="20%">Tên Loại Thuê Bao</th>
+                            <th width="15%">Tiêu Đề</th>
+                            <th width="15%">Loại Thuê Bao</th>
+                            <th width="10%">Trạng Thái</th>
+                            <th width="15%">Chi Tiết</th>
+                            <th width="15%">Hành Động</th>
+                        </tr>
+                    </thead>
+                    <tbody id="subscription-table-body">
+                        @foreach ($subscriptionTypes as $type)
+                        <tr id="row-{{ $type->id }}" class="{{ $type->is_approved ? '' : 'table-warning' }}">
+                            <td>
+                                <img src="{{ asset('storage/' . $type->image) }}" alt="{{ $type->name }}" 
+                                     class="img-thumbnail rounded-circle" style="width: 60px; height: 60px; object-fit: cover;">
+                            </td>
+                            <td class="fw-bold">{{ $type->name }}</td>
+                            <td>{{ $type->title }}</td>
+                            <td>
+                                <span class="badge bg-{{ $type->subscription_category == 'Trả trước' ? 'info' : ($type->subscription_category == 'Trả sau' ? 'primary' : 'success') }}">
+                                    {{ $type->subscription_category }}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="badge bg-{{ $type->is_approved ? 'success' : 'warning' }}">
+                                    {{ $type->is_approved ? 'Đã duyệt' : 'Chờ duyệt' }}
+                                </span>
+                            </td>
+                            <td>
+                                <a href="{{ route('loaithuebao.show', ['subscriptionTypeId' => $type->id, 'id' => $type->id]) }}" 
+                                   class="btn btn-sm btn-outline-info">
+                                   <i class="fas fa-eye me-1"></i> Xem
+                                </a>
+                            </td>
+                            <td>
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-sm btn-outline-warning edit-btn" data-id="{{ $type->id }}">
+                                        <i class="fas fa-edit me-1"></i> Sửa
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger delete-btn" data-id="{{ $type->id }}">
+                                        <i class="fas fa-trash-alt me-1"></i> Xóa
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 
-<!-- Modal -->
+<!-- Modal Thêm/Sửa -->
 <div class="modal fade" id="subscriptionModal" tabindex="-1" aria-labelledby="subscriptionModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content shadow">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
             <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title" id="subscriptionModalLabel">Thêm Loại Thuê Bao</h5>
-                <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="subscription-form">
+                <form id="subscription-form" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="id" id="subscription-id">
-
-                    <!-- Bước 1 -->
-                    <div class="form-group mb-3">
-                        <label for="name">Tên Loại Thuê Bao</label>
-                        <input type="text" name="name" id="name" class="form-control shadow-sm" required>
+                    
+                    <div class="row">
+                        <!-- Cột trái -->
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Tên Loại Thuê Bao <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control shadow-sm" id="name" name="name" required>
+                                <div class="invalid-feedback">Vui lòng nhập tên loại thuê bao</div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="title" class="form-label">Tiêu Đề <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control shadow-sm" id="title" name="title" required>
+                                <div class="invalid-feedback">Vui lòng nhập tiêu đề</div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="subscription_category" class="form-label">Loại Thuê Bao <span class="text-danger">*</span></label>
+                                <select class="form-select shadow-sm" id="subscription_category" name="subscription_category" required>
+                                    <option value="Trả trước">Trả trước</option>
+                                    <option value="Trả sau">Trả sau</option>
+                                    <option value="Fast Connect">Fast Connect</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <!-- Cột phải -->
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="is_approved" class="form-label">Trạng Thái</label>
+                                <select class="form-select shadow-sm" id="is_approved" name="is_approved">
+                                    <option value="1">Đã duyệt</option>
+                                    <option value="0">Chờ duyệt</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="image" class="form-label">Hình Ảnh</label>
+                                <input type="file" class="form-control shadow-sm" id="image" name="image" accept="image/*">
+                                <small class="text-muted">Định dạng: JPG, PNG (Tối đa 2MB)</small>
+                                <div class="invalid-feedback">Vui lòng chọn hình ảnh hợp lệ</div>
+                            </div>
+                            
+                            <div class="text-center mt-2">
+                                <img id="image-preview" src="" alt="Preview" class="img-thumbnail d-none" style="max-height: 150px;">
+                            </div>
+                        </div>
                     </div>
-
-                    <!-- Bước 2 -->
-                    <div class="form-group mb-3">
-                        <label for="title">Tiêu Đề</label>
-                        <input type="text" name="title" id="title" class="form-control shadow-sm" required>
+                    
+                    <div class="modal-footer border-top-0">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-2"></i> Lưu Thay Đổi
+                        </button>
                     </div>
-
-                    <!-- Bước 3 -->
-                    <div class="form-group mb-3">
-                        <label for="image">Hình Ảnh</label>
-                        <input type="file" name="image" id="image" class="form-control shadow-sm">
-                        <small class="text-muted">Hỗ trợ: JPG, PNG (Max 2MB)</small>
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label for="subscription_category">Loại Thuê Bao</label>
-                        <select name="subscription_category" id="subscription_category" class="form-control shadow-sm" required>
-                            <option value="Trả trước">Trả trước</option>
-                            <option value="Trả sau">Trả sau</option>
-                            <option value="Fast Connect">Fast Connect</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label for="is_approved">Kiểm Duyệt</label>
-                        <select name="is_approved" id="is_approved" class="form-control shadow-sm">
-                            <option value="1">Đã duyệt</option>
-                            <option value="0">Chưa duyệt</option>
-                        </select>
-                    </div>
-
-                    <button type="submit" class="btn btn-success w-100 shadow-sm">Lưu</button>
                 </form>
             </div>
         </div>
@@ -92,149 +145,149 @@
 </div>
 @endsection
 
+@section('js')
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-    const modal = new bootstrap.Modal(document.getElementById('subscriptionModal'));
-    const form = document.getElementById('subscription-form');
-    const tableBody = document.getElementById('subscription-table-body');
-
-    // Reset form và modal khi nhấn "Thêm mới"
-    document.getElementById('create-new').addEventListener('click', function () {
-        form.reset();
-        document.getElementById('subscriptionModalLabel').textContent = 'Thêm Loại Thuê Bao';
-        form.setAttribute('data-action', 'create');
-    });
-
-    // Xử lý submit form
-    form.addEventListener('submit', function (event) {
-    event.preventDefault();
-
-    const formData = new FormData(form);
-    const action = form.getAttribute('data-action');
-    const url = action === 'create' ? '/admin/subscription-types' : `/admin/subscription-types/${formData.get('id')}`;
-    const method = action === 'create' ? 'POST' : 'PUT';
-
-    axios({
-        method: method,
-        url: url,
-        data: formData,
-        headers: { 'Content-Type': 'multipart/form-data' }
-    })
-        .then(response => {
-            if (action === 'create') {
-                tableBody.insertAdjacentHTML('beforeend', response.data.html);
-            } else {
-                document.getElementById(`row-${formData.get('id')}`).outerHTML = response.data.html;
+$(document).ready(function() {
+    // Khởi tạo DataTable
+   // Khởi tạo DataTable với ngôn ngữ Tiếng Việt
+        $('#subscription-table').DataTable({
+            language: {
+                url: '/vendor/datatables/vi.json' // Đường dẫn đến file ngôn ngữ cục bộ
+            },
+            columnDefs: [
+                { orderable: false, targets: [3] } // Cột hành động không sắp xếp
+            ],
+            responsive: true,
+            dom: '<"top"lf>rt<"bottom"ip>',
+            initComplete: function() {
+                $('.dataTables_filter input').attr('placeholder', 'Tìm kiếm...');
             }
-            modal.hide();
-        })
-        .catch(error => {
-    console.error('Error response:', error.response); // Log chi tiết phản hồi lỗi
-    if (error.response && error.response.data && error.response.data.message) {
-        alert(`Lỗi: ${error.response.data.message}`);
-    } else {
-        alert('Có lỗi xảy ra. Vui lòng thử lại!');
-    }
-});
-
-});
-
-
-    // Sửa loại thuê bao
-    tableBody.addEventListener('click', function (event) {
-    if (event.target.classList.contains('edit-btn')) {
-        const id = event.target.getAttribute('data-id');
-        axios.get(`/admin/subscription-types/${id}/edit`)
-            .then(response => {
-                const data = response.data;
-                document.getElementById('subscription-id').value = data.id;
-                document.getElementById('name').value = data.name;
-                document.getElementById('title').value = data.title;
-                document.getElementById('is_approved').value = data.is_approved;
-                document.getElementById('subscription_category').value = data.subscription_category; // Bổ sung
-                document.getElementById('subscriptionModalLabel').textContent = 'Chỉnh Sửa Loại Thuê Bao';
-                form.setAttribute('data-action', 'edit');
-                modal.show();
-            })
-            .catch(error => console.error(error));
-    }
-});
-
-
-    // Xóa loại thuê bao
-    tableBody.addEventListener('click', function (event) {
-        if (event.target.classList.contains('delete-btn')) {
-            const id = event.target.getAttribute('data-id');
-            if (confirm('Bạn có chắc chắn muốn xóa?')) {
-                axios.delete(`/admin/subscription-types/${id}`)
-                    .then(() => {
-                        document.getElementById(`row-${id}`).remove();
-                    })
-                    .catch(error => console.error(error));
+        });
+    
+    // Xử lý preview ảnh
+    $('#image').change(function() {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                $('#image-preview').attr('src', e.target.result).removeClass('d-none');
             }
+            reader.readAsDataURL(file);
         }
     });
-});
-
-
-document.addEventListener('DOMContentLoaded', function () {
-    const imageInput = document.getElementById('image');
-    if (imageInput) {
-        imageInput.addEventListener('change', function (e) {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                const preview = document.getElementById('preview-img');
-                if (preview) {
-                    preview.src = e.target.result;
-                }
-            };
-            reader.readAsDataURL(this.files[0]);
+    
+    // Reset form khi mở modal thêm mới
+    $('#create-new').click(function() {
+        $('#subscription-form')[0].reset();
+        $('#subscriptionModalLabel').text('Thêm Loại Thuê Bao');
+        $('#subscription-id').val('');
+        $('#image-preview').addClass('d-none').attr('src', '');
+        $('#subscription-form').attr('data-action', 'create');
+        $('.invalid-feedback').hide();
+    });
+    
+    // Xử lý sửa
+    $(document).on('click', '.edit-btn', function() {
+    const id = $(this).data('id');
+    
+    axios.get(`/admin/subscription-types/${id}/edit`)
+        .then(response => {
+            const data = response.data;
+            
+            $('#subscription-id').val(data.id);
+            $('#name').val(data.name).data('original-name', data.name);
+            $('#title').val(data.title).data('original-title', data.title);
+            $('#subscription_category').val(data.subscription_category)
+                .data('original-subscription_category', data.subscription_category);
+            $('#is_approved').val(data.is_approved ? '1' : '0')
+                .data('original-is_approved', data.is_approved ? '1' : '0');
+            
+            if (data.image) {
+                $('#image-preview').attr('src', `/storage/${data.image}`).removeClass('d-none');
+            } else {
+                $('#image-preview').addClass('d-none');
+            }
+            
+            $('#subscriptionModalLabel').text('Chỉnh Sửa Loại Thuê Bao');
+            $('#subscription-form').attr('data-action', 'edit');
+            $('#subscriptionModal').modal('show');
+        })
+        .catch(error => {
+            console.error(error);
+            Swal.fire('Lỗi!', 'Không thể tải dữ liệu để chỉnh sửa', 'error');
         });
-    }
 });
+    
+   // Biến cờ kiểm tra đang xử lý
+   $('#subscription-form').on('submit', function(e) {
+    e.preventDefault();
 
+    let formData = new FormData(this);
+    let action = $('#subscription-form').attr('data-action');
+    let id = $('#subscription-id').val();
+    let url = '/admin/subscription-types';
 
-$(document).ready(function () {
-    $('#subscription-table').DataTable({
-        paging: true,
-        searching: true,
-        ordering: true,
-        info: true,
-        language: {
-            search: "Tìm kiếm:",
-            lengthMenu: "Hiển thị _MENU_ bản ghi",
-            info: "Hiển thị _START_ đến _END_ trong tổng _TOTAL_ bản ghi",
-            paginate: {
-                first: "Đầu",
-                last: "Cuối",
-                next: "Sau",
-                previous: "Trước",
-            },
-        },
+    if (action === 'edit') {
+        url += `/${id}`;
+        formData.append('_method', 'PUT'); // Laravel yêu cầu _method để update
+    }
+
+    console.log("Dữ liệu gửi lên:", Object.fromEntries(formData));
+
+    axios.post(url, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+    })
+    .then(response => {
+        console.log("Phản hồi từ server:", response.data);
+        Swal.fire('Thành công!', 'Dữ liệu đã được cập nhật.', 'success');
+        $('#subscriptionModal').modal('hide');
+        location.reload(); // Cập nhật lại bảng dữ liệu
+    })
+    .catch(error => {
+        console.error("Lỗi:", error.response?.data || error);
+        Swal.fire('Lỗi!', 'Không thể cập nhật dữ liệu.', 'error');
     });
 });
-document.querySelectorAll('.delete-btn').forEach(button => {
-    button.addEventListener('click', function () {
-        const id = this.getAttribute('data-id');
+
+    // Xử lý xóa
+    $(document).on('click', '.delete-btn', function() {
+        const id = $(this).data('id');
+        
         Swal.fire({
             title: 'Bạn có chắc chắn?',
-            text: "Hành động này không thể hoàn tác!",
+            text: "Bạn sẽ không thể hoàn tác hành động này!",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#d33',
             cancelButtonColor: '#3085d6',
             confirmButtonText: 'Xóa',
-            cancelButtonText: 'Hủy',
+            cancelButtonText: 'Hủy'
         }).then((result) => {
             if (result.isConfirmed) {
-                // Thực hiện xóa (gửi request AJAX hoặc chuyển hướng)
-                console.log(`Xóa mục ID: ${id}`);
+                axios.delete(`/admin/subscription-types/${id}`)
+                    .then(() => {
+                        $(`#row-${id}`).fadeOut(300, function() {
+                            $(this).remove();
+                        });
+                        
+                        Swal.fire(
+                            'Đã xóa!',
+                            'Loại thuê bao đã được xóa.',
+                            'success'
+                        );
+                    })
+                    .catch(error => {
+                        Swal.fire(
+                            'Lỗi!',
+                            'Không thể xóa loại thuê bao này.',
+                            'error'
+                        );
+                    });
             }
         });
     });
 });
-
 </script>
+@endsection

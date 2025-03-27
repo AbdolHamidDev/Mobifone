@@ -7,6 +7,10 @@ use App\Models\QuocGia;
 use App\Models\NhaKhaiThac;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
+
 
 class GiaCuocQuocTeController extends Controller {
     public function index(Request $request) {
@@ -146,4 +150,231 @@ private function chuanHoaLoaiThueBao($loaiThueBao)
 }
     
 
+public function getDashboardData()
+    {
+        try {
+            // Kiểm tra kết nối CSDL
+            DB::connection()->getPdo();
+            
+            // Lấy ngày hiện tại và tháng trước
+            $currentDate = Carbon::now();
+            $lastMonthDate = Carbon::now()->subMonth();
+            
+            // 1. Tổng số quốc gia và nhà khai thác
+            $totalCountries = DB::table('quoc_gia')->count();
+            $totalOperators = DB::table('nha_khai_thac')->count();
+            
+            // 2. Tính % thay đổi số quốc gia có cước
+            $currentCountryCount = DB::table('gia_cuoc_quoc_te')
+                ->whereYear('created_at', $currentDate->year)
+                ->whereMonth('created_at', $currentDate->month)
+                ->distinct('quoc_gia_id')
+                ->count('quoc_gia_id');
+                
+            $lastMonthCountryCount = DB::table('gia_cuoc_quoc_te')
+                ->whereYear('created_at', $lastMonthDate->year)
+                ->whereMonth('created_at', $lastMonthDate->month)
+                ->distinct('quoc_gia_id')
+                ->count('quoc_gia_id');
+                
+            $countryChangePercent = $this->calculateChangePercent($currentCountryCount, $lastMonthCountryCount);
+            
+            // 3. Tính % thay đổi số nhà khai thác
+            $currentOperatorCount = DB::table('gia_cuoc_quoc_te')
+                ->whereYear('created_at', $currentDate->year)
+                ->whereMonth('created_at', $currentDate->month)
+                ->distinct('nha_khai_thac_id')
+                ->count('nha_khai_thac_id');
+                
+            $lastMonthOperatorCount = DB::table('gia_cuoc_quoc_te')
+                ->whereYear('created_at', $lastMonthDate->year)
+                ->whereMonth('created_at', $lastMonthDate->month)
+                ->distinct('nha_khai_thac_id')
+                ->count('nha_khai_thac_id');
+                
+            $operatorChangePercent = $this->calculateChangePercent($currentOperatorCount, $lastMonthOperatorCount);
+            
+            // 4. Lấy giá trị trung bình các loại cước (tháng hiện tại)
+            $currentMonthRates = DB::table('gia_cuoc_quoc_te')
+                ->select([
+                    DB::raw('AVG(cuoc_goi_ve_vn) as avg_call_rate'),
+                    DB::raw('AVG(cuoc_data) as avg_data_rate'),
+                    DB::raw('AVG(cuoc_sms) as avg_sms_rate'),
+                    DB::raw('AVG(cuoc_nhan_goi) as avg_receive_rate')
+                ])
+                ->whereYear('created_at', $currentDate->year)
+                ->whereMonth('created_at', $currentDate->month)
+                ->first();
+                
+            // 5. Lấy giá trị trung bình tháng trước để tính % thay đổi
+            $lastMonthRates = DB::table('gia_cuoc_quoc_te')
+                ->select([
+                    DB::raw('AVG(cuoc_goi_ve_vn) as avg_call_rate'),
+                    DB::raw('AVG(cuoc_data) as avg_data_rate')
+                ])
+                ->whereYear('created_at', $lastMonthDate->year)
+                ->whereMonth('created_at', $lastMonthDate->month)
+                ->first();
+                
+            $callRateChangePercent = $this->calculateChangePercent(
+                $currentMonthRates->avg_call_rate, 
+                $lastMonthRates->avg_call_rate ?? 0
+            );
+            
+            $dataRateChangePercent = $this->calculateChangePercent(
+                $currentMonthRates->avg_data_rate, 
+                $lastMonthRates->avg_data_rate ?? 0
+            );
+            
+            // 6. Dữ liệu biểu đồ theo quốc gia (tháng hiện tại)
+            $chartData = DB::table('gia_cuoc_quoc_te as g')
+                ->join('quoc_gia as q', 'g.quoc_gia_id', '=', 'q.id')
+                ->select([
+                    'q.ten_quoc_gia as country',
+                    DB::raw('AVG(g.cuoc_goi_ve_vn) as avg_call_rate'),
+                    DB::raw('AVG(g.cuoc_data) as avg_data_rate'),
+                    DB::raw('AVG(g.cuoc_sms) as avg_sms_rate')
+                ])
+                ->whereYear('g.created_at', $currentDate->year)
+                ->whereMonth('g.created_at', $currentDate->month)
+                ->groupBy('q.ten_quoc_gia')
+                ->orderBy('avg_call_rate', 'desc')
+                ->limit(10)
+                ->get();
+            
+            // 7. Phân bố loại thuê bao (tháng hiện tại)
+            $subscriptionTypes = DB::table('gia_cuoc_quoc_te')
+                ->select([
+                    'loai_thue_bao',
+                    DB::raw('COUNT(*) as count')
+                ])
+                ->whereYear('created_at', $currentDate->year)
+                ->whereMonth('created_at', $currentDate->month)
+                ->groupBy('loai_thue_bao')
+                ->pluck('count', 'loai_thue_bao');
+            
+            // 8. Top 10 quốc gia có cước cao nhất (tháng hiện tại)
+            $topCountries = DB::table('gia_cuoc_quoc_te as g')
+                ->join('quoc_gia as q', 'g.quoc_gia_id', '=', 'q.id')
+                ->select([
+                    'q.ten_quoc_gia as country',
+                    DB::raw('MAX(g.cuoc_goi_ve_vn) as call_rate'),
+                    DB::raw('MAX(g.cuoc_data) as data_rate'),
+                    DB::raw('MAX(g.cuoc_sms) as sms_rate'),
+                    DB::raw('MAX(g.cuoc_nhan_goi) as receive_rate'),
+                    DB::raw('(MAX(g.cuoc_goi_ve_vn) + MAX(g.cuoc_data) + MAX(g.cuoc_sms)) as total')
+                ])
+                ->whereYear('g.created_at', $currentDate->year)
+                ->whereMonth('g.created_at', $currentDate->month)
+                ->groupBy('q.ten_quoc_gia')
+                ->orderBy('total', 'desc')
+                ->limit(10)
+                ->get();
+            
+            return response()->json([
+                'status' => 'success',
+                'data' => [
+                    'summary' => [
+                        'total_countries' => $totalCountries,
+                        'total_operators' => $totalOperators,
+                        'country_change' => $countryChangePercent,
+                        'operator_change' => $operatorChangePercent,
+                        'call_rate_change' => $callRateChangePercent,
+                        'data_rate_change' => $dataRateChangePercent
+                    ],
+                    'average_rates' => [
+                        'call' => round($currentMonthRates->avg_call_rate),
+                        'data' => round($currentMonthRates->avg_data_rate),
+                        'sms' => round($currentMonthRates->avg_sms_rate),
+                        'receive' => round($currentMonthRates->avg_receive_rate)
+                    ],
+                    'chart_data' => [
+                        'countries' => $chartData->pluck('country'),
+                        'call_rates' => $chartData->pluck('avg_call_rate'),
+                        'data_rates' => $chartData->pluck('avg_data_rate'),
+                        'sms_rates' => $chartData->pluck('avg_sms_rate'),
+                        'subscription_types' => [
+                            'prepaid' => $subscriptionTypes['Trả trước'] ?? 0,
+                            'postpaid' => $subscriptionTypes['Trả sau'] ?? 0
+                        ]
+                    ],
+                    'top_countries' => $topCountries
+                ]
+            ]);
+            
+        } catch (\Exception $e) {
+            Log::error('Dashboard Error: '.$e->getMessage());
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Internal Server Error',
+                'error' => env('APP_DEBUG') ? $e->getMessage() : null
+            ], 500);
+        }
+    }
+
+    public function getTopCountries(Request $request)
+    {
+        try {
+            $type = $request->query('type', 'all');
+            $currentDate = Carbon::now();
+            
+            $query = DB::table('gia_cuoc_quoc_te as g')
+                ->join('quoc_gia as q', 'g.quoc_gia_id', '=', 'q.id')
+                ->select([
+                    'q.ten_quoc_gia as country',
+                    DB::raw('MAX(g.cuoc_goi_ve_vn) as call_rate'),
+                    DB::raw('MAX(g.cuoc_data) as data_rate'),
+                    DB::raw('MAX(g.cuoc_sms) as sms_rate'),
+                    DB::raw('MAX(g.cuoc_nhan_goi) as receive_rate'),
+                    DB::raw('(MAX(g.cuoc_goi_ve_vn) + MAX(g.cuoc_data) + MAX(g.cuoc_sms)) as total')
+                ])
+                ->whereYear('g.created_at', $currentDate->year)
+                ->whereMonth('g.created_at', $currentDate->month)
+                ->groupBy('q.ten_quoc_gia');
+            
+            switch ($type) {
+                case 'call':
+                    $query->orderBy('call_rate', 'desc');
+                    break;
+                case 'data':
+                    $query->orderBy('data_rate', 'desc');
+                    break;
+                case 'sms':
+                    $query->orderBy('sms_rate', 'desc');
+                    break;
+                case 'receive':
+                    $query->orderBy('receive_rate', 'desc');
+                    break;
+                default:
+                    $query->orderBy('total', 'desc');
+            }
+            
+            $results = $query->limit(10)->get();
+            
+            return response()->json([
+                'status' => 'success',
+                'data' => $results,
+                'type' => $type
+            ]);
+            
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Internal Server Error',
+                'error' => env('APP_DEBUG') ? $e->getMessage() : null
+            ], 500);
+        }
+    }
+    
+    /**
+     * Tính toán phần trăm thay đổi
+     */
+    private function calculateChangePercent($currentValue, $previousValue)
+    {
+        if ($previousValue == 0) {
+            return 0;
+        }
+        
+        return round(($currentValue - $previousValue) / $previousValue * 100, 2);
+    }
 }

@@ -6,13 +6,48 @@ use App\Models\Goidata;
 use Illuminate\Http\Request;
 use App\Models\PackageRegistration;
 use Yajra\DataTables\Facades\DataTables;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\GoidataImport;
+use App\Exports\GoidataExport;
 
 class QuanlyDataController extends Controller
 {
+
+    // Phương thức nhập Excel
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv',
+        ]);
+
+        try {
+            Excel::import(new GoidataImport, $request->file('file'));
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Nhập dữ liệu thành công!',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Đã xảy ra lỗi: ' . $e->getMessage(),
+            ]);
+        }
+    }
+
+    // Phương thức xuất Excel
+    public function export()
+    {
+        return Excel::download(new GoidataExport, 'goidatas.xlsx');
+    }
     
     public function api(Request $request)
     {
-        $Goidatas = Goidata::select(['id', 'ten_data', 'gia', 'thoi_gian', 'dung_luong', 'loai_data', 'status', 'created_at']);
+        $Goidatas = Goidata::select([
+            'id', 'ten_data', 'gia', 'thoi_gian', 
+            'dung_luong', 'don_vi_dung_luong', // ✅ Thêm dòng này!
+            'loai_data', 'status', 'created_at'
+        ]);
     
         return DataTables::of($Goidatas)
             ->addColumn('actions', function ($row) {

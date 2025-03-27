@@ -320,7 +320,9 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::resource('Goidatas', QuanlyDataController::class);
     Route::post('/goidatas/{id}/change-status', [QuanlyDataController::class, 'changeStatus'])->name('goidatas.changeStatus');
     Route::get('/api/datas', [QuanlyDataController::class, 'api'])->name('Goidatas.api');
-
+    //file excel
+    Route::post('/admin/goidatas/import', [QuanlyDataController::class, 'import'])->name('Goidatas.import');
+    Route::get('/admin/goidatas/export', [QuanlyDataController::class, 'export'])->name('Goidatas.export');
 
     // quản lý gói cước chi tiết
     Route::resource('goicuocs_detail', GoicuocDetailController::class);
@@ -368,11 +370,11 @@ Route::prefix('admin')->middleware('auth')->group(function () {
 
     // loại thuê bao
     Route::resource('subscription-types', SubscriptionTypeController::class);
-
-    // chi tiết loại thuê bao
+    
     Route::prefix('subscription-types/{subscriptionTypeId}/loaithuebao')->group(function () {
         Route::get('/', [LoaiThueBaoController::class, 'index'])->name('loaithuebao.index');
         Route::post('/', [LoaiThueBaoController::class, 'store'])->name('loaithuebao.store');
+        Route::get('/{id}', [LoaiThueBaoController::class, 'show'])->name('loaithuebao.show');
         Route::get('/{id}/edit', [LoaiThueBaoController::class, 'edit'])->name('loaithuebao.edit');
         Route::put('/{id}', [LoaiThueBaoController::class, 'update'])->name('loaithuebao.update');
         Route::delete('/{id}', [LoaiThueBaoController::class, 'destroy'])->name('loaithuebao.destroy');
@@ -420,7 +422,13 @@ Route::prefix('admin')->middleware('auth')->group(function () {
    
 
     Route::resource('nha-khai-thac', NhaKhaiThacController::class);
-    Route::resource('cuoc-quoc-te', GiaCuocQuocTeController::class);
+   // Đặt route custom trước route resource
+Route::prefix('cuoc-quoc-te')->group(function() {
+    Route::get('/dashboard-data', [GiaCuocQuocTeController::class, 'getDashboardData']);
+    Route::get('/top-countries', [GiaCuocQuocTeController::class, 'getTopCountries']);
+});
+
+Route::resource('cuoc-quoc-te', GiaCuocQuocTeController::class);
     Route::get('/get-quoc-gia', [NhaKhaiThacController::class, 'getQuocGia']);
     Route::get('/get-quoc-gia-nha-khai-thac', [GiaCuocQuocTeController::class, 'getQuocGiaNhaKhaiThac']);
 
@@ -479,3 +487,10 @@ Route::get('/api/otp-users', function () {
 Route::get('/news', [NewsController::class, 'index']);
 
 
+//KHỞI TẠO DATATABLE TIẾNG VIỆT
+Route::get('/vendor/datatables/{file}', function ($file) {
+    return response()->file(public_path("vendor/datatables/$file"), [
+        'Content-Type' => 'application/json',
+        'Access-Control-Allow-Origin' => '*'
+    ]);
+});

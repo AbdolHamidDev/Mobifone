@@ -55,23 +55,37 @@ document.addEventListener('DOMContentLoaded', function () {
                 name: 'dung_luong',
                 className: 'text-center',
                 render: function(data, type, row) {
-                    const unit = row.don_vi_dung_luong || 'MB'; // Gán 'MB' nếu không có đơn vị
+                    // Đảm bảo có giá trị mặc định
+                    const rawValue = parseFloat(data) || 0;
+                    const unit = (row.don_vi_dung_luong || 'MB').toUpperCase();
                     
-                    // Kiểm tra dữ liệu dung lượng
-                    let converted = data !== undefined ? data : 0; // Gán 0 nếu không có giá trị dung lượng
-            
-                    // Kiểm tra đơn vị dung lượng
+                    // Xử lý chuyển đổi đơn vị
+                    let displayValue, displayUnit;
+                    
                     if (unit === 'GB') {
-                        converted = data.toFixed(2); // Chuyển đổi khi là GB
-                    } else if (unit === 'MB') {
-                        // Không cần chuyển đổi nếu là MB
-                        converted = data;
+                        // Nếu đơn vị gốc là GB thì giữ nguyên
+                        displayValue = rawValue.toFixed(2);
+                        displayUnit = 'GB';
+                    } else {
+                        // Nếu đơn vị gốc là MB thì chuyển sang GB nếu >= 1024
+                        if (rawValue >= 1024) {
+                            displayValue = (rawValue / 1024).toFixed(2);
+                            displayUnit = 'GB';
+                        } else {
+                            displayValue = rawValue.toFixed(2);
+                            displayUnit = 'MB';
+                        }
+                    }
+                    
+                    // Loại bỏ .00 nếu là số nguyên
+                    if (displayValue.endsWith('.00')) {
+                        displayValue = displayValue.slice(0, -3);
                     }
             
                     return `
                         <div class="d-flex align-items-center justify-content-center">
                             <span class="data-capacity-badge">
-                                ${converted} ${unit}
+                                ${displayValue} ${displayUnit}
                             </span>
                         </div>
                     `;
@@ -128,7 +142,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             title="Xem chi tiết">
                             <i class="fas fa-eye"></i>
                         </button>
-                        <button type="button" class="btn btn-action btn-edit" 
+                        <button  href="/admin/goicuocs/${data}/edit type="button" class="btn btn-action btn-edit" 
                             data-id="${data}"
                             title="Chỉnh sửa">
                             <i class="fas fa-edit"></i>
@@ -248,7 +262,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     $('#goidatasTable').on('click', '.btn-edit', function() {
         const id = $(this).data('id');
-        window.location.href = `/admin/goidatas/${id}/edit`;
+        window.location.href = `/admin/Goidatas/${id}/edit`;
     });
 
     $('#goidatasTable').on('click', '.btn-delete', function() {

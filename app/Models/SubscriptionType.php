@@ -22,5 +22,6 @@ class SubscriptionType extends Model
         return $this->hasMany(LoaiThueBao::class, 'subscription_type_id', 'id');
     }
     
+    
 
 }

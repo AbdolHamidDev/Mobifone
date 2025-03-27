@@ -1,5 +1,7 @@
+<!-- filepath: c:\xampp\htdocs\mobifone\resources\views\admin\goidatas\danhsach.blade.php -->
 @extends('layouts.admin')
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" href="{{ asset('admins/goidata/goidata.css') }}">
 
 @section('content')
 @include('partials.content-header', ['name' => 'Danh sách', 'key' => 'Gói Data'])
@@ -16,13 +18,20 @@
     </div>
 </div>
 
-
-
 <div class="container mx-auto mt-4">
-    <!-- Nút thêm Gói data -->
-    <button class="btn btn-primary mb-4" data-bs-toggle="modal" data-bs-target="#addGoidataModal">
-        <i class="fas fa-plus"></i> Thêm Gói data
-    </button>
+    <!-- Nút thêm, nhập và xuất Gói data -->
+    <div class="d-flex justify-content-start mb-4">
+        <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#addGoidataModal">
+            <i class="fas fa-plus"></i> Thêm Gói data
+        </button>
+        <button class="btn btn-success me-2" onclick="document.getElementById('importFileInput').click();">
+            <i class="fas fa-file-import"></i> Nhập Excel
+        </button>
+        <button class="btn btn-secondary" onclick="exportGoidatas();">
+            <i class="fas fa-file-export"></i> Xuất Excel
+        </button>
+        <input type="file" id="importFileInput" style="display: none;" onchange="importGoidatas(event)">
+    </div>
 
     <!-- Bảng DataTables -->
     <div class="table-responsive shadow-lg">
@@ -46,7 +55,7 @@
     </div>
 </div>
 
-<!-- Modal Thêm Gói data - Phiên bản nâng cấp UX/UI -->
+<!-- Modal Thêm Gói data -->
 <div class="modal fade" id="addGoidataModal" tabindex="-1" aria-labelledby="addGoidataModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -64,7 +73,7 @@
                         <input type="text" name="ten_data" id="ten_data" class="form-control form-control-lg" placeholder="Nhập tên gói data" required>
                         <div class="invalid-feedback">Vui lòng nhập tên gói data</div>
                     </div>
-
+                    
                     <div class="row g-3">
                         <div class="col-md-6">
                             <div class="mb-3">
@@ -93,7 +102,7 @@
                             </div>
                         </div>
                     </div>
-
+                    
                     <div class="row g-3">
                         <div class="col-md-6">
                             <div class="mb-3">
@@ -133,101 +142,64 @@
     </div>
 </div>
 
-
 @endsection
 
 <script>
     const routes = {
         api: '{{ route('Goidatas.api') }}',
         store: '{{ route('Goidatas.store') }}',
+        import: '{{ route('Goidatas.import') }}',
+        export: '{{ route('Goidatas.export') }}',
         changeStatus: (id) => `/admin/goidatas/${id}/change-status`,
     };
     const csrfToken = '{{ csrf_token() }}';
+
+    // Hàm nhập Excel
+    function importGoidatas(event) {
+        const fileInput = event.target;
+        const formData = new FormData();
+        formData.append('file', fileInput.files[0]);
+        formData.append('_token', csrfToken);
+
+        fetch(routes.import, {
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Thành công!',
+                    text: data.message,
+                    confirmButtonText: 'OK',
+                }).then(() => {
+                    location.reload();
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Thất bại!',
+                    text: data.message || 'Đã xảy ra lỗi.',
+                    confirmButtonText: 'OK',
+                });
+            }
+        })
+        .catch(error => {
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi hệ thống!',
+                text: 'Không thể hoàn thành yêu cầu. Vui lòng thử lại sau.',
+                confirmButtonText: 'OK',
+            });
+        });
+    }
+
+    // Hàm xuất Excel
+    function exportGoidatas() {
+        window.location.href = routes.export;
+    }
 </script>
 
 <script src="{{ asset('admins/goidata/goidata.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-
-
-<style>
-    .chart-container {
-        max-width: 900px; /* Giới hạn chiều rộng */
-        margin: auto; /* Căn giữa */
-        padding: 20px;
-        background: #fff; /* Tạo nền trắng */
-        border-radius: 10px; /* Bo góc */
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Tạo hiệu ứng nổi */
-    }
-       #goidatasTable {
-        width: 100% !important;
-    }
-    #goidatasTable th {
-        background-color: #f8f9fa;
-        font-weight: 600;
-        white-space: nowrap;
-    }
-    #goidatasTable td {
-        vertical-align: middle;
-    }
-    .btn-action-group {
-        gap: 0.5rem;
-    }
-    .btn-action {
-        width: 32px;
-        height: 32px;
-        padding: 0;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-    }
-    .btn-view {
-        color: #17a2b8;
-        border-color: #17a2b8;
-    }
-    .btn-view:hover {
-        background-color: rgba(23, 162, 184, 0.1);
-    }
-    .btn-edit {
-        color: #007bff;
-        border-color: #007bff;
-    }
-    .btn-edit:hover {
-        background-color: rgba(0, 123, 255, 0.1);
-    }
-    .btn-delete {
-        color: #dc3545;
-        border-color: #dc3545;
-    }
-    .btn-delete:hover {
-        background-color: rgba(220, 53, 69, 0.1);
-    }
-    .btn-status {
-        color: white !important;
-        min-width: 100px;
-    }
-    .data-capacity-badge {
-        background-color: #e9ecef;
-        padding: 0.25rem 0.5rem;
-        border-radius: 0.25rem;
-        font-family: monospace;
-    }
-    .bg-purple {
-        background-color: #6f42c1 !important;
-    }
-    .animate__animated {
-        --animate-duration: 0.5s;
-    }
-    .dataTables_wrapper .dataTables_paginate .paginate_button {
-        padding: 0.25rem 0.5rem;
-        margin: 0 2px;
-        border-radius: 0.25rem;
-    }
-    .dataTables_wrapper .dataTables_paginate .paginate_button.current {
-        background: #0d6efd !important;
-        color: white !important;
-        border: none;
-    }
-`;
-</style>

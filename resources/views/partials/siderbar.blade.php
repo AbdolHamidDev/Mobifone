@@ -331,28 +331,7 @@
         });
     }
 </script>
-<script>
-    $(document).ready(function() {
-        // Kích hoạt PJAX
-        $(document).pjax('a.ajax-link', '#content-area', {
-            timeout: 5000 // Thời gian chờ cho request
-        });
 
-        // Hiển thị spinner trong khi tải
-        $(document).on('pjax:start', function() {
-            $('#content-area').html(
-                '<div class="text-center mt-5"><i class="fas fa-spinner fa-spin fa-2x"></i></div>');
-        });
-
-
-
-        // Xử lý sau khi PJAX hoàn tất
-        $(document).on('pjax:end', function() {
-            console.log('Nội dung đã được tải bằng PJAX.');
-        });
-
-    });
-</script>
 @section('js')
 <script>
     document.addEventListener("DOMContentLoaded", function() {

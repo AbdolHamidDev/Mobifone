@@ -19,8 +19,8 @@ class LoaiThueBao extends Model
     ];
 
     public function subscriptionType()
-    {
-        return $this->belongsTo(SubscriptionType::class, 'subscription_type_id', 'id');
-    }
+{
+    return $this->belongsTo(SubscriptionType::class);
+}
     
 }
