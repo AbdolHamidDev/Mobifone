@@ -122,5 +122,81 @@ class GoiVoipCuocPhiController extends Controller {
     }
 
 
+    public function dashboard()
+    {
+        // Tổng số quốc gia
+        $totalCountries = GoiVoipCuocPhi::distinct('quoc_gia_id')->count('quoc_gia_id');
 
+        // Tổng số nhóm cước
+        $totalGroups = GoiVoipCuocPhi::distinct('nhom_cuoc')->count('nhom_cuoc');
+
+        // Tổng số gói cước
+        $totalPackages = GoiVoipCuocPhi::count();
+
+        // Thống kê quốc gia
+        $countryStats = GoiVoipCuocPhi::selectRaw('quoc_gia_id, COUNT(*) as total')
+            ->groupBy('quoc_gia_id')
+            ->get();
+        $countryLabels = $countryStats->pluck('quoc_gia_id');
+        $countryData = $countryStats->pluck('total');
+
+        // Thống kê nhóm cước
+        $groupStats = GoiVoipCuocPhi::selectRaw('nhom_cuoc, COUNT(*) as total')
+            ->groupBy('nhom_cuoc')
+            ->get();
+        $groupLabels = $groupStats->pluck('nhom_cuoc');
+        $groupData = $groupStats->pluck('total');
+
+        return response()->json([
+            'totalCountries' => $totalCountries,
+            'totalGroups' => $totalGroups,
+            'totalPackages' => $totalPackages,
+            'countryLabels' => $countryLabels,
+            'countryData' => $countryData,
+            'groupLabels' => $groupLabels,
+            'groupData' => $groupData,
+        ]);
+    }
+
+
+
+
+
+    public function dashboard1()
+    {
+        // Tổng số mã vùng
+        $totalRegions = GoiVoipCuocPhi::distinct('ma_vung')->count('ma_vung');
+
+        // Trung bình Block 6s đầu
+        $avgBlock6s = GoiVoipCuocPhi::avg('block_6s_dau');
+
+        // Trung bình giá mỗi giây
+        $avgPricePerSecond = GoiVoipCuocPhi::avg('gia_moi_giay');
+
+        // Trung bình giá 1 phút đầu
+        $avgPriceFirstMinute = GoiVoipCuocPhi::avg('gia_1_phut_dau');
+
+        // Thống kê Block 6s đầu theo mã vùng
+        $block6sStats = GoiVoipCuocPhi::selectRaw('ma_vung, AVG(block_6s_dau) as avg_block_6s')
+            ->groupBy('ma_vung')
+            ->get();
+        $regionLabels = $block6sStats->pluck('ma_vung');
+        $block6sData = $block6sStats->pluck('avg_block_6s');
+
+        // Thống kê giá mỗi giây theo mã vùng
+        $pricePerSecondStats = GoiVoipCuocPhi::selectRaw('ma_vung, AVG(gia_moi_giay) as avg_price_per_second')
+            ->groupBy('ma_vung')
+            ->get();
+        $pricePerSecondData = $pricePerSecondStats->pluck('avg_price_per_second');
+
+        return response()->json([
+            'totalRegions' => $totalRegions,
+            'avgBlock6s' => round($avgBlock6s, 2),
+            'avgPricePerSecond' => round($avgPricePerSecond, 2),
+            'avgPriceFirstMinute' => round($avgPriceFirstMinute, 2),
+            'regionLabels' => $regionLabels,
+            'block6sData' => $block6sData,
+            'pricePerSecondData' => $pricePerSecondData,
+        ]);
+    }
 }

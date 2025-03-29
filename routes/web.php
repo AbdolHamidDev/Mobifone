@@ -486,6 +486,11 @@ Route::get('/api/otp-users', function () {
 
 Route::get('/news', [NewsController::class, 'index']);
 
+Route::get('/admin/goivoip/dashboard', [GoiVoipCuocPhiController::class, 'dashboard'])->name('goivoip.dashboard');
+Route::get('/admin/goivoip1/dashboard', [GoiVoipCuocPhiController::class, 'dashboard1'])->name('goivoip.dashboard1');
+
+
+Route::get('/admin/quocgia/dashboard', [QuocgiaController::class, 'dashboard'])->name('quocgia.dashboard');
 
 //KHỞI TẠO DATATABLE TIẾNG VIỆT
 Route::get('/vendor/datatables/{file}', function ($file) {

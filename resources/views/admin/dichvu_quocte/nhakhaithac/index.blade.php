@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="{{ asset('admins/nhakhaithac/style.css') }}">
 
 @section('content')
-@include('partials.content-header', ['name' => 'Danh sách', 'key' => 'Nhà khai thác'])
+<x-layout.content-header name="Danh sách" key="Nhà khai thác" />
 
 <div class="container-fluid px-4">
     <div class="card shadow border-0 mb-4">

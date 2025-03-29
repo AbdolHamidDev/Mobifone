@@ -2,8 +2,7 @@
 
 @section('content')
 
-@include('partials.content-header', ['name' => 'Dashboard', 'key' => '🎯'])
-
+<x-layout.content-header name="Danh sách" key="dasbroad" />
  <!-- Khu vực Người Dùng Đăng Nhập OTP (Ticker) -->
 
     <h3 class="text-lg font-bold text-gray-700 text-center">Người Dùng Đăng Nhập OTP 🚀</h3>

@@ -95,19 +95,25 @@
             background-color: #f8f9fa;
         }
     </style>
-    
+    @stack('styles')
+
     <!-- Page-specific CSS -->
     @yield('css')
 </head>
 
 <body class="hold-transition sidebar-mini">
-    <div class="wrapper">
-        @include('partials.header')
-        @include('partials.siderbar')
+    <div class="wrapper d-flex flex-column min-vh-100">
+        <x-layout.header />  
         
-        <div id="content-area">
-            @yield('content')
+        <div class="d-flex">
+            <x-layout.sidebar /> 
+            
+            <main class="flex-grow-1 p-6">
+                @yield('content') 
+            </main>
         </div>
+
+        <x-layout.footer />  
     </div>
     
     <!-- Core JS Libraries -->
@@ -232,6 +238,8 @@
         });
     </script>
     
+    @stack('scripts')
+
     <!-- Page-specific JS -->
     @yield('js')
 </body>

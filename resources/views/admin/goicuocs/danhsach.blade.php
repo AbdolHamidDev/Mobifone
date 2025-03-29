@@ -4,8 +4,7 @@
 <link rel="stylesheet" href="{{ asset('admins/goicuoc/goicuoc.css') }}">
 
 @section('content')
-@include('partials.content-header', ['name' => 'Danh sách', 'key' => 'Gói Cước'])
-
+<x-layout.content-header name="Danh sách" key="Gói cước" />
 <!-- Nhúng file incomplete.blade.php -->
 @include('admin.goicuocs.incomplete', ['incompleteGoiCuocs' => $incompleteGoiCuocs])
 

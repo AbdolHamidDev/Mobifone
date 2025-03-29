@@ -50,7 +50,7 @@ class QuocGiaController extends Controller {
         return response()->json(['message' => 'Xóa quốc gia thành công!']);
     }
 
+    
 
- 
 
 }
