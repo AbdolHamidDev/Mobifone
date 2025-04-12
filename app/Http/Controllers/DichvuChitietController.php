@@ -42,6 +42,22 @@ class DichvuChitietController extends Controller
         ]);
     }
     
+
+    public function update(Request $request, $id)
+{
+    $request->validate([
+        'doi_tuong_su_dung' => 'nullable|string',
+        'tinh_nang_chinh' => 'nullable|string',
+        'quy_dinh' => 'nullable|string',
+        'tien_ich' => 'nullable|string',
+    ]);
+
+    $dichvuChitiet = DichvuChitiet::findOrFail($id);
+    $dichvuChitiet->update($request->all());
+
+    return redirect()->back()->with('success', 'Cập nhật chi tiết dịch vụ thành công!');
+}
+
     
 
 

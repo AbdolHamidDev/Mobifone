@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 @section('content')
-@include('partials.content-header', ['name' => 'Danh sách', 'key' => 'Đăng ký'])
+<x-layout.content-header name="Danh sách" key="Đăng ký" />
 
 @if(session('success'))
     <div class="alert alert-success mb-4">

@@ -157,7 +157,7 @@ public function getDashboardData()
             DB::connection()->getPdo();
             
             // Lấy ngày hiện tại và tháng trước
-            $currentDate = Carbon::now();
+            $currentDate = Carbon::now()->subMonth(); // Lùi về tháng 3 thay vì tháng 4
             $lastMonthDate = Carbon::now()->subMonth();
             
             // 1. Tổng số quốc gia và nhà khai thác

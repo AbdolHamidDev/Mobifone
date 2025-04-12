@@ -6,7 +6,7 @@
 <x-layout.content-header name="Danh sách" key="Cước quốc tế" />
 
 <div class="row mb-4 g-4">
-   
+
     <x-ui.cards.cuocquocte.tongquocgia/>
     <x-ui.cards.cuocquocte.tongnhakhaithac/>
     <x-ui.cards.cuocquocte.trungbinhcuocgoi/>

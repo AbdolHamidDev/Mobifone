@@ -2,7 +2,7 @@
 
 <link rel="stylesheet" href="{{ asset('admins/dichvu/dichvu.css') }}">
 @section('content')
-    @include('partials.content-header', ['name' => 'Danh sách', 'key' => 'Dịch vụ'])
+<x-layout.content-header name="Danh sách" key="Dịch vụ" />
 
     <div class="container-fluid mt-4">
         <!-- Card chứa toàn bộ nội dung -->

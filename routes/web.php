@@ -422,7 +422,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
    
 
     Route::resource('nha-khai-thac', NhaKhaiThacController::class);
-   // Đặt route custom trước route resource
+   
 Route::prefix('cuoc-quoc-te')->group(function() {
     Route::get('/dashboard-data', [GiaCuocQuocTeController::class, 'getDashboardData']);
     Route::get('/top-countries', [GiaCuocQuocTeController::class, 'getTopCountries']);

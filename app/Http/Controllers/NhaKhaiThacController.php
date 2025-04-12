@@ -60,4 +60,9 @@ class NhaKhaiThacController extends Controller {
         NhaKhaiThac::findOrFail($id)->delete();
         return response()->json(['message' => 'Xóa nhà khai thác thành công!']);
     }
+    
+
+
+
+   
 }

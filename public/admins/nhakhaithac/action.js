@@ -233,3 +233,9 @@ $(document).ready(function() {
         console.log('Xem chi tiết nhà khai thác ID:', id);
     });
 });
+
+// Load dữ liệu dashboard khi trang được tải
+$(document).ready(function() {
+    loadDashboardData();
+});
+

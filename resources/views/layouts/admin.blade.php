@@ -44,57 +44,8 @@
     <link rel="stylesheet" href="{{ asset('admins/header/header.css') }}">
     <link rel="stylesheet" href="{{ asset('admins/main.css') }}">
     <link rel="stylesheet" href="{{ asset('admins/mode.css') }}">
+    <link rel="stylesheet" href="{{ asset('admins/Sidebar/sidebar.css') }}">
 
-    <!-- Fix CSS cho DataTables -->
-    <style>
-        /* Đảm bảo phân trang DataTables phù hợp với Bootstrap 5 */
-        .dataTables_wrapper .dataTables_paginate .paginate_button {
-            padding: 0.375rem 0.75rem;
-            margin-left: -1px;
-            line-height: 1.5;
-            color: #0d6efd;
-            text-decoration: none;
-            background-color: #fff;
-            border: 1px solid #dee2e6;
-            display: inline-block;
-        }
-        
-        .dataTables_wrapper .dataTables_paginate .paginate_button.current,
-        .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
-            z-index: 3;
-            color: #fff !important;
-            background-color: #0d6efd !important;
-            border-color: #0d6efd !important;
-        }
-        
-        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-            z-index: 2;
-            color: #0a58ca;
-            background-color: #e9ecef;
-            border-color: #dee2e6;
-        }
-        
-        .dataTables_wrapper .dataTables_paginate .paginate_button.disabled,
-        .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover,
-        .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:active {
-            color: #6c757d !important;
-            cursor: default;
-            background-color: #fff !important;
-            border-color: #dee2e6 !important;
-        }
-        
-        /* Fix khoảng cách và căn chỉnh phân trang */
-        .dataTables_wrapper .dataTables_paginate {
-            margin-top: 15px;
-            float: right !important;
-        }
-        
-        /* Fix header table */
-        .dataTables_wrapper .table thead th {
-            position: relative;
-            background-color: #f8f9fa;
-        }
-    </style>
     @stack('styles')
 
     <!-- Page-specific CSS -->
@@ -143,7 +94,8 @@
     
     <!-- Custom JS -->
     <script src="{{ asset('admins/header/header.js') }}"></script>
-    
+    <script src="{{ asset('admins/Sidebar/sidebar.js') }}"></script>
+
     <!-- DataTables Initialization -->
     <script>
         $(document).ready(function() {

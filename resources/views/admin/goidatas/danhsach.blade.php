@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="{{ asset('admins/goidata/goidata.css') }}">
 
 @section('content')
-@include('partials.content-header', ['name' => 'Danh sách', 'key' => 'Gói Data'])
+<x-layout.content-header name="Danh sách" key="Gói data" />
 
 <div class="d-flex justify-content-between flex-wrap">
     <!-- Biểu đồ tròn (Thống kê loại gói data) -->

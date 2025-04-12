@@ -2,7 +2,7 @@
 @extends('layouts.admin')
 
 @section('content')
-@include('partials.content-header', ['name' => 'Danh sách', 'key' => 'Số thuê bao'])
+<x-layout.content-header name="Danh sách" key="Số thuê bao" />
 
 <div class="container mx-auto mt-4">
 <!-- Biểu đồ trạng thái với UI hiện đại -->

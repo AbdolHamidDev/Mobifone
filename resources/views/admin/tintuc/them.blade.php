@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 @section('content')
     <div class="container mx-auto">
-        @include('partials.content-header', ['name' => 'Thêm', 'key' => 'bài viết'])
+        <x-layout.content-header name="Thêm" key="Bài viết" />
 
         <form action="{{ route('news.store') }}" method="POST" enctype="multipart/form-data">
             @csrf

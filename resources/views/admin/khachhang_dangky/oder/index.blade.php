@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-@include('partials.content-header', ['name' => 'Khách hàng', 'key' => 'Đăng ký Hòa mạng'])
+<x-layout.content-header name="khách hàng" key="đăng ký hòa mạng" />
 
 <div class="card">
   

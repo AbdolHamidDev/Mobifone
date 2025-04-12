@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-@include('partials.content-header', ['name' => 'Cập nhật', 'key' => 'thông tin'])
+<x-layout.content-header name="Cập nhật" key="Thông tin" />
 
 <div class="container mx-auto p-4">
     <form action="{{ route('tuyendung.update', $tuyendung->id) }}" method="POST" class="bg-white p-6 rounded-lg shadow-lg space-y-6">
