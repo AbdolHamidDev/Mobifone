@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 @section('content')
     <div class="container mx-auto">
-        <x-layout.content-header name="Sửa" key="Bài viết" />
+        <x-layout.content-header title="sửa bài viết" />
 
         <form action="{{ route('news.update', $news->id) }}" method="POST" enctype="multipart/form-data">
             @csrf

@@ -11,7 +11,11 @@ class DichVuController extends Controller
     public function index()
     {
         $dichvus = DichVu::all();
-        return view('admin.dichvu_didong.dichvu.index', compact('dichvus'));
+    
+        // Lấy danh sách loại dịch vụ duy nhất
+        $loaiDichVuOptions = DichVu::select('loai_dich_vu')->distinct()->pluck('loai_dich_vu');
+    
+        return view('admin.dichvu_didong.dichvu.index', compact('dichvus', 'loaiDichVuOptions'));
     }
 
     public function create()

@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 @section('content')
     <div class="container mx-auto">
-        <x-layout.content-header name="Thêm" key="Bài viết" />
+        <x-layout.content-header title="thêm bài viết" />
 
         <form action="{{ route('news.store') }}" method="POST" enctype="multipart/form-data">
             @csrf

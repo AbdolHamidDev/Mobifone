@@ -9,7 +9,6 @@
     
     <!-- Favicon -->
     <link rel="shortcut icon" href="{{ asset('favicon1.ico') }}">
-    <link rel="icon" type="image/x-icon" href="{{ asset('favicon1.ico') }}">
     
     <!-- Preconnect to external domains -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,10 +40,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
     
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ asset('admins/header/header.css') }}">
     <link rel="stylesheet" href="{{ asset('admins/main.css') }}">
-    <link rel="stylesheet" href="{{ asset('admins/mode.css') }}">
-    <link rel="stylesheet" href="{{ asset('admins/Sidebar/sidebar.css') }}">
 
     @stack('styles')
 
@@ -53,19 +49,24 @@
 </head>
 
 <body class="hold-transition sidebar-mini">
-    <div class="wrapper d-flex flex-column min-vh-100">
-        <x-layout.header />  
-        
+    <div class="wrapper">
+        <!-- Header (Blade Component) -->
+        <x-layout.header />
+    
         <div class="d-flex">
-            <x-layout.sidebar /> 
-            
+            <!-- Sidebar (Blade Component) -->
+            <x-layout.sidebar />
+    
+            <!-- Main Content -->
             <main class="flex-grow-1 p-6">
-                @yield('content') 
+                @yield('content')
             </main>
         </div>
-
-        <x-layout.footer />  
+    
+        <!-- Footer (Blade Component) -->
+        <x-layout.footer />
     </div>
+    
     
     <!-- Core JS Libraries -->
    
@@ -93,102 +94,8 @@
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js" defer></script>
     
     <!-- Custom JS -->
-    <script src="{{ asset('admins/header/header.js') }}"></script>
     <script src="{{ asset('admins/Sidebar/sidebar.js') }}"></script>
 
-    <!-- DataTables Initialization -->
-    <script>
-        $(document).ready(function() {
-            // Khởi tạo DataTables với cấu hình tối ưu
-            $('.data-table').DataTable({
-                dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
-                     "<'row'<'col-sm-12'tr>>" +
-                     "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-                language: {
-                    url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/vi.json'
-                },
-                responsive: true,
-                pageLength: 10,
-                lengthMenu: [5, 10, 25, 50, 100],
-                drawCallback: function(settings) {
-                    // Xử lý sau khi vẽ bảng
-                    $('.dataTables_paginate').addClass('pagination');
-                    $('.paginate_button').addClass('page-item');
-                    $('.paginate_button a').addClass('page-link');
-                }
-            });
-            
-            // Áp dụng class Bootstrap cho các phần tử phân trang
-            $(document).on('draw.dt', function() {
-                $('.dataTables_paginate').addClass('pagination');
-                $('.paginate_button').addClass('page-item');
-                $('.paginate_button a').addClass('page-link');
-            });
-        });
-    </script>
-
-    <!-- Notification Handlers -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Initialize AOS
-            if (typeof AOS !== 'undefined') {
-                AOS.init();
-            }
-            
-            // Success notification
-            @if(session('success'))
-            Swal.fire({
-                icon: 'success',
-                title: 'Thành công!',
-                text: '{{ session('success') }}',
-                timer: 3000,
-                showConfirmButton: false
-            });
-            @endif
-            
-            // Error notification
-            @if(session('error'))
-            Swal.fire({
-                icon: 'error',
-                title: 'Lỗi!',
-                text: '{{ session('error') }}',
-            });
-            @endif
-            
-            // Info notification
-            @if(session('info'))
-            Swal.fire({
-                icon: 'info',
-                title: 'Thông tin!',
-                text: '{{ session('info') }}',
-            });
-            @endif
-            
-            // Delete confirmation handler
-            const deleteButtons = document.querySelectorAll('.delete-button');
-            deleteButtons.forEach(button => {
-                button.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const form = this.closest('form');
-                    
-                    Swal.fire({
-                        title: 'Bạn có chắc chắn muốn xóa?',
-                        text: "Hành động này không thể hoàn tác!",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Có, xóa!',
-                        cancelButtonText: 'Hủy'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            form.submit();
-                        }
-                    });
-                });
-            });
-        });
-    </script>
     
     @stack('scripts')
 

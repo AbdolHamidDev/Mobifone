@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-<x-layout.content-header name="Khách hàng" key="tự tạo gói cước" />
+<x-layout.content-header title="Khách hàng tự tạo gói" />
 <div class="container-fluid px-4">
  
 

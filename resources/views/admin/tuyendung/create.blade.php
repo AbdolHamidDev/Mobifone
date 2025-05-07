@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-<x-layout.content-header name="Tạo công việc" key="Tuyển dụng mới" />
+<x-layout.content-header title="Thêm tuyển dụng" />
 
 <div class="container mx-auto p-4">
     <form action="{{ route('tuyendung.store') }}" method="POST" class="bg-white p-6 rounded-lg shadow-lg space-y-6">

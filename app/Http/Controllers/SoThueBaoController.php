@@ -44,7 +44,16 @@ class SoThueBaoController extends Controller
         ];
         return view('admin.dichvu_didong.sothuebao.index', compact('soThueBaos','trangThaiCounts'));
     }
-
+    public function edit($id)
+    {
+        $soThueBao = SoThueBao::findOrFail($id);
+        
+        if(request()->wantsJson()) {
+            return response()->json($soThueBao);
+        }
+        
+        return view('admin.dichvu_didong.sothuebao.modal-edit', compact('soThueBao'));
+    }
 
 
     public function store(Request $request)

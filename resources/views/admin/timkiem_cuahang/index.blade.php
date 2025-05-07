@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-<x-layout.content-header name="Danh sách" key="Cửa hàng" />
+<x-layout.content-header title="danh sách cửa hàng" />
 
 <div class="container mx-auto mt-5">
 

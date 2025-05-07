@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <x-layout.content-header name="Danh sách" key="Liên hệ" />
+    <x-layout.content-header title="Liên hệ" />
 
     <div class="card">
         <div class="card-header bg-primary text-white">

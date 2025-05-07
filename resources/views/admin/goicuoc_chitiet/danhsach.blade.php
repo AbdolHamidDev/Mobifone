@@ -1,7 +1,6 @@
 @extends('layouts.admin')
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 @section('content')
-<x-layout.content-header name="Danh sách" key="gói cước chi tiết" />
+<x-layout.content-header title="Danh sách gói cước chi tiết" />
 <div class="container mx-auto mt-6 px-4">
     <!-- Kết quả tìm kiếm -->
     <div id="accordion-container">

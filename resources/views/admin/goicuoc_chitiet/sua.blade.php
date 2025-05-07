@@ -1,8 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-<x-layout.content-header name="Sửa" key="gói cước chi tiết" />
-
+<x-layout.content-header title="Sửa gói cước chi tiết" />
 <div class="container mx-auto mt-4">
     <form action="{{ route('goicuocs_detail.update', $detail->id) }}" method="POST">
         @csrf

@@ -9,6 +9,8 @@ use App\Models\PackageRegistration;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Cache;
+use App\Models\User;
+use App\Models\Role;
 
 class AdminController extends Controller
 {
@@ -74,4 +76,93 @@ class AdminController extends Controller
             'recentOrders', 'statusLabels', 'statusData','otpUsers','packageRegistrations'
         ));
     }
+
+    private $user;
+    public function __construct(User $user)
+    {
+        $this->user = $user;   
+    }
+  
+
+    public function index()
+    {
+        $users = User::with('roles')->get();  // Lấy danh sách người dùng kèm theo vai trò
+        return view('admin.user.index', compact('users'));
+    }
+
+    public function edit($id)
+{
+    $user = User::with('roles')->findOrFail($id);  // Lấy người dùng kèm vai trò
+    $roles = Role::all();  // Lấy tất cả vai trò
+    return view('admin.user.edit', compact('user', 'roles'));
+}
+public function store(Request $request)
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email',
+        'password' => 'required|min:6',
+        'role_id' => 'required|array',
+        'role_id.*' => 'exists:roles,id', // Kiểm tra từng role_id có tồn tại không
+    ]);
+
+    $user = User::create([
+        'name' => $request->name,
+        'email' => $request->email,
+        'password' => bcrypt($request->password),
+    ]);
+
+    // Thêm vai trò vào bảng role_user
+    $user->roles()->sync($request->role_id);  // Đồng bộ các vai trò
+
+    return redirect()->route('users.index')->with('success', 'Tạo người dùng thành công');
+}
+
+public function update(Request $request, $id)
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email,' . $id,
+        'role_id' => 'required|array',
+        'role_id.*' => 'exists:roles,id',
+    ]);
+
+    $user = User::findOrFail($id);
+    $user->update([
+        'name' => $request->name,
+        'email' => $request->email,
+    ]);
+
+    // Cập nhật các vai trò
+    $user->roles()->sync($request->role_id);  // Đồng bộ các vai trò mới
+
+    return redirect()->route('users.index')->with('success', 'Cập nhật người dùng thành công');
+}
+
+
+
+    public function create()
+    {
+        $roles = Role::all();
+        return view('admin.user.create', compact('roles'));
+    }
+
+    
+    
+    public function destroy($id)
+    {
+        $user = User::findOrFail($id);
+        $user->roles()->detach();  // Gỡ mối quan hệ trong bảng role_user
+        $user->delete();  // Xóa người dùng
+    
+        return redirect()->route('users.index')->with('success', 'Xóa người dùng thành công');
+    }
+    
+
+
+public function getIndex()
+{
+    return view('admin.welcome');
+}
+
 }

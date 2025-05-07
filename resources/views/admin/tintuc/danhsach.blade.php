@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-<x-layout.content-header name="Tin tức" key="Khuyến mãi" />
+<x-layout.content-header title="Tin tức khuyến mãi" />
     <div class="container mx-auto">
         <a href="{{ route('news.create') }}" class="inline-block bg-gradient-to-r from-blue-500 to-blue-600 text-white text-sm font-medium px-6 py-2 rounded-full shadow-md transition-all duration-300 hover:from-blue-600 hover:to-blue-700 hover:shadow-lg mb-4">
             + Thêm mới

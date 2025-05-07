@@ -1,8 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-<x-layout.content-header name="Cập nhật" key="Thông tin" />
-
+<x-layout.content-header title="Sửa thông tin tuyển dụng" />
 <div class="container mx-auto p-4">
     <form action="{{ route('tuyendung.update', $tuyendung->id) }}" method="POST" class="bg-white p-6 rounded-lg shadow-lg space-y-6">
         @csrf

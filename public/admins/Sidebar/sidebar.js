@@ -14,23 +14,3 @@ function confirmLogout() {
         }
     });
 }
-
-
-document.addEventListener("DOMContentLoaded", function() {
-    // Lấy đường dẫn URL hiện tại
-    let currentUrl = window.location.href;
-
-    // Lặp qua tất cả các mục menu để kiểm tra đường dẫn
-    document.querySelectorAll(".nav-sidebar .nav-link").forEach(function(link) {
-        if (link.href === currentUrl) {
-            link.classList.add("active"); // Thêm class active
-
-            // Nếu mục này thuộc dropdown, mở dropdown đó
-            let parent = link.closest(".has-treeview");
-            if (parent) {
-                parent.classList.add("menu-open");
-                parent.querySelector(".nav-link").classList.add("active");
-            }
-        }
-    });
-});

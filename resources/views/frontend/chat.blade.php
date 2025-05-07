@@ -2,7 +2,7 @@
 
 
 
-@auth
+@if (session('authenticated') && session('phone'))
     <!-- Nút chat icon -->
     <div id="chat-icon" class="chat-icon">
         <i class="fas fa-comment-dots"></i>
@@ -46,8 +46,8 @@
 <!-- Script chat -->
 <script>
     $(document).ready(function() {
-        let phone = "{{ session('phone') }}"; // Lấy số điện thoại từ session
-// Ẩn chat nếu không đăng nhập
+        let phone = @json(session('phone'));
+        // Ẩn chat nếu không đăng nhập
 if (!phone) {
         $('#chat-icon').hide();
         $('#chat-box').hide();
@@ -87,7 +87,10 @@ if (!phone) {
                     });
 
                     // Cuộn xuống tin nhắn mới nhất
-                    $('#messages').scrollTop($('#messages')[0].scrollHeight);
+                    let messageContainer = $('#messages')[0];
+if (messageContainer) {
+    $('#messages').scrollTop(messageContainer.scrollHeight);
+}
                 },
                 error: function(xhr) {
                     console.error("Không thể tải tin nhắn:", xhr.responseText);

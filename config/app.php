@@ -129,6 +129,7 @@ return [
     ],
     
     Yajra\DataTables\DataTablesServiceProvider::class,
+    App\Providers\AuthServiceProvider::class,
 
 
 

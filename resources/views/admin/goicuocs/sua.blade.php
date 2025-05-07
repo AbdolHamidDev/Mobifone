@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-<x-layout.content-header name="Sửa" key="Gói cước" />
+<x-layout.content-header title="Sửa gói cước" />
 
 <div class="container mx-auto py-6 px-4">
     <div class="bg-white shadow-md rounded-lg p-6">

@@ -253,17 +253,11 @@ Route::name('frontend.')->group(function () {
 Route::get('/api/khachhang/goicuoc', [KhachhangController::class, 'apiSubscriptions'])
     ->name('khachhang.apiSubscriptions');
 
-// API Tra cứu gói data (dùng trong DataTable)
-Route::get('/api/khachhang/goidata', [KhachhangController::class, 'apiSubscriptions2'])
-    ->name('khachhang.apiSubscriptions2');
 
 // Tra cứu gói cước
 Route::get('/hosokhachhang/tracuu-goicuoc', [KhachhangController::class, 'traCuuGoiCuoc'])
     ->name('khachhang.tracuuGoicuoc');
 
-// Tra cứu gói data
-Route::get('/hosokhachhang/tracuu-goidata', [KhachhangController::class, 'traCuuGoiData'])
-    ->name('khachhang.tracuuGoidata');
 
 
 // Route lưu lịch sử hủy bằng store()
@@ -271,7 +265,10 @@ Route::post('/khachhang/goicuoc/store', [CancellationController::class, 'store']
     ->name('khachhang.storeCancellation');
 
 
-
+ // API DataTables lịch sử hủy
+ Route::get('/api/lich-su-huy-goi', [CancellationController::class, 'apiIndex'])->name('cancellations.apiIndex');
+ // hiệu lực thời gian gói cước
+ Route::get('/api/lich-su-huy-goi/subscriptions', [CancellationController::class, 'apiSubscriptions'])->name('khachhang.apiSubscriptions');
 
 
 
@@ -292,172 +289,216 @@ Route::get('/chat', function () {
     Route::get('/chat/messages', [ChatController::class, 'getUserMessages'])->name('chat.get');
 
 
-// 🟢 Admin
-Route::get('/admin/chat', [ChatController::class, 'adminIndex'])->name('chat.admin');
-Route::get('/admin/chat/messages/{conversation_id}', [ChatController::class, 'getMessages'])->name('chat.admin.messages');
-Route::post('/admin/chat/send', [ChatController::class, 'adminSendMessage'])->name('chat.admin.send');
-Route::get('/admin/chat/load/{conversation_id}', [ChatController::class, 'getAdminMessages'])->name('chat.admin.load');
+
+
 
 
 // Phần Admin
 Route::prefix('admin')->middleware('auth')->group(function () {
 
     // Trang chủ admin
+    Route::get('/', [AdminController::class, 'getIndex'])->name('admin.welcome');
+
     Route::get('/home', [AdminController::class, 'getHome'])->name('admin.home');
 
+    // Quản lý nhân viên
+    Route::middleware(['auth', 'can:quản lý nhân viên'])->group(function () {
+        Route::resource('users', AdminController::class);
+    });
+    
+    // quản lý vai trò
+    Route::middleware(['auth', 'can:quản lý vai trò'])->group(function () {
+        Route::resource('roles', \App\Http\Controllers\Admin\RoleController::class);
+    });
+    
     // quản lý gói cước
-    Route::resource('goicuocs', QuanLyGoicuocController::class);
-    Route::post('/goicuocs/{id}/change-status', [QuanLyGoicuocController::class, 'changeStatus'])->name('goicuocs.changeStatus');
-    Route::get('/api', [QuanLyGoicuocController::class, 'api'])->name('goicuocs.api');
-    //file excel
-    Route::get('/export', [QuanLyGoicuocController::class, 'export'])->name('goicuocs.export');
-    Route::post('/import', [QuanLyGoicuocController::class, 'import'])->name('goicuocs.import');
+    Route::middleware(['auth', 'can:quản lý gói cước'])->group(function () {
+        Route::resource('goicuocs', QuanLyGoicuocController::class);
+        Route::post('/goicuocs/{id}/change-status', [QuanLyGoicuocController::class, 'changeStatus'])->name('goicuocs.changeStatus');
+        Route::get('/api', [QuanLyGoicuocController::class, 'api'])->name('goicuocs.api');
+        Route::get('/export', [QuanLyGoicuocController::class, 'export'])->name('goicuocs.export');
+        Route::post('/import', [QuanLyGoicuocController::class, 'import'])->name('goicuocs.import');
+         // quản lý gói cước chi tiết
+        Route::resource('goicuocs_detail', GoicuocDetailController::class);
+        Route::get('/goicuocs/{id}/details', [GoicuocDetailController::class, 'showDetails'])->name('goicuocs.details');
 
-     // gói cước chưa hoàn thiện
-     Route::get('/incomplete-goicuocs', [QuanLyGoicuocController::class, 'incomplete'])->name('goicuocs.incomplete');
+    });
     
     // quản lý gói data
-    Route::resource('Goidatas', QuanlyDataController::class);
-    Route::post('/goidatas/{id}/change-status', [QuanlyDataController::class, 'changeStatus'])->name('goidatas.changeStatus');
-    Route::get('/api/datas', [QuanlyDataController::class, 'api'])->name('Goidatas.api');
-    //file excel
-    Route::post('/admin/goidatas/import', [QuanlyDataController::class, 'import'])->name('Goidatas.import');
-    Route::get('/admin/goidatas/export', [QuanlyDataController::class, 'export'])->name('Goidatas.export');
+    Route::middleware(['auth', 'can:quản lý gói data'])->group(function () {
 
-    // quản lý gói cước chi tiết
-    Route::resource('goicuocs_detail', GoicuocDetailController::class);
-    Route::get('/goicuocs/{id}/details', [GoicuocDetailController::class, 'showDetails'])->name('goicuocs.details');
-
+        Route::resource('Goidatas', QuanlyDataController::class);
+        Route::post('/goidatas/{id}/change-status', [QuanlyDataController::class, 'changeStatus'])->name('goidatas.changeStatus');
+        Route::get('/api/datas', [QuanlyDataController::class, 'api'])->name('Goidatas.api');
+        //file excel
+        Route::post('/admin/goidatas/import', [QuanlyDataController::class, 'import'])->name('Goidatas.import');
+        Route::get('/admin/goidatas/export', [QuanlyDataController::class, 'export'])->name('Goidatas.export');
+        // quản lý data chi tiết
+        Route::resource('goidatas_detail', GoiDataDetailController::class);
+        Route::get('/goidatas/{id}/details', [GoiDataDetailController::class, 'showDetails'])->name('goidatas.details');
+    });  
     
-    // quản lý data chi tiết
-    Route::resource('goidatas_detail', GoiDataDetailController::class);
-    Route::get('/goidatas/{id}/details', [GoiDataDetailController::class, 'showDetails'])->name('goidatas.details');
+    // quản lý số thuê bao
+    Route::middleware(['auth', 'can:quản lý số thuê bao'])->group(function () {
+        // số thuê bao
+        Route::resource('so-thue-bao', SoThueBaoController::class);
+        Route::get('so-thue-bao/{id}/edit', [SoThueBaoController::class, 'edit'])->name('so-thue-bao.edit');
+        //file excel số thuê bao
+        Route::get('export-so-thue-bao', [SoThueBaoController::class, 'export'])->name('so-thue-bao.export');
+        Route::post('import-so-thue-bao', [SoThueBaoController::class, 'import'])->name('so-thue-bao.import');    
+    }); 
 
 
-    // quản lý tin tức khuyến mãi
-    Route::resource('news', NewsController::class);
-    // Route kiểm duyệt bài viết
-    Route::get('news/kiemduyet/{id}', [NewsController::class, 'kiemDuyet'])->name('news.kiemduyet');
-    Route::get('news/kichhoat/{id}', [NewsController::class, 'kichHoat'])->name('news.kichhoat');
+    // quản lý tin tức và khuyến mãi
+    Route::middleware(['auth', 'can:quản lý tin tức và khuyến mãi'])->group(function () {
 
-    // tuyển dụng
-    Route::resource('tuyendung', TuyenDungController::class);
-    // CV
-    Route::get('/cv', [CVController::class, 'index'])->name('cv.index');
-    Route::post('/cv/store', [CvController::class, 'store'])->name('cv.store');
-    Route::post('/cv/{id}/mark-as-seen', [CVController::class, 'markAsSeen'])->name('cv.markAsSeen');
-    Route::post('/cv/{id}/mark-as-approved', [CVController::class, 'markAsApproved'])->name('cv.markAsApproved');
-
-
-    // tìm kiếm cửa hàng
-    Route::resource('store', StoreController::class);
-
-    // chuyển đổi mạng
-    Route::resource('dang-ky-chuyen-doi-mang', DangKyChuyenDoiMangController::class);
-   // Thêm route POST vào file routes/web.php
-
-    Route::post('/dang-ky/{id}/toggle-lien-he', [DangKyChuyenDoiMangController::class, 'toggleLienHe']);
-    Route::post('/dang-ky/{id}/toggle-ho-tro-thu-tuc', [DangKyChuyenDoiMangController::class, 'toggleHoTroThuTuc']);
-    Route::post('/dang-ky/{id}/toggle-nhan-ket-qua', [DangKyChuyenDoiMangController::class, 'toggleNhanKetQua']);
-    Route::get('/dangky/search', [DangKyChuyenDoiMangController::class, 'search'])->name('admin.dangky.search');
-
-    // liên hệ
-
-    Route::get('/contacts', [ContactController::class, 'index'])->name('contact.index');
-    Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
-    Route::patch('/contact/{id}/status', [ContactController::class, 'updateStatus'])->name('contact.updateStatus');
-
-
-    // loại thuê bao
-    Route::resource('subscription-types', SubscriptionTypeController::class);
-    
-    Route::prefix('subscription-types/{subscriptionTypeId}/loaithuebao')->group(function () {
-        Route::get('/', [LoaiThueBaoController::class, 'index'])->name('loaithuebao.index');
-        Route::post('/', [LoaiThueBaoController::class, 'store'])->name('loaithuebao.store');
-        Route::get('/{id}', [LoaiThueBaoController::class, 'show'])->name('loaithuebao.show');
-        Route::get('/{id}/edit', [LoaiThueBaoController::class, 'edit'])->name('loaithuebao.edit');
-        Route::put('/{id}', [LoaiThueBaoController::class, 'update'])->name('loaithuebao.update');
-        Route::delete('/{id}', [LoaiThueBaoController::class, 'destroy'])->name('loaithuebao.destroy');
+        // quản lý tin tức khuyến mãi
+        Route::resource('news', NewsController::class);
+        // Route kiểm duyệt bài viết
+        Route::get('news/kiemduyet/{id}', [NewsController::class, 'kiemDuyet'])->name('news.kiemduyet');
+        Route::get('news/kichhoat/{id}', [NewsController::class, 'kichHoat'])->name('news.kichhoat');
     });
 
-    // thông tin khách hàng đăng ký
-        //gói cước
-        Route::get('/subscriptions', [KhachhangController::class, 'index'])->name('subscriptions.index');
-        Route::get('/api/subscriptions', [KhachhangController::class, 'apiSubscriptions'])->name('subscriptions.api');
-        
-        
-       // Gói data
-        Route::get('/goidata', [KhachhangController::class, 'data'])->name('subscriptions.data');
-        Route::get('/api/goidata', [KhachhangController::class, 'apiSubscriptions2'])->name('subscriptions2.api');
+    // quản lý loại thuê bao
+    Route::middleware(['auth', 'can:quản lý loại thuê bao'])->group(function () {
 
-        // tự tạo gói cước
-        Route::get('/custom-packages', [CustomPackageController::class, 'index'])->name('custom-packages.index');
-        Route::post('/create-custom-package', [CustomPackageController::class, 'store'])->name('custom-package.store');
-        Route::get('/api/custom-packages', [CustomPackageController::class, 'apiCustomPackages'])->name('custom-packages.api');
+        // loại thuê bao
+        Route::resource('subscription-types', SubscriptionTypeController::class);
+        
+        Route::prefix('subscription-types/{subscriptionTypeId}/loaithuebao')->group(function () {
+            Route::get('/', [LoaiThueBaoController::class, 'index'])->name('loaithuebao.index');
+            Route::post('/', [LoaiThueBaoController::class, 'store'])->name('loaithuebao.store');
+            Route::get('/{id}', [LoaiThueBaoController::class, 'show'])->name('loaithuebao.show');
+            Route::get('/{id}/edit', [LoaiThueBaoController::class, 'edit'])->name('loaithuebao.edit');
+            Route::put('/{id}', [LoaiThueBaoController::class, 'update'])->name('loaithuebao.update');
+            Route::delete('/{id}', [LoaiThueBaoController::class, 'destroy'])->name('loaithuebao.destroy');
+        });
+    });
 
+
+    // quản lý dịch vụ 
+    Route::middleware(['auth', 'can:quản lý dịch vụ'])->group(function () {
 
         // dịch vụ
         Route::resource('dichvus', DichVuController::class);
-    
+            
         Route::post('/dichvu_chitiet', [DichvuChitietController::class, 'store'])->name('dichvu_chitiet.store');
         Route::put('/dichvu_chitiet/{id}', [DichvuChitietController::class, 'update'])->name('dichvu_chitiet.update');
+        Route::get('/dichvu/{id}/detail', [DichVuController::class, 'getDetail'])->name('dichvu.detail');
+        Route::get('/dichvu/{id}/detail-edit', [DichVuController::class, 'getDetailEdit'])->name('dichvu.detail.edit');
+        Route::get('/dichvu/{id}/edit-form', [DichVuController::class, 'getEditForm'])->name('dichvu.edit.form');
+    });
 
 
-    // số thuê bao
-    Route::resource('so-thue-bao', SoThueBaoController::class);
-   //file excel số thuê bao
-    Route::get('export-so-thue-bao', [SoThueBaoController::class, 'export'])->name('so-thue-bao.export');
-    Route::post('import-so-thue-bao', [SoThueBaoController::class, 'import'])->name('so-thue-bao.import');
-
-    // oder
-    Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
-    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
-    Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show');
-    Route::post('/orders/{id}/toggle-payment', [OrderController::class, 'togglePaymentStatus']);
-    Route::post('/orders/{id}/toggle-delivery', [OrderController::class, 'toggleDeliveryStatus']);
+   // quản lý quốc gia
+    Route::middleware(['auth', 'can:quản lý quốc gia'])->group(function () {
+        Route::resource('quoc-gia', QuocGiaController::class);
+    });
 
 
-    // Dịch vụ quốc tế
-    Route::resource('quoc-gia', QuocGiaController::class);
-   
+    // quản lý nhà khai thác
+    Route::middleware(['auth', 'can:quản lý nhà khai thác'])->group(function () {
+        Route::resource('nha-khai-thac', NhaKhaiThacController::class);
+        Route::get('/get-quoc-gia', [NhaKhaiThacController::class, 'getQuocGia']);
+    });
 
-    Route::resource('nha-khai-thac', NhaKhaiThacController::class);
-   
-Route::prefix('cuoc-quoc-te')->group(function() {
-    Route::get('/dashboard-data', [GiaCuocQuocTeController::class, 'getDashboardData']);
-    Route::get('/top-countries', [GiaCuocQuocTeController::class, 'getTopCountries']);
-});
+    // quản lý cước quốc tế
+    Route::middleware(['auth', 'can:quản lý cước quốc tế'])->group(function () {
+        Route::resource('cuoc-quoc-te', GiaCuocQuocTeController::class);   
+        Route::get('/get-quoc-gia-nha-khai-thac', [GiaCuocQuocTeController::class, 'getQuocGiaNhaKhaiThac']);
+    });
 
-Route::resource('cuoc-quoc-te', GiaCuocQuocTeController::class);
-    Route::get('/get-quoc-gia', [NhaKhaiThacController::class, 'getQuocGia']);
-    Route::get('/get-quoc-gia-nha-khai-thac', [GiaCuocQuocTeController::class, 'getQuocGiaNhaKhaiThac']);
+    // quản lý gọi VoIP
+    Route::middleware(['auth', 'can:quản lý gọi VoIP'])->group(function () {
+        Route::resource('goi-voip-cuoc-phi', GoiVoipCuocPhiController::class);
+    });
 
-    // Gọi VoIP 131
-    Route::resource('goi-voip-cuoc-phi', GoiVoipCuocPhiController::class);
+
+    //quản lý khách hàng đăng ký gói cước
+    Route::middleware(['auth', 'can:quản lý đăng ký gói cước'])->group(function () {
+        Route::get('/subscriptions', [KhachhangController::class, 'index'])->name('subscriptions.index');
+        Route::get('/api/subscriptions', [KhachhangController::class, 'apiSubscriptions'])->name('subscriptions.api');
+    });    
+
+    //quản lý khách hàng đăng ký gói data
+    Route::middleware(['auth', 'can:quản lý đăng ký gói data'])->group(function () {
+        Route::get('/goidata', [KhachhangController::class, 'data'])->name('subscriptions.data');
+        Route::get('/api/goidata', [KhachhangController::class, 'apiSubscriptions2'])->name('subscriptions2.api');
+    });
+
+    // quản lý khách hàng tự tạo gói cước
+    Route::middleware(['auth', 'can:quản lý gói cước tự tạo'])->group(function () {
+        Route::get('/custom-packages', [CustomPackageController::class, 'index'])->name('custom-packages.index');
+        Route::post('/create-custom-package', [CustomPackageController::class, 'store'])->name('custom-package.store');
+        Route::get('/api/custom-packages', [CustomPackageController::class, 'apiCustomPackages'])->name('custom-packages.api');
+    }); 
+
+    // quản lý khách hàng Oder đăng ký hòa mạng
+    Route::middleware(['auth', 'can:quản lý đăng ký hòa mạng'])->group(function () {
+        Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
+        Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+        Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show');
+        Route::post('/orders/{id}/toggle-payment', [OrderController::class, 'togglePaymentStatus']);
+        Route::post('/orders/{id}/toggle-delivery', [OrderController::class, 'toggleDeliveryStatus']);
+    });
+
+    // quản lý khách hàng chuyển đổi mạng
+    Route::middleware(['auth', 'can:quản lý đăng ký chuyển mạng'])->group(function () {
+        Route::resource('dang-ky-chuyen-doi-mang', DangKyChuyenDoiMangController::class);
+        Route::post('/dang-ky/{id}/toggle-lien-he', [DangKyChuyenDoiMangController::class, 'toggleLienHe']);
+        Route::post('/dang-ky/{id}/toggle-ho-tro-thu-tuc', [DangKyChuyenDoiMangController::class, 'toggleHoTroThuTuc']);
+        Route::post('/dang-ky/{id}/toggle-nhan-ket-qua', [DangKyChuyenDoiMangController::class, 'toggleNhanKetQua']);
+        Route::get('/dangky/search', [DangKyChuyenDoiMangController::class, 'search'])->name('admin.dangky.search');
+    });
+
+
+    // quản lý tuyển dụng
+    Route::middleware(['auth', 'can:quản lý danh sách tuyển dụng'])->group(function () {
+        Route::resource('tuyendung', TuyenDungController::class);
+    });
+
+    // quản lý CV
+    Route::middleware(['auth', 'can:quản lý CV'])->group(function () {
+        Route::get('/cv', [CVController::class, 'index'])->name('cv.index');
+        Route::post('/cv/store', [CvController::class, 'store'])->name('cv.store');
+        Route::post('/cv/{id}/mark-as-seen', [CVController::class, 'markAsSeen'])->name('cv.markAsSeen');
+        Route::post('/cv/{id}/mark-as-approved', [CVController::class, 'markAsApproved'])->name('cv.markAsApproved');
+    });
+
+
+    // quản lý tìm kiếm cửa hàng
+    Route::middleware(['auth', 'can:quản lý cửa hàng'])->group(function () {
+        Route::resource('store', StoreController::class);
+    });
+
+
+    // quản lý liên hệ
+    Route::middleware(['auth', 'can:quản lý liên hệ'])->group(function () {
+        Route::get('/contacts', [ContactController::class, 'index'])->name('contact.index');
+        Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+        Route::patch('/contact/{id}/status', [ContactController::class, 'updateStatus'])->name('contact.updateStatus');
+
+    });
+
+    // quản lý xem lịch sử hủy
+    Route::middleware(['auth', 'can:quản lý hủy gói'])->group(function () {
+        Route::get('/lich-su-huy-goi', [CancellationController::class, 'index'])->name('cancellations.index');
+       
+    });  
+
     
-
-      // Giao diện xem lịch sử hủy
-Route::get('/lich-su-huy-goi', [CancellationController::class, 'index'])->name('cancellations.index');
-
-// API DataTables lịch sử hủy
-Route::get('/api/lich-su-huy-goi', [CancellationController::class, 'apiIndex'])->name('cancellations.apiIndex');
-// hiệu lực thời gian gói cước
-Route::get('/api/lich-su-huy-goi/subscriptions', [CancellationController::class, 'apiSubscriptions'])->name('khachhang.apiSubscriptions');
-
-
-
-
-
-   
+    // quản lý chat
+    Route::middleware(['auth', 'can:quản lý chat'])->group(function () {
+        Route::get('/chat', [ChatController::class, 'adminIndex'])->name('chat.admin');
+        Route::get('/chat/messages/{conversation_id}', [ChatController::class, 'getMessages'])->name('chat.admin.messages');
+        Route::post('/chat/send', [ChatController::class, 'adminSendMessage'])->name('chat.admin.send');
+        Route::get('/chat/load/{conversation_id}', [ChatController::class, 'getAdminMessages'])->name('chat.admin.load');
+    });
 
 });
-
-
 
 
 // khu vực API
-Route::get('/admin/api/goicuocs-stats', [QuanLyGoicuocController::class, 'getStats']);
-
 Route::get('/api/quoc-gia', [GiaCuocQuocTeController::class, 'getQuocGia']);
 Route::get('/api/cuoc-quoc-te', [GiaCuocQuocTeController::class, 'getCuocQuocTe']);
 

@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-<x-layout.content-header name="Chat" key="Tin nhắn" />
+<x-layout.content-header title="tin nhắn" />
 
 <div class="container mt-4">
     <div class="card shadow-lg">

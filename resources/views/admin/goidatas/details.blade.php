@@ -1,109 +1,100 @@
 @extends('layouts.admin')
 @section('content')
-<x-layout.content-header name="Danh sách" key="Data chi tiết" />
-
+<x-layout.content-header title="Danh sách data chi tiết" />
 <div class="container mx-auto mt-6 px-4">
-    <!-- Search results -->
-    <div id="accordion-container">
-        @if ($details->isEmpty())
-            <div class="text-center py-12">
-                <div class="mx-auto w-24 h-24 mb-4 text-gray-400">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                </div>
-                <h3 class="text-lg font-medium text-gray-600 mb-2">Chưa có chi tiết nào cho gói cước này</h3>
-                <p class="text-gray-500 mb-6">Vui lòng thêm chi tiết để bắt đầu</p>
-                <button class="btn btn-primary px-6 py-2 rounded-md shadow-sm" data-bs-toggle="modal" data-bs-target="#addDetailModal" onclick="setgoidataId({{ $id }})">
-                    <i class="fas fa-plus mr-2"></i> Thêm Chi Tiết
-                </button>
-            </div>
-        @else
-            <!-- Accordion display -->
-            <div class="space-y-4">
-                @php $previousgoidataId = null; @endphp
-    
-                @foreach ($details as $detail)
-                    @if ($detail->goidata_id != $previousgoidataId)
-                        @php
-                            $previousgoidataId = $detail->goidata_id;
-                            $goidata = $detail->goidata;
-                        @endphp
-    
-                        <div class="bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg">
-                            <button class="w-full text-left p-5 flex items-center justify-between focus:outline-none accordion-header hover:bg-gray-50 transition-colors duration-200" 
-                                    data-goidata_id="{{ $detail->goidata_id }}">
-                                <div class="flex items-center space-x-4">
-                                    <div class="w-10 h-10 flex items-center justify-center bg-blue-100 text-blue-600 rounded-lg">
-                                        <i class="fas fa-database"></i>
-                                    </div>
-                                    <div>
-                                        <h3 class="text-lg font-semibold text-gray-800">ID: {{ $detail->goidata_id }} - {{ $goidata->ten_data }}</h3>
-                                        <p class="text-sm text-gray-500 mt-1">
-                                            {{ $details->where('goidata_id', $previousgoidataId)->count() }} chi tiết
-                                        </p>
-                                    </div>
+    @if ($details->isEmpty())
+        <div class="text-center py-12">
+            <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto w-16 h-16 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <h3 class="text-lg text-gray-600 mb-2">Chưa có chi tiết nào cho gói cước này</h3>
+            <button class="btn btn-primary mt-4" data-bs-toggle="modal" data-bs-target="#addDetailModal" onclick="setgoidataId({{ $id }})">
+                Thêm Chi Tiết
+            </button>
+        </div>
+    @else
+        <div class="space-y-4">
+            @php $previousgoidataId = null; @endphp
+
+            @foreach ($details as $detail)
+                @if ($detail->goidata_id != $previousgoidataId)
+                    @php
+                        $previousgoidataId = $detail->goidata_id;
+                        $goidata = $detail->goidata;
+                    @endphp
+
+                    <div class="bg-white rounded-lg shadow overflow-hidden">
+                        <button class="w-full text-left p-4 flex items-center justify-between accordion-header" 
+                                data-goidata_id="{{ $detail->goidata_id }}">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 flex items-center justify-center bg-blue-100 text-blue-600 rounded">
+                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M3 12v3c0 1.657 3.134 3 7 3s7-1.343 7-3v-3c0 1.657-3.134 3-7 3s-7-1.343-7-3z"></path><path d="M3 7v3c0 1.657 3.134 3 7 3s7-1.343 7-3V7c0 1.657-3.134 3-7 3S3 8.657 3 7z"></path><path d="M17 5c0 1.657-3.134 3-7 3S3 6.657 3 5s3.134-3 7-3 7 1.343 7 3z"></path></svg>
                                 </div>
-                                <i class="fas fa-chevron-down transition-transform duration-300"></i>
-                            </button>
-                            <div class="hidden accordion-content border-t border-gray-200">
-                                <div class="overflow-x-auto">
-                                    <table class="min-w-full divide-y divide-gray-200">
-                                        <thead class="bg-gray-50">
-                                            <tr>
-                                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Key</th>
-                                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Value</th>
-                                                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Hành động</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="bg-white divide-y divide-gray-200">
-                                            @foreach ($details->where('goidata_id', $previousgoidataId) as $item)
-                                                <tr class="hover:bg-gray-50 transition-colors duration-150">
-                                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $item->id }}</td>
-                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $item->key }}</td>
-                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $item->value }}</td>
-                                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                        <div class="flex items-center justify-end space-x-3">
-                                                            <a href="{{ route('goidatas_detail.edit', $item->id) }}" 
-                                                               class="text-blue-600 hover:text-blue-900 transition-colors duration-200"
-                                                               title="Chỉnh sửa">
-                                                                <i class="fas fa-edit"></i>
-                                                            </a>
-                                                            <form action="{{ route('goidatas_detail.destroy', $item->id) }}" method="POST" class="inline-block">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <button type="submit" 
-                                                                        class="text-red-600 hover:text-red-900 transition-colors duration-200"
-                                                                        title="Xóa"
-                                                                        onclick="return confirm('Bạn có chắc chắn muốn xóa chi tiết này?')">
-                                                                    <i class="fas fa-trash"></i>
-                                                                </button>
-                                                            </form>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
+                                <div>
+                                    <h3 class="text-base font-medium">ID: {{ $detail->goidata_id }} - {{ $goidata->ten_data }}</h3>
+                                    <p class="text-sm text-gray-500">
+                                        {{ $details->where('goidata_id', $previousgoidataId)->count() }} chi tiết
+                                    </p>
                                 </div>
                             </div>
+                            <svg class="w-5 h-5 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div class="hidden accordion-content border-t border-gray-200">
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-4 py-2 text-left text-xs text-gray-500 uppercase">ID</th>
+                                            <th class="px-4 py-2 text-left text-xs text-gray-500 uppercase">Key</th>
+                                            <th class="px-4 py-2 text-left text-xs text-gray-500 uppercase">Value</th>
+                                            <th class="px-4 py-2 text-right text-xs text-gray-500 uppercase">Hành động</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        @foreach ($details->where('goidata_id', $previousgoidataId) as $item)
+                                            <tr class="hover:bg-gray-50">
+                                                <td class="px-4 py-3 text-sm">{{ $item->id }}</td>
+                                                <td class="px-4 py-3 text-sm">{{ $item->key }}</td>
+                                                <td class="px-4 py-3 text-sm">{{ $item->value }}</td>
+                                                <td class="px-4 py-3 text-right">
+                                                    <div class="flex justify-end space-x-2">
+                                                        <a href="{{ route('goidatas_detail.edit', $item->id) }}" 
+                                                           class="text-blue-600 hover:text-blue-800"
+                                                           title="Chỉnh sửa">
+                                                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"></path></svg>
+                                                        </a>
+                                                        <form action="{{ route('goidatas_detail.destroy', $item->id) }}" method="POST">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" 
+                                                                    class="text-red-600 hover:text-red-800"
+                                                                    title="Xóa"
+                                                                    onclick="return confirm('Bạn có chắc chắn muốn xóa chi tiết này?')">
+                                                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                    @endif
-                @endforeach
-            </div>
-        @endif
-    </div>
+                    </div>
+                @endif
+            @endforeach
+        </div>
+    @endif
 </div>   
 
-<!-- Pagination -->
 @if($details->hasPages())
-<div class="mt-8 px-4">
-    <div class="flex items-center justify-between bg-white px-6 py-3 rounded-lg shadow-sm">
-        <div class="text-sm text-gray-700">
+<div class="mt-6 px-4">
+    <div class="flex flex-col sm:flex-row items-center justify-between bg-white px-4 py-3 rounded shadow-sm">
+        <div class="text-sm text-gray-700 mb-2 sm:mb-0">
             Hiển thị {{ $details->firstItem() }} đến {{ $details->lastItem() }} trong tổng số {{ $details->total() }} kết quả
         </div>
-        <div class="flex space-x-2">
+        <div>
             {{ $details->links() }}
         </div>
     </div>
@@ -112,30 +103,30 @@
 
 <!-- Add Detail Modal -->
 <div class="modal fade" id="addDetailModal" tabindex="-1" aria-labelledby="addDetailModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content border-0 shadow-lg">
+    <div class="modal-dialog">
+        <div class="modal-content">
             <form id="addDetailForm">
                 @csrf
                 <div class="modal-header bg-blue-600 text-white">
-                    <h5 class="modal-title text-lg font-semibold" id="addDetailModalLabel">Thêm Chi Tiết Gói Cước</h5>
-                    <button type="button" class="text-white opacity-80 hover:opacity-100" data-bs-dismiss="modal" aria-label="Close">
-                        <i class="fas fa-times"></i>
+                    <h5 class="modal-title">Thêm Chi Tiết Gói Cước</h5>
+                    <button type="button" class="text-white" data-bs-dismiss="modal" aria-label="Close">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                     </button>
                 </div>
-                <div class="modal-body p-6">
+                <div class="modal-body p-4">
                     <input type="hidden" name="goidata_id" id="goidata_id">
                     
-                    <div class="mb-6">
-                        <label for="details" class="block text-sm font-medium text-gray-700 mb-2">Thông tin chi tiết</label>
-                        <textarea name="details" id="details" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200" 
-                                  rows="6" placeholder="Nhập thông tin chi tiết (mỗi dòng dạng Key:Value)" required></textarea>
-                        <p class="mt-2 text-sm text-gray-500">Ví dụ: <code class="bg-gray-100 px-2 py-1 rounded">Dung lượng:10GB</code></p>
+                    <div class="mb-4">
+                        <label for="details" class="block text-sm mb-2">Thông tin chi tiết</label>
+                        <textarea name="details" id="details" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500" 
+                                  rows="5" placeholder="Nhập thông tin chi tiết (mỗi dòng dạng Key:Value)" required></textarea>
+                        <p class="mt-1 text-sm text-gray-500">Ví dụ: <code class="bg-gray-100 px-1 rounded">Dung lượng:10GB</code></p>
                     </div>
                 </div>
-                <div class="modal-footer bg-gray-50 px-6 py-4 border-t border-gray-200">
-                    <button type="button" class="btn btn-secondary px-5 py-2 rounded-md" data-bs-dismiss="modal">Đóng</button>
-                    <button type="submit" class="btn btn-primary px-5 py-2 rounded-md shadow-sm">
-                        <i class="fas fa-save mr-2"></i> Lưu Chi Tiết
+                <div class="modal-footer bg-gray-50 px-4 py-3 border-t">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-primary">
+                        Lưu Chi Tiết
                     </button>
                 </div>
             </form>
@@ -146,31 +137,20 @@
 @endsection
 
 @section('js')
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 <script>
     // Accordion functionality
     document.querySelectorAll('.accordion-header').forEach(header => {
         header.addEventListener('click', () => {
             const content = header.nextElementSibling;
-            const icon = header.querySelector('i');
+            const icon = header.querySelector('svg:last-child');
             
-            // Toggle accordion
             content.classList.toggle('hidden');
             icon.classList.toggle('rotate-180');
             
-            // Smooth animation
             if (!content.classList.contains('hidden')) {
                 content.style.maxHeight = content.scrollHeight + 'px';
-                setTimeout(() => {
-                    content.style.maxHeight = 'none';
-                }, 300);
             } else {
-                content.style.maxHeight = content.scrollHeight + 'px';
-                setTimeout(() => {
-                    content.style.maxHeight = '0';
-                }, 10);
+                content.style.maxHeight = '0';
             }
         });
         
@@ -187,14 +167,14 @@
         document.getElementById('goidata_id').value = id;
     }
 
-    // Form submission with better UX
+    // Form submission
     document.getElementById('addDetailForm').addEventListener('submit', function(e) {
         e.preventDefault();
         
         const submitBtn = this.querySelector('button[type="submit"]');
         const originalText = submitBtn.innerHTML;
         submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Đang xử lý...';
+        submitBtn.innerHTML = 'Đang xử lý...';
         
         const formData = new FormData(this);
 
@@ -206,42 +186,17 @@
             },
             body: formData,
         })
-        .then(response => {
-            if (!response.ok) {
-                return response.json().then(err => { throw err; });
-            }
-            return response.json();
-        })
+        .then(response => response.json())
         .then(data => {
-            Swal.fire({
-                icon: 'success',
-                title: 'Thành công!',
-                text: data.message,
-                confirmButtonText: 'OK',
-                customClass: {
-                    confirmButton: 'px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition'
-                }
-            }).then(() => {
+            if (data.success) {
                 location.reload();
-            });
+            } else {
+                alert(data.message || 'Đã xảy ra lỗi');
+            }
         })
         .catch(error => {
-            let errorMessage = 'Đã xảy ra lỗi. Vui lòng thử lại sau.';
-            if (error.message) {
-                errorMessage = error.message;
-            } else if (error.errors && error.errors.details) {
-                errorMessage = error.errors.details[0];
-            }
-            
-            Swal.fire({
-                icon: 'error',
-                title: 'Lỗi!',
-                html: `<div class="text-left">${errorMessage}</div>`,
-                confirmButtonText: 'Đã hiểu',
-                customClass: {
-                    confirmButton: 'px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition'
-                }
-            });
+            console.error('Error:', error);
+            alert('Đã xảy ra lỗi. Vui lòng thử lại sau.');
         })
         .finally(() => {
             submitBtn.disabled = false;

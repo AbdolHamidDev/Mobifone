@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-<x-layout.content-header name="Thêm" key="Cửa hàng" />
+<x-layout.content-header title="thêm cửa hàng" />
 
 <div class="container mx-auto mt-8 max-w-lg">
 

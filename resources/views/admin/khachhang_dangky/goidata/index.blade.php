@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-<x-layout.content-header name="khách hàng" key="Đăng ký gói data" />
+<x-layout.content-header title="Khách hàng đăng ký Gói data" />
 
 <div class="container mt-4">
     <div class="card shadow-sm">

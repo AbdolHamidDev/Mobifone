@@ -105,5 +105,7 @@ class AppServiceProvider extends ServiceProvider
 
         // Chia sẻ biến `$contacts` cho tất cả các view
         View::share('contacts', $contacts);
+
+        
     }
 }

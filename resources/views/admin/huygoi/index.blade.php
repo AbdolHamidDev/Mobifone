@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-<x-layout.content-header name="Lịch sử" key="Hủy gói" />
+<x-layout.content-header title="Hủy gói" />
 <div class="container">
 
     
@@ -33,7 +33,6 @@
 @endsection
 
 @section('js')
-<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
 <script>
 $(document).ready(function() {
     let table = $('#cancellation-table').DataTable({

@@ -294,19 +294,20 @@ class OrderController extends Controller
 
     //API: Thay đổi trạng thái nhận hàng
 
-    public function toggleDeliveryStatus(Order $order)
+    public function toggleDeliveryStatus($id)
     {
+        $order = Order::findOrFail($id);
+    
         if ($order->trang_thai !== 'hoa_mang') {
             return response()->json([
                 'success' => false,
                 'message' => 'Đơn hàng chưa Hòa mạng, không thể nhận hàng.'
             ], 400);
         }
-
-        // Chuyển đổi trạng thái nhận hàng
+    
         $order->da_nhan_hang = !$order->da_nhan_hang;
         $order->save();
-
+    
         return response()->json([
             'success' => true,
             'isDelivered' => $order->da_nhan_hang,

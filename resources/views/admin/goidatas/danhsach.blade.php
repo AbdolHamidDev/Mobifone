@@ -1,22 +1,8 @@
-<!-- filepath: c:\xampp\htdocs\mobifone\resources\views\admin\goidatas\danhsach.blade.php -->
 @extends('layouts.admin')
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<link rel="stylesheet" href="{{ asset('admins/goidata/goidata.css') }}">
 
 @section('content')
-<x-layout.content-header name="Danh sách" key="Gói data" />
+<x-layout.content-header title="Danh sách Gói data" />
 
-<div class="d-flex justify-content-between flex-wrap">
-    <!-- Biểu đồ tròn (Thống kê loại gói data) -->
-    <div class="chart-container" style="flex: 1; max-width: 48%; height: 50vh;">
-        <canvas id="goidataChart"></canvas>
-    </div>
-
-    <!-- Biểu đồ cột (Thống kê trạng thái active/inactive) -->
-    <div class="chart-container" style="flex: 1; max-width: 48%; height: 50vh;">
-        <canvas id="statusChart"></canvas>
-    </div>
-</div>
 
 <div class="container mx-auto mt-4">
     <!-- Nút thêm, nhập và xuất Gói data -->
@@ -55,29 +41,27 @@
     </div>
 </div>
 
-<!-- Modal Thêm Gói data -->
+<!-- Modal Thêm Gói data - Optimized -->
 <div class="modal fade" id="addGoidataModal" tabindex="-1" aria-labelledby="addGoidataModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <form id="goidataForm" class="needs-validation" novalidate>
                 <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title fs-5" id="addGoidataModalLabel">
-                        <i class="bi bi-database-add me-2"></i>Thêm Gói Data Mới
-                    </h5>
+                    <h5 class="modal-title" id="addGoidataModalLabel">Thêm Gói Data Mới</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     @csrf
                     <div class="mb-3">
-                        <label for="ten_data" class="form-label fw-semibold">Tên Gói data <span class="text-danger">*</span></label>
-                        <input type="text" name="ten_data" id="ten_data" class="form-control form-control-lg" placeholder="Nhập tên gói data" required>
+                        <label for="ten_data" class="form-label">Tên Gói data <span class="text-danger">*</span></label>
+                        <input type="text" name="ten_data" id="ten_data" class="form-control" placeholder="Nhập tên gói data" required>
                         <div class="invalid-feedback">Vui lòng nhập tên gói data</div>
                     </div>
                     
                     <div class="row g-3">
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="gia" class="form-label fw-semibold">Giá (VND) <span class="text-danger">*</span></label>
+                                <label for="gia" class="form-label">Giá (VND) <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <input type="number" name="gia" id="gia" class="form-control" placeholder="0" required>
                                     <span class="input-group-text">₫</span>
@@ -87,9 +71,9 @@
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="loai_data" class="form-label fw-semibold">Loại Gói data <span class="text-danger">*</span></label>
+                                <label for="loai_data" class="form-label">Loại Gói data <span class="text-danger">*</span></label>
                                 <select name="loai_data" id="loai_data" class="form-select" required>
-                                    <option value="" selected disabled>-- Chọn loại gói --</option>
+                                    <option value="" selected disabled>Chọn loại gói</option>
                                     <option value="mien_phi_mxh">Miễn phí MXH</option>
                                     <option value="dai_ky">Dài kỳ</option>
                                     <option value="data_bo_sung">Data bổ sung</option>
@@ -106,7 +90,7 @@
                     <div class="row g-3">
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="thoi_gian" class="form-label fw-semibold">Thời Gian <span class="text-danger">*</span></label>
+                                <label for="thoi_gian" class="form-label">Thời Gian <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <input type="number" name="thoi_gian" id="thoi_gian" class="form-control" placeholder="30" required>
                                     <span class="input-group-text">ngày</span>
@@ -116,7 +100,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="dung_luong" class="form-label fw-semibold">Dung Lượng <span class="text-danger">*</span></label>
+                                <label for="dung_luong" class="form-label">Dung Lượng <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <input type="number" name="dung_luong" id="dung_luong" class="form-control" placeholder="1" required>
                                     <select name="don_vi_dung_luong" id="don_vi_dung_luong" class="form-select" style="max-width: 100px">
@@ -130,12 +114,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                        <i class="bi bi-x-lg me-1"></i> Đóng
-                    </button>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="bi bi-check-lg me-1"></i> Lưu Gói Data
-                    </button>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-primary">Lưu Gói Data</button>
                 </div>
             </form>
         </div>
@@ -202,4 +182,3 @@
 </script>
 
 <script src="{{ asset('admins/goidata/goidata.js') }}"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
