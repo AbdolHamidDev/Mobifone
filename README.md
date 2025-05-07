@@ -71,7 +71,22 @@ Thực hiện các bước sau để cài đặt và chạy dự án trên máy 
     ```bash
     php artisan serve
     ```
+### ⚠️ Quan trọng: Import dữ liệu mẫu để tránh lỗi
 
+**❗ Nếu không import cơ sở dữ liệu mẫu, khi chạy `php artisan serve` sẽ bị lỗi do các bảng ràng buộc bắt buộc không tồn tại.**
+
+Đã cung cấp sẵn file SQL để mày chỉ cần import vào là chạy được ngay.
+
+📂 **Đường dẫn:** `database/sample/mobifone.sql`  
+📥 **Tải nhanh trên GitHub:**  
+👉 [mobifone.sql](https://github.com/HamidAbdol89/Mobifone/blob/master/database/sample/mobifone.sql)
+
+### Cách import vào PHPMyAdmin:
+
+1. Mở `phpMyAdmin` từ `localhost/phpmyadmin`
+2. Tạo cơ sở dữ liệu mới, ví dụ: `mobifone`
+3. Chọn database đó → nhấn tab **Import**
+4. Chọn file `mobifone.sql` và nhấn **Go**
 ## Tìm hiểu thêm
 
 Để tìm hiểu thêm, bạn có thể tham khảo [tài liệu Laravel chính thức](https://laravel.com/docs).
