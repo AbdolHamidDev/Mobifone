@@ -1,66 +1,93 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
-
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+    <img src="https://github.com/HamidAbdol89/Mobifone/blob/master/public/assets/images/logo.png?raw=true" width="400" alt="Logo Mobifone">
 </p>
 
-## About Laravel
+<p align="center">
+    <a href="https://github.com/HamidAbdol89/Mobifone"><img src="https://img.shields.io/badge/Status-Active-green" alt="Trạng thái dự án"></a>
+    <a href="https://github.com/HamidAbdol89/Mobifone/releases"><img src="https://img.shields.io/github/release/HamidAbdol89/Mobifone" alt="Phiên bản mới nhất"></a>
+</p>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Giới thiệu về dự án Mobifone
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Dự án này là một ứng dụng web được phát triển sử dụng Laravel, thiết kế để quản lý các **gói cước Mobifone**, **mua SIM số**, và các dịch vụ di động khác cho người dùng. Mục tiêu của dự án là cung cấp một nền tảng dễ sử dụng để quản lý các dịch vụ viễn thông với sự tập trung vào quản lý dữ liệu, tính dễ sử dụng và khả năng mở rộng.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Các tính năng chính bao gồm:
+- **Quản lý gói cước Mobifone**: Hiển thị và lọc các gói cước Mobifone hiện có.
+- **Mua SIM số**: Tích hợp hệ thống cho phép người dùng mua SIM số trực tiếp từ nền tảng.
+- **Tích hợp API**: Dự án được xây dựng trên nền tảng **Laravel** và cung cấp API RESTful để dễ dàng tích hợp với các dịch vụ bên ngoài.
+- **Giao diện người dùng**: Giao diện người dùng hiện đại, sử dụng **AJAX** và **JavaScript** để tải và hiển thị dữ liệu động.
 
-## Learning Laravel
+## Tính năng
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- **Quản lý gói cước Mobifone**: Người dùng có thể xem và lọc các gói cước của Mobifone.
+- **Mua SIM số**: Cho phép người dùng mua SIM và đăng ký dịch vụ trực tiếp trên nền tảng.
+- **Hiển thị dữ liệu động**: Sử dụng Ajax/JS để tải nội dung động dựa trên hành động của người dùng.
+- **Hoàn toàn tương thích với di động**: Dự án được thiết kế để hoạt động mượt mà trên mọi thiết bị.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Hướng dẫn cài đặt
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Thực hiện các bước sau để cài đặt và chạy dự án trên máy tính của bạn.
 
-## Laravel Sponsors
+### Yêu cầu
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+- PHP 7.4 trở lên
+- Composer
+- Laravel 8.x
+- MySQL hoặc MariaDB
+- Node.js (dành cho frontend)
 
-### Premium Partners
+### Cài đặt
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+1. Clone repository:
+    ```bash
+    git clone https://github.com/HamidAbdol89/Mobifone.git
+    ```
+2. Di chuyển vào thư mục dự án:
+    ```bash
+    cd Mobifone
+    ```
+3. Cài đặt các phụ thuộc PHP sử dụng Composer:
+    ```bash
+    composer install
+    ```
+4. Sao chép tệp cấu hình môi trường:
+    ```bash
+    cp .env.example .env
+    ```
+5. Cấu hình tệp **.env** với thông tin cơ sở dữ liệu và các cấu hình khác.
+6. Tạo khóa ứng dụng:
+    ```bash
+    php artisan key:generate
+    ```
+7. Chạy migration để tạo cơ sở dữ liệu:
+    ```bash
+    php artisan migrate
+    ```
+8. Cài đặt các phụ thuộc frontend:
+    ```bash
+    npm install
+    ```
+9. Chạy ứng dụng:
+    ```bash
+    php artisan serve
+    ```
 
-## Contributing
+## Tìm hiểu thêm
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Để tìm hiểu thêm, bạn có thể tham khảo [tài liệu Laravel chính thức](https://laravel.com/docs).
 
-## Code of Conduct
+Nếu bạn muốn cải tiến hoặc tích hợp frontend sử dụng JavaScript hoặc Vue.js, vui lòng tham khảo tài liệu của **frontend**.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Đóng góp
 
-## Security Vulnerabilities
+Chúng tôi hoan nghênh mọi đóng góp từ cộng đồng! Nếu bạn muốn đóng góp cho dự án, hãy làm theo hướng dẫn trong [tài liệu đóng góp](https://github.com/HamidAbdol89/Mobifone/CONTRIBUTING.md).
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Giấy phép
 
-## License
+Dự án này được cấp phép theo giấy phép MIT - xem chi tiết trong tệp [LICENSE](https://opensource.org/licenses/MIT).
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Lời cảm ơn
+
+- Cảm ơn Mobifone đã cung cấp các API và dịch vụ hỗ trợ cho dự án này.
+- Đặc biệt cảm ơn đến **Laravel** vì đã cung cấp một framework mạnh mẽ để phát triển dự án này.
+
