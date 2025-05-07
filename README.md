@@ -16,6 +16,27 @@ Các tính năng chính bao gồm:
 - **Mua SIM số**: Tích hợp hệ thống cho phép người dùng mua SIM số trực tiếp từ nền tảng.
 - **Tích hợp API**: Dự án được xây dựng trên nền tảng **Laravel** và cung cấp API RESTful để dễ dàng tích hợp với các dịch vụ bên ngoài.
 - **Giao diện người dùng**: Giao diện người dùng hiện đại, sử dụng **AJAX** và **JavaScript** để tải và hiển thị dữ liệu động.
+## 🎬 Demo chức năng chính
+
+<table>
+  <tr>
+    <td align="center">
+      <strong>📱 Giao diện lọc gói cước</strong><br><br>
+      <img src="https://github.com/HamidAbdol89/Mobifone/blob/master/public/assets/screenshots/demoGoicuoc.gif?raw=true" width="500" alt="Demo Gói Cước">
+    </td>
+    <td align="center">
+      <strong>📞 Mua SIM số trực tiếp</strong><br><br>
+      <img src="https://github.com/HamidAbdol89/Mobifone/blob/master/public/assets/screenshots/demoSim.gif?raw=true" width="500" alt="Demo Mua SIM">
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">
+      <br>
+      <strong>🔍 Kiểm tra đơn hàng bằng mã giữ số</strong><br><br>
+      <img src="https://github.com/HamidAbdol89/Mobifone/blob/master/public/assets/screenshots/democheck.gif?raw=true" width="600" alt="Demo Check đơn hàng">
+    </td>
+  </tr>
+</table>
 
 ## Tính năng
 
