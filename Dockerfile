@@ -29,11 +29,8 @@ RUN composer install --no-dev --optimize-autoloader --no-scripts
 # Cài đặt frontend dependencies & build
 RUN npm install && npm run build
 
-# Tạo storage link
-RUN php artisan storage:link || true
-
 # Expose port
 EXPOSE 10000
 
-# Start Laravel server (scripts sẽ chạy khi runtime, không phải build time)
-CMD php artisan serve --host=0.0.0.0 --port=$PORT
+# Chạy migration (--graceful bỏ qua các bảng đã tồn tại) + storage link + start server
+CMD php artisan migrate --force --graceful 2>/dev/null; php artisan storage:link 2>/dev/null || true && php artisan serve --host=0.0.0.0 --port=$PORT
