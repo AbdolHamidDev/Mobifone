@@ -19,27 +19,22 @@ services:
       - key: DB_CONNECTION
         value: mysql
       - key: DB_HOST
-        fromDatabase:
-          name: mobifone-db
-          property: host
+        sync: false
       - key: DB_PORT
-        fromDatabase:
-          name: mobifone-db
-          property: port
+        sync: false
       - key: DB_DATABASE
-        fromDatabase:
-          name: mobifone-db
-          property: database
+        sync: false
       - key: DB_USERNAME
-        fromDatabase:
-          name: mobifone-db
-          property: user
+        sync: false
       - key: DB_PASSWORD
-        fromDatabase:
-          name: mobifone-db
-          property: password
-
-databases:
-  - name: mobifone-db
-    databaseName: mobifone
-    ipAllowList: []
+        sync: false
+      - key: SESSION_DRIVER
+        value: file
+      - key: CACHE_STORE
+        value: file
+      - key: QUEUE_CONNECTION
+        value: sync
+      - key: BROADCAST_DRIVER
+        value: log
+      - key: MAIL_MAILER
+        value: log
