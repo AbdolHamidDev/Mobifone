@@ -23,6 +23,12 @@ WORKDIR /app
 # Copy toàn bộ source code
 COPY . .
 
+# Tạo file SQLite tạm (tránh lỗi package:discover khi chưa có env)
+RUN touch database/database.sqlite
+
+# Copy .env.example sang .env để tránh lỗi trong quá trình build
+RUN cp .env.example .env
+
 # Cài đặt PHP dependencies
 RUN composer install --no-dev --optimize-autoloader
 
