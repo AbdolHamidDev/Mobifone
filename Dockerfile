@@ -23,14 +23,8 @@ WORKDIR /app
 # Copy toàn bộ source code
 COPY . .
 
-# Tạo file SQLite tạm (tránh lỗi package:discover khi chưa có env)
-RUN touch database/database.sqlite
-
-# Copy .env.example sang .env để tránh lỗi trong quá trình build
-RUN cp .env.example .env
-
-# Cài đặt PHP dependencies
-RUN composer install --no-dev --optimize-autoloader
+# Cài đặt PHP dependencies (bỏ qua scripts để tránh lỗi database trong quá trình build)
+RUN composer install --no-dev --optimize-autoloader --no-scripts
 
 # Cài đặt frontend dependencies & build
 RUN npm install && npm run build
@@ -41,5 +35,5 @@ RUN php artisan storage:link || true
 # Expose port
 EXPOSE 10000
 
-# Start Laravel server
+# Start Laravel server (scripts sẽ chạy khi runtime, không phải build time)
 CMD php artisan serve --host=0.0.0.0 --port=$PORT
