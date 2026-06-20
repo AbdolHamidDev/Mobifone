@@ -71,6 +71,24 @@ Nếu bạn thấy dự án hữu ích, hãy ủng hộ tôi một ly cà phê n
 
 ---
 
+## 📄 Ấn phẩm đồ án tốt nghiệp (Báo cáo thực tập)
+
+> [!TIP]
+> **Bạn có thể tải file báo cáo Word hoàn chỉnh của đồ án tốt nghiệp này tại đây để tham khảo, học tập và nghiên cứu.**
+>
+> File bao gồm: cấu trúc luận văn, phân tích thiết kế hệ thống, kiến trúc CSDL, giao diện, quy trình nghiệp vụ và tài liệu tham khảo.
+
+<p align="center">
+  <a href="https://github.com/AbdolHamidDev/Mobifone/raw/master/public/Word.docx">
+    <img src="https://img.shields.io/badge/📥_Tải_xuống_Word-2B579A?style=for-the-badge&logo=microsoft-word&logoColor=white" alt="Tải Word">
+  </a>
+  <a href="https://ir.vnulib.edu.vn/entities/publication/75837547-1b9e-4503-a3fb-c90caae01cb3">
+    <img src="https://img.shields.io/badge/📄_Xem_ấn_phẩm_VNULIB-4285F4?style=for-the-badge&logo=google-scholar&logoColor=white" alt="Ấn phẩm VNULIB">
+  </a>
+</p>
+
+---
+
 ## 🏗️ Kiến trúc & Công nghệ
 
 | Thành phần | Công nghệ sử dụng |
