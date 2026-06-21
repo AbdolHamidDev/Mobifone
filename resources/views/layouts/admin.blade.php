@@ -53,14 +53,15 @@
         <!-- Header (Blade Component) -->
         <x-layout.header />
     
-        <div class="d-flex">
-            <!-- Sidebar (Blade Component) -->
-            <x-layout.sidebar />
+        <!-- Sidebar (Blade Component) -->
+        <x-layout.sidebar />
     
+        <!-- Content Wrapper -->
+        <div class="content-wrapper">
             <!-- Main Content -->
-            <main class="flex-grow-1 p-6">
+            <div class="content p-6">
                 @yield('content')
-            </main>
+            </div>
         </div>
     
         <!-- Footer (Blade Component) -->
