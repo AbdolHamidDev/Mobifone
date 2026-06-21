@@ -260,7 +260,9 @@ php artisan serve
 
 ### Deploy trên Render
 
-Dự án đã cấu hình sẵn cho **Render**. Live demo: [https://mobifone.onrender.com](https://mobifone.onrender.com)
+Dự án được deploy lên **Render** sử dụng **Docker**. Live demo: [https://mobifone.onrender.com](https://mobifone.onrender.com)
+
+> **Yêu cầu bắt buộc:** File `Dockerfile` phải có ở root repository để Render có thể build và deploy.
 
 #### Bước 1: Chuẩn bị Database trên Aiven
 
@@ -292,16 +294,18 @@ mysql -h mysql-xxxxx.aivencloud.com -P 3306 -u avnadmin -p defaultdb < database/
 
 #### Bước 3: Deploy Web Service trên Render
 
-1. Đảm bảo code đã push lên GitHub và có file `render.yml` ở root repository
+1. Đảm bảo code đã push lên GitHub và có đủ các file sau ở root repository:
+   - `Dockerfile`
+   - `render.yml`
 2. Vào [Render Dashboard](https://dashboard.render.com/)
 3. Click **New +** → **Web Service**
 4. Connect GitHub repository của bạn
 5. Cấu hình cơ bản:
    - **Name:** `mobifone`
-   - **Environment:** `PHP`
+   - **Environment:** `Docker`
    - **Plan:** Free (đủ cho demo) hoặc Starter
    - **Region:** chọn region gần Aiven database (ví dụ: Singapore)
-6. Render sẽ tự động đọc `render.yml` cho build command
+6. Render sẽ tự động đọc `Dockerfile` và `render.yml` cho build và deploy
 
 #### Bước 4: Thêm Environment Variables trên Render
 
@@ -327,22 +331,19 @@ Vào tab **Environment** của Web Service, thêm các biến sau:
 | `TRUSTED_PROXIES` | `*` | Cho phép Render proxy |
 
 7. Click **Create Web Service**
-8. Đợi 2-5 phút để Render build và deploy
+8. Đợi 5-10 phút để Render build Docker image và deploy
 
 ### Cấu trúc render.yml
 
-File `render.yml` ở root repository xử lý build và start process:
+File `render.yml` ở root repository xử lý deploy với Docker:
 
 ```yaml
 services:
   - type: web
     name: mobifone
-    env: php
-    buildCommand: |
-      composer install --no-dev --optimize-autoloader
-      npm install
-      npm run build
-    startCommand: php artisan migrate --force && php artisan db:seed --force && php artisan serve --host=0.0.0.0 --port=$PORT
+    env: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
     envVars:
       - key: APP_KEY
         generateValue: true
@@ -378,7 +379,10 @@ services:
         value: log
 ```
 
-> **Lưu ý:** Các biến `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD` được đánh dấu `sync: false` nghĩa là bạn cần nhập thủ công trên Render Dashboard thay vì để trong file YAML.
+> **Lưu ý:** 
+> - `env: docker` bắt buộc để Render sử dụng Docker build
+> - `dockerfilePath: ./Dockerfile` chỉ định đường dẫn đến Dockerfile
+> - Các biến `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD` được đánh dấu `sync: false` nghĩa là bạn cần nhập thủ công trên Render Dashboard
 
 ---
 
