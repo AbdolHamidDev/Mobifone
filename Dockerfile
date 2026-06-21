@@ -106,7 +106,7 @@ RUN echo 'server {' > /etc/nginx/sites-available/default && \
 
 # Start script: thay PORT + khởi động Supervisor + migrate + storage link
 CMD sh -c "\
-    sed -i 's/listen 8080/listen ${PORT}/' /etc/nginx/sites-available/default && \
+    sed -i \"s/listen 8080/listen $PORT/\" /etc/nginx/sites-available/default && \
     /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf & \
     php artisan migrate --force --graceful 2>/dev/null; \
     php artisan storage:link 2>/dev/null || true && \
