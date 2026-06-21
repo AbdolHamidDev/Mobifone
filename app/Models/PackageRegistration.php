@@ -24,7 +24,7 @@ class PackageRegistration extends Model
 
     public function goiData()
     {
-        return $this->belongsTo(GoiData::class, 'package_id');
+        return $this->belongsTo(Goidata::class, 'package_id');
     }
 
     public function package()
@@ -32,7 +32,7 @@ class PackageRegistration extends Model
         if ($this->type === 'goicuoc') {
             return $this->belongsTo(GoiCuoc::class, 'package_id');
         } elseif ($this->type === 'goidata') {
-            return $this->belongsTo(GoiData::class, 'package_id');
+            return $this->belongsTo(Goidata::class, 'package_id');
         }
         return null;
     }
