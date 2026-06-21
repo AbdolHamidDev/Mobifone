@@ -45,8 +45,30 @@ jobs:
           echo "DB_USERNAME=root" >> .env
           echo "DB_PASSWORD=root" >> .env
 
-      - name: Install dependencies
-        run: composer install --prefer-dist --no-progress --no-suggest
+      - name: Install dependencies (no scripts)
+        run: composer install --prefer-dist --no-progress --no-suggest --no-scripts
+        env:
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_DATABASE: mobifone_test
+          DB_USERNAME: root
+          DB_PASSWORD: root
+
+      - name: Wait for MySQL to be ready
+        run: |
+          for i in {1..30}; do
+            if mysql -h 127.0.0.1 -u root -proot -e "SELECT 1" >/dev/null 2>&1; then
+              echo "MySQL is ready"
+              break
+            fi
+            echo "Waiting for MySQL... ($i/30)"
+            sleep 2
+          done
+
+      - name: Setup database
+        run: |
+          mysql -h 127.0.0.1 -u root -proot mobifone_test < database/sample/mobifone.sql
         env:
           DB_CONNECTION: mysql
           DB_HOST: 127.0.0.1
@@ -65,9 +87,8 @@ jobs:
           DB_USERNAME: root
           DB_PASSWORD: root
 
-      - name: Setup database
-        run: |
-          mysql -h 127.0.0.1 -u root -proot mobifone_test < database/sample/mobifone.sql
+      - name: Run package discovery
+        run: php artisan package:discover --ansi
         env:
           DB_CONNECTION: mysql
           DB_HOST: 127.0.0.1
@@ -129,8 +150,8 @@ jobs:
           echo "DB_USERNAME=root" >> .env
           echo "DB_PASSWORD=root" >> .env
 
-      - name: Install dependencies
-        run: composer install --prefer-dist --no-progress --no-suggest
+      - name: Install dependencies (no scripts)
+        run: composer install --prefer-dist --no-progress --no-suggest --no-scripts
         env:
           DB_CONNECTION: mysql
           DB_HOST: 127.0.0.1
@@ -138,6 +159,17 @@ jobs:
           DB_DATABASE: mobifone_test
           DB_USERNAME: root
           DB_PASSWORD: root
+
+      - name: Wait for MySQL to be ready
+        run: |
+          for i in {1..30}; do
+            if mysql -h 127.0.0.1 -u root -proot -e "SELECT 1" >/dev/null 2>&1; then
+              echo "MySQL is ready"
+              break
+            fi
+            echo "Waiting for MySQL... ($i/30)"
+            sleep 2
+          done
 
       - name: Run Laravel Pint (Code Style)
         run: vendor/bin/pint --test
@@ -171,8 +203,8 @@ jobs:
           echo "DB_USERNAME=root" >> .env
           echo "DB_PASSWORD=root" >> .env
 
-      - name: Install dependencies
-        run: composer install --no-dev --optimize-autoloader --no-progress --no-suggest
+      - name: Install dependencies (no scripts)
+        run: composer install --no-dev --optimize-autoloader --no-progress --no-suggest --no-scripts
         env:
           DB_CONNECTION: mysql
           DB_HOST: 127.0.0.1
