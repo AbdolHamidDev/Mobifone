@@ -81,8 +81,8 @@ EOF
 
 # Start script: khởi động PHP-FPM + Nginx + migrate + storage link
 CMD sh -c "\
-    service php8.2-fpm start && \
-    service nginx start && \
+    php-fpm8.2 -D && \
+    nginx && \
     php artisan migrate --force --graceful 2>/dev/null; \
     php artisan storage:link 2>/dev/null || true && \
     tail -f /var/log/nginx/access.log /var/log/nginx/error.log \
