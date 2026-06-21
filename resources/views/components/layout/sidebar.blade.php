@@ -27,13 +27,13 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('goicuocs.danhsach') }}" class="nav-link">
+                    <a href="{{ route('goicuocs.index') }}" class="nav-link">
                         <i class="nav-icon fas fa-box"></i>
                         <p>Gói cước</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('sothuebao.index') }}" class="nav-link">
+                    <a href="{{ route('so-thue-bao.index') }}" class="nav-link">
                         <i class="nav-icon fas fa-mobile-alt"></i>
                         <p>Số thuê bao</p>
                     </a>
@@ -45,7 +45,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('tintuc.danhsach') }}" class="nav-link">
+                    <a href="{{ route('news.index') }}" class="nav-link">
                         <i class="nav-icon fas fa-newspaper"></i>
                         <p>Tin tức & KM</p>
                     </a>
