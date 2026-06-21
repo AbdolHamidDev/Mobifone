@@ -513,7 +513,13 @@ class GoicuocDetailSeeder extends Seeder
         }
 
         foreach ($details as $detail) {
-            GoicuocDetail::create($detail);
+            GoicuocDetail::updateOrCreate(
+                [
+                    'goicuoc_id' => $detail['goicuoc_id'],
+                    'key' => $detail['key']
+                ],
+                $detail
+            );
         }
     }
 }

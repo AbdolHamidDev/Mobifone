@@ -69,7 +69,10 @@ class OrderSeeder extends Seeder
         }
 
         foreach ($orders as $order) {
-            Order::create($order);
+            Order::updateOrCreate(
+                ['order_code' => $order['order_code']],
+                $order
+            );
         }
     }
 }

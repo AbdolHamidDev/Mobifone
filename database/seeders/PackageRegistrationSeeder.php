@@ -42,7 +42,14 @@ class PackageRegistrationSeeder extends Seeder
         }
 
         foreach ($registrations as $registration) {
-            PackageRegistration::create($registration);
+            PackageRegistration::updateOrCreate(
+                [
+                    'phone_number' => $registration['phone_number'],
+                    'package_id' => $registration['package_id'],
+                    'type' => $registration['type']
+                ],
+                $registration
+            );
         }
     }
 }

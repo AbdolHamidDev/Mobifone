@@ -56,7 +56,10 @@ class SoThueBaoSeeder extends Seeder
         ];
 
         foreach ($soThueBaos as $soThueBao) {
-            SoThueBao::create($soThueBao);
+            SoThueBao::updateOrCreate(
+                ['so_thue_bao' => $soThueBao['so_thue_bao']],
+                $soThueBao
+            );
         }
     }
 }

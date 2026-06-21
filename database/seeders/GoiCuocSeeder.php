@@ -508,7 +508,10 @@ class GoiCuocSeeder extends Seeder
         ];
 
         foreach ($goiCuocData as $data) {
-            GoiCuoc::create($data);
+            GoiCuoc::updateOrCreate(
+                ['ten_goicuoc' => $data['ten_goicuoc']],
+                $data
+            );
         }
     }
 }
