@@ -268,7 +268,7 @@ Route::post('/khachhang/goicuoc/store', [CancellationController::class, 'store']
  // API DataTables lịch sử hủy
  Route::get('/api/lich-su-huy-goi', [CancellationController::class, 'apiIndex'])->name('cancellations.apiIndex');
  // hiệu lực thời gian gói cước
- Route::get('/api/lich-su-huy-goi/subscriptions', [CancellationController::class, 'apiSubscriptions'])->name('khachhang.apiSubscriptions');
+ Route::get('/api/lich-su-huy-goi/subscriptions', [CancellationController::class, 'apiSubscriptions'])->name('cancellations.apiSubscriptions');
 
 
 
