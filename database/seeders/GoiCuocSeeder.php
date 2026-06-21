@@ -10,7 +10,7 @@ class GoiCuocSeeder extends Seeder
     public function run()
     {
         $goiCuocData = [
-            // Gói cước Global Saving
+            // Gói cước Thoại Quốc Tế
             [
                 'ten_goicuoc' => 'VoIP 1313 - TQT9',
                 'gia' => 90000,
@@ -18,7 +18,7 @@ class GoiCuocSeeder extends Seeder
                 'dung_luong' => 1,
                 'don_vi_dung_luong' => 'GB',
                 'status' => 1,
-                'loai_goicuoc' => 'global_saving'
+                'loai_goicuoc' => 'thoai_quoc_te'
             ],
             [
                 'ten_goicuoc' => 'VoIP 1313 - TQT19',
@@ -27,7 +27,7 @@ class GoiCuocSeeder extends Seeder
                 'dung_luong' => 2,
                 'don_vi_dung_luong' => 'GB',
                 'status' => 1,
-                'loai_goicuoc' => 'global_saving'
+                'loai_goicuoc' => 'thoai_quoc_te'
             ],
             [
                 'ten_goicuoc' => 'VoIP 1313 - TQT49',
@@ -36,7 +36,7 @@ class GoiCuocSeeder extends Seeder
                 'dung_luong' => 5,
                 'don_vi_dung_luong' => 'GB',
                 'status' => 1,
-                'loai_goicuoc' => 'global_saving'
+                'loai_goicuoc' => 'thoai_quoc_te'
             ],
             [
                 'ten_goicuoc' => 'VoIP 1313 - TQT99',
@@ -45,7 +45,7 @@ class GoiCuocSeeder extends Seeder
                 'dung_luong' => 10,
                 'don_vi_dung_luong' => 'GB',
                 'status' => 1,
-                'loai_goicuoc' => 'global_saving'
+                'loai_goicuoc' => 'thoai_quoc_te'
             ],
             [
                 'ten_goicuoc' => 'VoIP 1313 - TQT199',
@@ -54,7 +54,7 @@ class GoiCuocSeeder extends Seeder
                 'dung_luong' => 20,
                 'don_vi_dung_luong' => 'GB',
                 'status' => 1,
-                'loai_goicuoc' => 'global_saving'
+                'loai_goicuoc' => 'thoai_quoc_te'
             ],
             [
                 'ten_goicuoc' => 'VoIP 1313 - TQT299',
@@ -63,10 +63,10 @@ class GoiCuocSeeder extends Seeder
                 'dung_luong' => 30,
                 'don_vi_dung_luong' => 'GB',
                 'status' => 1,
-                'loai_goicuoc' => 'global_saving'
+                'loai_goicuoc' => 'thoai_quoc_te'
             ],
 
-            // Gói cước Hàn Quốc
+            // Gói cước Chuyển Vùng Quốc Tế
             [
                 'ten_goicuoc' => 'Combo Hàn Quốc 1',
                 'gia' => 350000,
@@ -74,7 +74,7 @@ class GoiCuocSeeder extends Seeder
                 'dung_luong' => 2,
                 'don_vi_dung_luong' => 'GB',
                 'status' => 1,
-                'loai_goicuoc' => 'han_quoc'
+                'loai_goicuoc' => 'chuyen_vung_quoc_te'
             ],
             [
                 'ten_goicuoc' => 'Combo Hàn Quốc 2',
@@ -83,10 +83,10 @@ class GoiCuocSeeder extends Seeder
                 'dung_luong' => 5,
                 'don_vi_dung_luong' => 'GB',
                 'status' => 1,
-                'loai_goicuoc' => 'han_quoc'
+                'loai_goicuoc' => 'chuyen_vung_quoc_te'
             ],
 
-            // Gói cước Tích hợp trong nước & quốc tế
+            // Gói cước Combo trong nước
             [
                 'ten_goicuoc' => 'Gói MobiF MF199QT',
                 'gia' => 199000,
@@ -94,7 +94,7 @@ class GoiCuocSeeder extends Seeder
                 'dung_luong' => 4,
                 'don_vi_dung_luong' => 'GB',
                 'status' => 1,
-                'loai_goicuoc' => 'tich_hop'
+                'loai_goicuoc' => 'combo_trong_nuoc'
             ],
             [
                 'ten_goicuoc' => 'Gói MobiF MF149QT',
@@ -103,7 +103,7 @@ class GoiCuocSeeder extends Seeder
                 'dung_luong' => 3,
                 'don_vi_dung_luong' => 'GB',
                 'status' => 1,
-                'loai_goicuoc' => 'tich_hop'
+                'loai_goicuoc' => 'combo_trong_nuoc'
             ],
             [
                 'ten_goicuoc' => 'Gói MobiF MF99QT',
@@ -112,10 +112,10 @@ class GoiCuocSeeder extends Seeder
                 'dung_luong' => 2,
                 'don_vi_dung_luong' => 'GB',
                 'status' => 1,
-                'loai_goicuoc' => 'tich_hop'
+                'loai_goicuoc' => 'combo_trong_nuoc'
             ],
 
-            // Gói cước Khách hàng doanh nghiệp
+            // Gói cước Doanh nghiệp
             [
                 'ten_goicuoc' => 'Gói FClass',
                 'gia' => 500000,
