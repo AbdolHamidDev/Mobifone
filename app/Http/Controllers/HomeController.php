@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Conversation;
 use App\Models\DichVu;
-use App\Models\Goicuoc;
+use App\Models\GoiCuoc;
 use App\Models\Goidata;
 use App\Models\LoaiThueBao;
 use App\Models\News;
@@ -22,7 +22,7 @@ class HomeController extends Controller
     public function index()
 {
     // Lấy danh sách goicuoc (giữ nguyên)
-    $goicuocs = Goicuoc::all();
+    $goicuocs = GoiCuoc::all();
 
     // Lấy danh sách goidatas
     $goidatas = Goidata::all();
