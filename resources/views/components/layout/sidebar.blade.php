@@ -12,7 +12,7 @@
             <div class="info">
                 <a href="#" class="d-block">
                     <i class="fas fa-user-circle mr-2"></i>
-                    {{ Auth::user()->name ?? 'Admin' }}
+                    {{ auth()->user()->name ?? 'Admin' }}
                 </a>
             </div>
         </div>
