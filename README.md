@@ -39,22 +39,22 @@
   <hr>
 </div>
 
-## 📖 Giới thiệu
+## Giới thiệu
 
 **Mobifone** là nền tảng thương mại điện tử viễn thông toàn diện mã nguồn mở, được xây dựng bằng **Laravel 11** bởi sinh viên **Trường Đại học An Giang (AGU)**. Hệ thống cho phép khách hàng tra cứu, đăng ký các gói cước di động, mua SIM số trực tuyến và quản lý dịch vụ viễn thông Mobifone. Dự án tích hợp đầy đủ hệ thống quản trị (Admin Panel) với phân quyền chi tiết, hỗ trợ quy trình nghiệp vụ từ tiếp thị, bán hàng đến chăm sóc khách hàng.
 
-### 🎯 Mục tiêu
+### Mục tiêu
 - Xây dựng hệ thống quản lý dịch vụ viễn thông tập trung
 - Thay thế quy trình thủ công bằng nền tảng số hiện đại
 - Đảm bảo khả năng mở rộng cao và dễ sử dụng
 
-### 🏫 Đơn vị thực hiện
+### Đơn vị thực hiện
 - **Trường Đại học An Giang (AGU)**
 - **Đồ án tốt nghiệp** - Hệ thống quản lý dịch vụ viễn thông Mobifone
 
 ---
 
-## 👤 Tác giả
+## Tác giả
 
 <p align="center">
   <table>
@@ -66,17 +66,17 @@
       </td>
       <td>
         <strong>Abdol Hamid</strong><br>
-        🌐 <a href="https://hamid.id.vn">Portfolio</a><br>
-        💼 <a href="https://www.linkedin.com/in/hamidabdol">LinkedIn</a><br>
-        📧 <a href="mailto:abdolhamid.dev@gmail.com">abdolhamid.dev@gmail.com</a><br>
-        🐙 <a href="https://github.com/AbdolHamidDev">GitHub</a><br>
-        📄 <a href="https://ir.vnulib.edu.vn/entities/publication/75837547-1b9e-4503-a3fb-c90caae01cb3">Báo cáo thực tập (Ấn phẩm khoa học)</a>
+        <a href="https://hamid.id.vn">Portfolio</a><br>
+        <a href="https://www.linkedin.com/in/hamidabdol">LinkedIn</a><br>
+        <a href="mailto:abdolhamid.dev@gmail.com">abdolhamid.dev@gmail.com</a><br>
+        <a href="https://github.com/AbdolHamidDev">GitHub</a><br>
+        <a href="https://ir.vnulib.edu.vn/entities/publication/75837547-1b9e-4503-a3fb-c90caae01cb3">Báo cáo thực tập (Ấn phẩm khoa học)</a>
       </td>
     </tr>
   </table>
 </p>
 
-Nếu bạn thấy dự án hữu ích, hãy ủng hộ tôi một ly cà phê nhé ☕:
+Nếu bạn thấy dự án hữu ích, hãy ủng hộ tôi một ly cà phê nhé:
 
 <p align="center">
   <a href="https://buymeacoffee.com/hamidabdol">
@@ -86,13 +86,13 @@ Nếu bạn thấy dự án hữu ích, hãy ủng hộ tôi một ly cà phê n
 
 ---
 
-## 🚀 Demo trực tiếp
+## Demo trực tiếp
 
 **URL Production:** [https://mobifone.onrender.com](https://mobifone.onrender.com)
 
 ---
 
-## 🛠️ Công nghệ sử dụng
+## Công nghệ sử dụng
 
 | Danh mục | Công nghệ |
 |:---------|:----------|
@@ -112,52 +112,52 @@ Nếu bạn thấy dự án hữu ích, hãy ủng hộ tôi một ly cà phê n
 
 ---
 
-## ✨ Tính năng
+## Tính năng
 
-### 🌐 Giao diện khách hàng
-- 🏠 **Trang chủ** - Banner quảng cáo, gói cước nổi bật, tin tức, đăng ký nhanh
-- 📦 **Gói cước di động** - Tra cứu, lọc theo loại thuê bao (trả trước/trả sau), chi tiết, đăng ký online
-- 📊 **Gói DATA** - Tra cứu gói data 4G/5G với bộ lọc
-- 📞 **Mua SIM số** - Chọn theo kho số, lọc VIP/ thường, đặt mua 2 bước, QR code, tra cứu đơn hàng
-- 🔄 **Chuyển mạng giữ số (MNP)** - Đăng ký chuyển mạng online
-- 🌍 **Dịch vụ quốc tế** - Cước gọi quốc tế, roaming, VoIP, nhà khai thác
-- 🏪 **Cửa hàng** - Tìm cửa hàng Mobifone gần nhất
-- 📰 **Tin tức & KM** - Bài viết khuyến mãi
-- 💼 **Tuyển dụng** - Việc làm, nộp CV online
-- 💬 **Chat hỗ trợ** - Hỗ trợ thời gian thực (cần OTP)
-- 🔐 **Xác thực OTP** - Đăng nhập SMS, tra cứu gói, lịch sử hủy
-- 📄 **Hồ sơ KH** - Gói đã đăng ký, lịch sử hủy
+### Giao diện khách hàng
+- **Trang chủ** - Banner quảng cáo, gói cước nổi bật, tin tức, đăng ký nhanh
+- **Gói cước di động** - Tra cứu, lọc theo loại thuê bao (trả trước/trả sau), chi tiết, đăng ký online
+- **Gói DATA** - Tra cứu gói data 4G/5G với bộ lọc
+- **Mua SIM số** - Chọn theo kho số, lọc VIP/ thường, đặt mua 2 bước, QR code, tra cứu đơn hàng
+- **Chuyển mạng giữ số (MNP)** - Đăng ký chuyển mạng online
+- **Dịch vụ quốc tế** - Cước gọi quốc tế, roaming, VoIP, nhà khai thác
+- **Cửa hàng** - Tìm cửa hàng Mobifone gần nhất
+- **Tin tức & KM** - Bài viết khuyến mãi
+- **Tuyển dụng** - Việc làm, nộp CV online
+- **Chat hỗ trợ** - Hỗ trợ thời gian thực (cần OTP)
+- **Xác thực OTP** - Đăng nhập SMS, tra cứu gói, lịch sử hủy
+- **Hồ sơ KH** - Gói đã đăng ký, lịch sử hủy
 
-### 🔧 Hệ thống quản trị
+### Hệ thống quản trị
 
 | Module | Mô tả | Quyền |
 |:-------|:------|:-----:|
-| 👤 **Quản lý nhân viên** | CRUD, gán vai trò | `quản lý nhân viên` |
-| 🔑 **Quản lý vai trò** | Tạo/sửa/xóa vai trò, phân quyền | `quản lý vai trò` |
-| 📦 **Gói cước** | CRUD, Excel, quản lý trạng thái | `quản lý gói cước` |
-| 📡 **Gói DATA** | CRUD, Excel import/export | `quản lý gói data` |
-| 📱 **Số thuê bao** | Quản lý kho SIM, Excel | `quản lý số thuê bao` |
-| 📰 **Tin tức & KM** | Đăng bài, kiểm duyệt, kích hoạt | `quản lý tin tức` |
-| 📋 **Loại thuê bao** | Quản lý danh mục | `quản lý loại thuê bao` |
-| 🔧 **Dịch vụ** | Quản lý dịch vụ GTGT | `quản lý dịch vụ` |
-| 🌏 **Quốc gia** | Quản lý danh mục quốc gia | `quản lý quốc gia` |
-| 📡 **Nhà khai thác** | Quản lý nhà khai thác quốc tế | `quản lý nhà khai thác` |
-| 💰 **Cước quốc tế** | Bảng giá cước gọi | `quản lý cước quốc tế` |
-| 📞 **VoIP** | Gói cước VoIP | `quản lý VoIP` |
-| 📝 **Đăng ký gói** | Danh sách đăng ký | `quản lý đăng ký gói` |
-| 🎨 **Gói tự tạo** | Gói cước khách hàng tạo | `quản lý gói tự tạo` |
-| 📄 **Đơn hàng** | Quản lý đăng ký, thanh toán, giao hàng | `quản lý đăng ký` |
-| 🔄 **Chuyển mạng** | Quản lý chuyển đổi mạng | `quản lý chuyển mạng` |
-| 💼 **Tuyển dụng** | Quản lý tin tuyển dụng | `quản lý tuyển dụng` |
-| 📑 **CV** | Quản lý CV ứng viên | `quản lý CV` |
-| 🏪 **Cửa hàng** | Quản lý danh sách | `quản lý cửa hàng` |
-| 📞 **Liên hệ** | Yêu cầu liên hệ | `quản lý liên hệ` |
-| ❌ **Hủy gói** | Lịch sử hủy gói | `quản lý hủy gói` |
-| 💬 **Chat** | Quản lý tin nhắn | `quản lý chat` |
+| **Quản lý nhân viên** | CRUD, gán vai trò | `quản lý nhân viên` |
+| **Quản lý vai trò** | Tạo/sửa/xóa vai trò, phân quyền | `quản lý vai trò` |
+| **Gói cước** | CRUD, Excel, quản lý trạng thái | `quản lý gói cước` |
+| **Gói DATA** | CRUD, Excel import/export | `quản lý gói data` |
+| **Số thuê bao** | Quản lý kho SIM, Excel | `quản lý số thuê bao` |
+| **Tin tức & KM** | Đăng bài, kiểm duyệt, kích hoạt | `quản lý tin tức` |
+| **Loại thuê bao** | Quản lý danh mục | `quản lý loại thuê bao` |
+| **Dịch vụ** | Quản lý dịch vụ GTGT | `quản lý dịch vụ` |
+| **Quốc gia** | Quản lý danh mục quốc gia | `quản lý quốc gia` |
+| **Nhà khai thác** | Quản lý nhà khai thác quốc tế | `quản lý nhà khai thác` |
+| **Cước quốc tế** | Bảng giá cước gọi | `quản lý cước quốc tế` |
+| **VoIP** | Gói cước VoIP | `quản lý VoIP` |
+| **Đăng ký gói** | Danh sách đăng ký | `quản lý đăng ký gói` |
+| **Gói tự tạo** | Gói cước khách hàng tạo | `quản lý gói tự tạo` |
+| **Đơn hàng** | Quản lý đăng ký, thanh toán, giao hàng | `quản lý đăng ký` |
+| **Chuyển mạng** | Quản lý chuyển đổi mạng | `quản lý chuyển mạng` |
+| **Tuyển dụng** | Quản lý tin tuyển dụng | `quản lý tuyển dụng` |
+| **CV** | Quản lý CV ứng viên | `quản lý CV` |
+| **Cửa hàng** | Quản lý danh sách | `quản lý cửa hàng` |
+| **Liên hệ** | Yêu cầu liên hệ | `quản lý liên hệ` |
+| **Hủy gói** | Lịch sử hủy gói | `quản lý hủy gói` |
+| **Chat** | Quản lý tin nhắn | `quản lý chat` |
 
 ---
 
-## 🗄️ Cơ sở dữ liệu
+## Cơ sở dữ liệu
 
 Hệ thống gồm **25+ bảng** chính:
 
@@ -186,18 +186,18 @@ Hệ thống gồm **25+ bảng** chính:
 
 ---
 
-## 🎬 Demo
+## Demo
 
 <table>
   <tr>
     <td align="center">
-      <strong>📱 Lọc gói cước</strong><br><br>
+      <strong>Lọc gói cước</strong><br><br>
       <a href="https://github.com/AbdolHamidDev/Mobifone/blob/master/public/assets/screenshots/demoGoicuoc.gif?raw=true">
         <img src="https://github.com/AbdolHamidDev/Mobifone/blob/master/public/assets/screenshots/demoGoicuoc.gif?raw=true" width="500" alt="Demo Gói cước">
       </a>
     </td>
     <td align="center">
-      <strong>📞 Mua SIM số</strong><br><br>
+      <strong>Mua SIM số</strong><br><br>
       <a href="https://github.com/AbdolHamidDev/Mobifone/blob/master/public/assets/screenshots/demoSim.gif?raw=true">
         <img src="https://github.com/AbdolHamidDev/Mobifone/blob/master/public/assets/screenshots/demoSim.gif?raw=true" width="500" alt="Demo SIM">
       </a>
@@ -206,7 +206,7 @@ Hệ thống gồm **25+ bảng** chính:
   <tr>
     <td colspan="2" align="center">
       <br>
-      <strong>🔍 Tra cứu đơn hàng</strong><br><br>
+      <strong>Tra cứu đơn hàng</strong><br><br>
       <a href="https://github.com/AbdolHamidDev/Mobifone/blob/master/public/assets/screenshots/democheck.gif?raw=true">
         <img src="https://github.com/AbdolHamidDev/Mobifone/blob/master/public/assets/screenshots/democheck.gif?raw=true" width="600" alt="Demo Tra cứu">
       </a>
@@ -216,7 +216,7 @@ Hệ thống gồm **25+ bảng** chính:
 
 ---
 
-## ⚡ Cài đặt nhanh
+## Cài đặt nhanh
 
 ### Yêu cầu
 
@@ -252,11 +252,11 @@ npm run build
 php artisan serve
 ```
 
-> **⚠️ Quan trọng:** File `database/sample/mobifone.sql` là bắt buộc để ứng dụng hoạt động.
+> **Quan trọng:** File `database/sample/mobifone.sql` là bắt buộc để ứng dụng hoạt động.
 
 ---
 
-## 🚢 Triển khai Production
+## Triển khai Production
 
 ### Deploy trên Render
 
@@ -382,7 +382,7 @@ services:
 
 ---
 
-## ⚙️ Cấu hình
+## Cấu hình
 
 ### Environment Variables
 
@@ -417,7 +417,7 @@ REDIS_PORT=6379
 
 ---
 
-## 🧪 Kiểm thử
+## Kiểm thử
 
 ```bash
 # Chạy toàn bộ test suite
@@ -429,7 +429,7 @@ php artisan test
 
 ---
 
-## 📚 Tài liệu tham khảo
+## Tài liệu tham khảo
 
 - [Laravel 11 Docs](https://laravel.com/docs/11.x)
 - [Tailwind CSS](https://tailwindcss.com/docs)
@@ -441,7 +441,7 @@ php artisan test
 
 ---
 
-## 🤝 Đóng góp
+## Đóng góp
 
 Chúng tôi hoan nghênh mọi đóng góp! Vui lòng:
 
@@ -453,20 +453,20 @@ Chúng tôi hoan nghênh mọi đóng góp! Vui lòng:
 
 ---
 
-## 🙏 Lời cảm ơn
+## Lời cảm ơn
 
-### 👨‍🏫 Giảng viên hướng dẫn - Trường Đại học An Giang
+### Giảng viên hướng dẫn - Trường Đại học An Giang
 - **Người hướng dẫn:** Huỳnh Thanh Việt
 - **Cố vấn học tập, Tiến sĩ Giảng viên:** Huỳnh Lý Thanh Nhàn
 
-### 🎓 Hội đồng bảo vệ
+### Hội đồng bảo vệ
 - Nguyễn Hoàng Tùng
 - Nguyễn Văn Đông
 
-### 💼 Mentor thực tập
+### Mentor thực tập
 - **Mentor tại Mobifone:** Lê Đường
 
-### 🙌 Cảm ơn chung
+### Cảm ơn chung
 - **Trường Đại học An Giang (AGU)** đã tạo điều kiện và hỗ trợ
 - **Mobifone** đã cung cấp API và hỗ trợ
 - **Laravel** framework mạnh mẽ
@@ -474,13 +474,13 @@ Chúng tôi hoan nghênh mọi đóng góp! Vui lòng:
 
 ---
 
-## 📄 Giấy phép
+## Giấy phép
 
 Dự án được cấp phép **MIT License**. Xem [LICENSE](https://opensource.org/licenses/MIT) để biết thêm.
 
 ---
 
-## ☕ Ủng hộ
+## Ủng hộ
 
 Nếu dự án hữu ích, hãy ủng hộ tôi một ly cà phê!
 
@@ -492,22 +492,22 @@ Nếu dự án hữu ích, hãy ủng hộ tôi một ly cà phê!
 
 ---
 
-## 📬 Liên hệ
+## Liên hệ
 
 | Kênh | Link |
 |:-----|:-----|
-| 🌐 **Portfolio** | [https://hamid.id.vn](https://hamid.id.vn) |
-| 💼 **LinkedIn** | [linkedin.com/in/hamidabdol](https://www.linkedin.com/in/hamidabdol) |
-| 🐙 **GitHub** | [github.com/AbdolHamidDev](https://github.com/AbdolHamidDev) |
-| 📧 **Email** | [abdolhamid.dev@gmail.com](mailto:abdolhamid.dev@gmail.com) |
-| 📄 **Báo cáo thực tập** | [Ấn phẩm VNULIB](https://ir.vnulib.edu.vn/entities/publication/75837547-1b9e-4503-a3fb-c90caae01cb3) |
+| **Portfolio** | [https://hamid.id.vn](https://hamid.id.vn) |
+| **LinkedIn** | [linkedin.com/in/hamidabdol](https://www.linkedin.com/in/hamidabdol) |
+| **GitHub** | [github.com/AbdolHamidDev](https://github.com/AbdolHamidDev) |
+| **Email** | [abdolhamid.dev@gmail.com](mailto:abdolhamid.dev@gmail.com) |
+| **Báo cáo thực tập** | [Ấn phẩm VNULIB](https://ir.vnulib.edu.vn/entities/publication/75837547-1b9e-4503-a3fb-c90caae01cb3) |
 
 ---
 
 <div align="center">
   <strong>Đồ án tốt nghiệp - Trường Đại học An Giang (AGU)</strong><br>
   <strong>Hệ thống quản lý dịch vụ viễn thông Mobifone</strong><br>
-  <em>Xây dựng với ❤️ và Laravel</em><br><br>
+  <em>Xây dựng với Laravel</em><br><br>
   <a href="https://github.com/AbdolHamidDev/Mobifone">
     <img src="https://img.shields.io/github/stars/AbdolHamidDev/Mobifone?style=social" alt="GitHub stars">
   </a>
