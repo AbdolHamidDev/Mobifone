@@ -10,6 +10,9 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
+        // Xóa users cũ để tránh trùng lặp
+        User::query()->delete();
+        
         // Tạo tài khoản Admin
         $admin = User::create([
             'name' => 'Nguyễn Văn Admin',
