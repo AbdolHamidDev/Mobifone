@@ -51,7 +51,7 @@
         <div class="flex flex-wrap gap-4">
             @php
                 // Lấy ngẫu nhiên các gói cước chuyển vùng quốc tế
-                $randomGoicuoc = \App\Models\Goicuoc::where('loai_goicuoc', 'chuyen_vung_quoc_te')
+                $randomGoicuoc = \App\Models\GoiCuoc::where('loai_goicuoc', 'chuyen_vung_quoc_te')
                     ->where('status', 1)
                     ->inRandomOrder()
                     ->limit(8) // Giới hạn tối đa 8 gói như code gốc

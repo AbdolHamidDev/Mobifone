@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Goicuoc;
+use App\Models\GoiCuoc;
 use App\Models\GoicuocDetail;
 use Illuminate\Http\Request;
 
@@ -24,7 +24,7 @@ class GoicuocDetailController extends Controller
 
     public function create()
 {
-    $goicuocs = Goicuoc::all(); // Lấy danh sách gói cước
+    $goicuocs = GoiCuoc::all(); // Lấy danh sách gói cước
     return view('admin.goicuoc_chitiet.them', compact('goicuocs'));
 }
 
@@ -108,13 +108,13 @@ class GoicuocDetailController extends Controller
     public function show($goicuoc_id)
     {
         // Lấy thông tin gói cước chính
-        $goi = Goicuoc::findOrFail($goicuoc_id);
+        $goi = GoiCuoc::findOrFail($goicuoc_id);
     
         // Lấy các chi tiết gói cước liên quan
         $goicuocDetails = GoicuocDetail::where('goicuoc_id', $goicuoc_id)->get();
     
         // Lấy các gói cước tương tự (ngoại trừ gói cước hiện tại)
-        $relatedGoicuocs = Goicuoc::where('id', '!=', $goicuoc_id)->take(4)->get();
+        $relatedGoicuocs = GoiCuoc::where('id', '!=', $goicuoc_id)->take(4)->get();
     
         // Trả dữ liệu ra view
         return view('frontend.dichvudidong.goicuoc_chitiet', compact('goi', 'goicuocDetails', 'relatedGoicuocs'));
@@ -124,7 +124,7 @@ class GoicuocDetailController extends Controller
     public function showDetails($id)
     {
         // Lấy thông tin gói cước
-        $goicuocs = Goicuoc::all(); // Danh sách gói cước cho modal
+        $goicuocs = GoiCuoc::all(); // Danh sách gói cước cho modal
         $details = GoicuocDetail::where('goicuoc_id', $id)->paginate(10); // Chi tiết gói cước
     
         return view('admin.goicuoc_chitiet.danhsach', compact('details', 'id', 'goicuocs'));

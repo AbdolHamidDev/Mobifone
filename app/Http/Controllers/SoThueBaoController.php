@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Goicuoc;
+use App\Models\GoiCuoc;
 use Illuminate\Http\Request;
 use App\Models\SoThueBao;
 use Illuminate\Support\Facades\Cache;
@@ -168,7 +168,7 @@ class SoThueBaoController extends Controller
 
         // Lấy thông tin từ cơ sở dữ liệu (nếu cần)
         $thueBao = SoThueBao::with('goicuoc')->findOrFail($dataToCache['so_thue_bao_id']);
-        $goiCuoc = Goicuoc::with(['details' => function ($query) {
+        $goiCuoc = GoiCuoc::with(['details' => function ($query) {
             $query->limit(1);
         }])
             ->where('status', 'active')

@@ -25,7 +25,7 @@ use App\Http\Controllers\QuocGiaController;
 use App\Http\Controllers\NhaKhaiThacController;
 use App\Http\Controllers\GiaCuocQuocTeController;
 use App\Http\Controllers\GoiVoipCuocPhiController;
-use App\Models\Goicuoc;
+use App\Models\GoiCuoc;
 use App\Models\Goidata;
 use App\Http\Controllers\Auth\CustomLoginController;
 use Illuminate\Support\Facades\Auth;
@@ -506,7 +506,7 @@ Route::get('/api/get-countries', [GoiVoipCuocPhiController::class, 'getCountries
 Route::get('/api/get-rates', [GoiVoipCuocPhiController::class, 'getRatesByCountry']);
 
 Route::get('/api/goicuoc', function () {
-    return response()->json(Goicuoc::all());
+    return response()->json(GoiCuoc::all());
 });
 
 Route::get('/api/goidata', function () {

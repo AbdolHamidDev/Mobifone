@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Goicuoc;
+use App\Models\GoiCuoc;
 use App\Models\Order;
 use App\Models\SoThueBao;
 use Illuminate\Http\Request;
@@ -131,7 +131,7 @@ class OrderController extends Controller
 
         // Xác định loại SIM (eSIM hoặc SIM Vật lý)
         $isEsim = $order->sim_type === 'eSIM';
-        $goiCuoc = Goicuoc::find($order->goi_cuoc_id);
+        $goiCuoc = GoiCuoc::find($order->goi_cuoc_id);
 
         // Lấy đường dẫn file QR Code từ storage
         $qrCodeBase64 = null;
@@ -176,7 +176,7 @@ class OrderController extends Controller
     
         // Lấy thông tin số thuê bao và gói cước từ cơ sở dữ liệu
         $soThueBao = SoThueBao::findOrFail($validated['so_thue_bao_id']);
-        $goiCuoc = Goicuoc::findOrFail($validated['goi_cuoc_id']);
+        $goiCuoc = GoiCuoc::findOrFail($validated['goi_cuoc_id']);
     
         // Tạo temp_id và lưu tất cả thông tin vào cache
         $tempId = 'temp_order_' . uniqid(); // Tạo ID tạm thời
@@ -215,7 +215,7 @@ class OrderController extends Controller
         }
     
         $soThueBao = SoThueBao::find($cachedData['so_thue_bao_id']);
-        $goiCuoc = Goicuoc::find($cachedData['goi_cuoc_id']);
+        $goiCuoc = GoiCuoc::find($cachedData['goi_cuoc_id']);
     
         // Sử dụng activation_fee thay vì phi_hoa_mang
         $activationFee = $cachedData['activation_fee'] ?? 0;

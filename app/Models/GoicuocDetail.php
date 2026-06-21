@@ -14,6 +14,6 @@ class GoicuocDetail extends Model
     // Liên kết với Goicuoc
     public function goicuoc()
     {
-        return $this->belongsTo(Goicuoc::class, 'goicuoc_id', 'id');
+        return $this->belongsTo(GoiCuoc::class, 'goicuoc_id', 'id');
     }
 }

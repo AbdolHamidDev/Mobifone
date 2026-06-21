@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Goicuoc;
+use App\Models\GoiCuoc;
 use Illuminate\Http\Request;
 use App\Models\PackageRegistration;
 use Yajra\DataTables\Facades\DataTables;
@@ -116,7 +116,7 @@ class QuanLyGoicuocController extends Controller
     
 
     // Chỉnh sửa gói cước
-    public function edit(Goicuoc $goicuoc)
+    public function edit(GoiCuoc $goicuoc)
     {
         return view('admin.goicuocs.sua', compact('goicuoc'));
     }
@@ -182,13 +182,13 @@ class QuanLyGoicuocController extends Controller
 public function show()
 {
     // Lọc gói cước nổi bật có trạng thái 'active'
-    $goiCuocNoiBat = Goicuoc::where('status', 'active')
+    $goiCuocNoiBat = GoiCuoc::where('status', 'active')
         ->where('loai_goicuoc', 'chuyen_vung_quoc_te')
         ->take(5)
         ->get();
 
     // Lấy tất cả gói cước và kiểm tra trạng thái
-    $goiCuocs = Goicuoc::all()->filter(function ($goi) {
+    $goiCuocs = GoiCuoc::all()->filter(function ($goi) {
         return $goi->status === 'active'; // Lọc chỉ gói cước 'active'
     });
 

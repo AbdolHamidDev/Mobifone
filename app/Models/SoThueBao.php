@@ -24,7 +24,7 @@ class SoThueBao extends Model
 
     public function goicuoc()
 {
-    return $this->belongsTo(Goicuoc::class, 'goicuoc_id');
+    return $this->belongsTo(GoiCuoc::class, 'goicuoc_id');
 }
 
 
