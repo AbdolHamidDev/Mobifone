@@ -27,8 +27,8 @@ class RolePermissionSeeder extends Seeder
         Role::truncate();
 
         // Tạo roles
-        $adminRole = Role::firstOrCreate(['name' => 'admin']);
-        $userRole = Role::firstOrCreate(['name' => 'user']);
+        $adminRole = Role::firstOrCreate(['name' => 'admin'], ['display_name' => 'Quản trị hệ thống']);
+        $userRole = Role::firstOrCreate(['name' => 'user'], ['display_name' => 'Người dùng']);
 
         // Tạo permissions cho các mục hiện có
         $manageGoiCuoc = Permission::firstOrCreate(['name' => 'quản lý gói cước']);
