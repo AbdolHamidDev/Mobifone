@@ -2,28 +2,23 @@
 
 namespace App\Models;
 
-
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Goicuoc extends Model
+class GoiCuoc extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
-        'ten_goicuoc', 'gia', 'thoi_gian', 'dung_luong', 'don_vi_dung_luong', 'status', 'loai_goicuoc'
+        'ten_goicuoc',
+        'gia',
+        'thoi_gian',
+        'dung_luong',
+        'don_vi_dung_luong',
+        'status',
+        'loai_goicuoc',
     ];
 
-
-     // Liên kết với GoicuocDetail
-     public function details()
-{
-    return $this->hasMany(GoicuocDetail::class, 'goicuoc_id', 'id');
-}
-
-public function orders()
-{
-    return $this->hasMany(Order::class, 'goi_cuoc_id');
-}
-
+    public function details(): HasMany
+    {
+        return $this->hasMany(GoicuocDetail::class, 'goicuoc_id');
+    }
 }
