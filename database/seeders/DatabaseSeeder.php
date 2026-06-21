@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             RolePermissionSeeder::class,
             GoiCuocSeeder::class,
             GoicuocDetailSeeder::class,
+            UserSeeder::class,
         ]);
     }
 }
