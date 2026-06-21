@@ -18,6 +18,8 @@ class DatabaseSeeder extends Seeder
             GoiCuocSeeder::class,
             GoicuocDetailSeeder::class,
             SoThueBaoSeeder::class,
+            OrderSeeder::class,
+            PackageRegistrationSeeder::class,
             UserSeeder::class,
         ]);
     }

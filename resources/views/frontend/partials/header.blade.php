@@ -36,6 +36,13 @@
 
                         <li class="scroll-to-section"><a href="{{ url('/khuyen-mai') }}">Khuyến mãi</a></li>
                         <li class="scroll-to-section"><a href="{{ url('/tuyen-dung') }}">Tuyển dụng</a></li>
+                        
+                        <!-- Admin Login Button -->
+                        <li class="scroll-to-section">
+                            <a href="{{ url('/login') }}" class="btn btn-primary btn-sm ms-2" style="background-color: #ff6600; border-color: #ff6600; color: white;">
+                                <i class="fas fa-user-shield"></i> Quản Trị
+                            </a>
+                        </li>
 
                         <!-- User Dropdown -->
                         <li class="has-sub user-dropdown">
