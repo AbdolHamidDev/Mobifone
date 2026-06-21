@@ -262,78 +262,123 @@ php artisan serve
 
 Dự án đã cấu hình sẵn cho **Render**. Live demo: [https://mobifone.onrender.com](https://mobifone.onrender.com)
 
-#### 1. Database (Aiven for MySQL)
+#### Bước 1: Chuẩn bị Database trên Aiven
 
-1. Đăng ký tại [Aiven Console](https://console.aiven.io/)
-2. Tạo service **MySQL** (có free tier)
-3. Chọn region (ví dụ: `aws-ap-southeast-1` - Singapore)
-4. Lấy thông tin từ tab **Connection information**:
-   - Host: `mysql-xxxxx.aivencloud.com`
-   - Port: `3306`
-   - User: `avnadmin`
-   - Password: (mật khẩu của bạn)
-   - Database: `defaultdb`
+1. Đăng ký / đăng nhập tại [Aiven Console](https://console.aiven.io/)
+2. Tạo service mới → chọn **MySQL** (free tier)
+3. Chọn region gần Việt Nam, ví dụ: `aws-ap-southeast-1` (Singapore)
+4. Sau khi service sẵn sàng, vào tab **Connection information** để lấy thông tin:
+   - **Host:** `mysql-xxxxx.aivencloud.com`
+   - **Port:** `3306`
+   - **User:** `avnadmin`
+   - **Password:** (mật khẩu bạn đặt khi tạo service)
+   - **Database:** `defaultdb`
 
-#### 2. Deploy trên Render
+#### Bước 2: Import dữ liệu mẫu vào Aiven
 
-1. Push code lên GitHub (đảm bảo có `render.yml` ở root)
-2. Vào [Render Dashboard](https://dashboard.render.com/)
-3. **New +** → **Web Service** → Connect GitHub repo
-4. Cấu hình:
-   - **Name:** `mobifone`
-   - **Environment:** `PHP`
-   - **Plan:** Free hoặc Starter
-5. Thêm environment variables:
+Trước khi deploy, cần import dữ liệu mẫu vào database Aiven:
 
-```env
-APP_ENV=production
-APP_DEBUG=false
-APP_URL=https://mobifone.onrender.com
+**Cách 1: Dùng Aiven Query Editor (khuyến nghị)**
+- Vào MySQL service trên Aiven Console
+- Chọn tab **Query editor**
+- Mở file `database/sample/mobifone.sql` trong dự án
+- Copy toàn bộ nội dung và paste vào Query editor
+- Click **Execute**
 
-# Database (từ Aiven)
-DB_CONNECTION=mysql
-DB_HOST=mysql-xxxxx.aivencloud.com
-DB_PORT=3306
-DB_DATABASE=defaultdb
-DB_USERNAME=avnadmin
-DB_PASSWORD=your_password
-
-# Render-specific
-SESSION_DRIVER=cookie
-CACHE_STORE=file
-QUEUE_CONNECTION=sync
-BROADCAST_DRIVER=log
-MAIL_MAILER=log
-TRUSTED_PROXIES=*
-```
-
-6. Click **Create Web Service**
-7. Đợi 2-5 phút để build hoàn tất
-
-#### 3. Import dữ liệu mẫu (nếu cần)
-
-**Cách 1: Aiven Console**
-- Vào MySQL service → **Query editor**
-- Paste nội dung `database/sample/mobifone.sql`
-- Execute
-
-**Cách 2: MySQL CLI**
+**Cách 2: Dùng MySQL CLI**
 ```bash
 mysql -h mysql-xxxxx.aivencloud.com -P 3306 -u avnadmin -p defaultdb < database/sample/mobifone.sql
 ```
 
-### Cấu hình render.yml
+#### Bước 3: Deploy Web Service trên Render
 
-File `render.yml` xử lý build process:
+1. Đảm bảo code đã push lên GitHub và có file `render.yml` ở root repository
+2. Vào [Render Dashboard](https://dashboard.render.com/)
+3. Click **New +** → **Web Service**
+4. Connect GitHub repository của bạn
+5. Cấu hình cơ bản:
+   - **Name:** `mobifone`
+   - **Environment:** `PHP`
+   - **Plan:** Free (đủ cho demo) hoặc Starter
+   - **Region:** chọn region gần Aiven database (ví dụ: Singapore)
+6. Render sẽ tự động đọc `render.yml` cho build command
+
+#### Bước 4: Thêm Environment Variables trên Render
+
+Vào tab **Environment** của Web Service, thêm các biến sau:
+
+| Key | Value | Ghi chú |
+|:---|:------|:--------|
+| `APP_ENV` | `production` | |
+| `APP_DEBUG` | `false` | Tắt debug ở production |
+| `APP_URL` | `https://mobifone.onrender.com` | Thay bằng domain thực tế |
+| `APP_KEY` | *(Render tự generate)* | Hoặc chạy `php artisan key:generate` |
+| `DB_CONNECTION` | `mysql` | |
+| `DB_HOST` | `mysql-xxxxx.aivencloud.com` | Host từ Aiven |
+| `DB_PORT` | `3306` | |
+| `DB_DATABASE` | `defaultdb` | Từ Aiven |
+| `DB_USERNAME` | `avnadmin` | Từ Aiven |
+| `DB_PASSWORD` | `your_password` | Password từ Aiven |
+| `SESSION_DRIVER` | `cookie` | Render không hỗ trợ session database |
+| `CACHE_STORE` | `file` | |
+| `QUEUE_CONNECTION` | `sync` | |
+| `BROADCAST_DRIVER` | `log` | Tắt Pusher realtime |
+| `MAIL_MAILER` | `log` | Log mail thay vì gửi thật |
+| `TRUSTED_PROXIES` | `*` | Cho phép Render proxy |
+
+7. Click **Create Web Service**
+8. Đợi 2-5 phút để Render build và deploy
+
+### Cấu trúc render.yml
+
+File `render.yml` ở root repository xử lý build và start process:
 
 ```yaml
-buildCommand: |
-  composer install --no-dev --optimize-autoloader
-  npm install
-  npm run build
-
-startCommand: php artisan migrate --force && php artisan db:seed --force && php artisan serve --host=0.0.0.0 --port=$PORT
+services:
+  - type: web
+    name: mobifone
+    env: php
+    buildCommand: |
+      composer install --no-dev --optimize-autoloader
+      npm install
+      npm run build
+    startCommand: php artisan migrate --force && php artisan db:seed --force && php artisan serve --host=0.0.0.0 --port=$PORT
+    envVars:
+      - key: APP_KEY
+        generateValue: true
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false
+      - key: APP_URL
+        value: https://mobifone.onrender.com
+      - key: TRUSTED_PROXIES
+        value: "*"
+      - key: DB_CONNECTION
+        value: mysql
+      - key: DB_HOST
+        sync: false
+      - key: DB_PORT
+        sync: false
+      - key: DB_DATABASE
+        sync: false
+      - key: DB_USERNAME
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: SESSION_DRIVER
+        value: cookie
+      - key: CACHE_STORE
+        value: file
+      - key: QUEUE_CONNECTION
+        value: sync
+      - key: BROADCAST_DRIVER
+        value: log
+      - key: MAIL_MAILER
+        value: log
 ```
+
+> **Lưu ý:** Các biến `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD` được đánh dấu `sync: false` nghĩa là bạn cần nhập thủ công trên Render Dashboard thay vì để trong file YAML.
 
 ---
 
