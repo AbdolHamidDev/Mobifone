@@ -10,16 +10,15 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        // Xóa users cũ để tránh trùng lặp
-        User::query()->delete();
-        
-        // Tạo tài khoản Admin
-        $admin = User::create([
-            'name' => 'Nguyễn Văn Admin',
-            'email' => 'admin@mobifone.com',
-            'password' => Hash::make('admin123'),
-            'email_verified_at' => now(),
-        ]);
+        // Tạo hoặc cập nhật tài khoản Admin (tránh trùng lặp)
+        $admin = User::updateOrCreate(
+            ['email' => 'admin@mobifone.com'],
+            [
+                'name' => 'Nguyễn Văn Admin',
+                'password' => Hash::make('admin123'),
+                'email_verified_at' => now(),
+            ]
+        );
         $admin->assignRole('admin');
 
         // Tạo tài khoản Nhân viên
