@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\SoThueBao;
 use App\Models\GoiCuoc;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 class OrderSeeder extends Seeder
 {
@@ -61,7 +62,7 @@ class OrderSeeder extends Seeder
                 'trang_thai' => $trangThai,
                 'da_nhan_hang' => $trangThai === 'hoàn thành' ? 1 : 0,
                 'qr_code' => 'NO_QR_CODE',
-                'order_code' => 'ORD-' . strtoupper(uniqid()),
+                'order_code' => 'ORD-' . strtoupper(Str::random(6)),
                 'created_at' => $createdAt,
                 'updated_at' => $createdAt,
             ];
