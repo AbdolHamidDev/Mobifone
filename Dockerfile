@@ -44,6 +44,10 @@ COPY --from=node-builder /app/public/build ./public/build
 # Cài đặt PHP dependencies (bỏ qua scripts để tránh lỗi database trong quá trình build)
 RUN composer install --no-dev --optimize-autoloader --no-scripts
 
+# Set proper permissions for storage directory
+RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache && \
+    chmod -R 775 /app/storage /app/bootstrap/cache
+
 # Cấu hình Supervisor để quản lý PHP-FPM + Nginx
 COPY <<'EOF' /etc/supervisor/conf.d/supervisord.conf
 [supervisord]
