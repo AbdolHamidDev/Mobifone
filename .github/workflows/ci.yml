@@ -66,17 +66,6 @@ jobs:
             sleep 2
           done
 
-      - name: Setup database
-        run: |
-          mysql -h 127.0.0.1 -u root -proot mobifone_test < database/sample/mobifone.sql
-        env:
-          DB_CONNECTION: mysql
-          DB_HOST: 127.0.0.1
-          DB_PORT: 3306
-          DB_DATABASE: mobifone_test
-          DB_USERNAME: root
-          DB_PASSWORD: root
-
       - name: Generate application key
         run: php artisan key:generate
         env:
@@ -97,8 +86,8 @@ jobs:
           DB_USERNAME: root
           DB_PASSWORD: root
 
-      - name: Run migrations
-        run: php artisan migrate --force
+      - name: Run fresh migrations
+        run: php artisan migrate:fresh --force
         env:
           DB_CONNECTION: mysql
           DB_HOST: 127.0.0.1
