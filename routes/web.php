@@ -342,7 +342,6 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::middleware(['auth', 'can:quản lý số thuê bao'])->group(function () {
         // số thuê bao
         Route::resource('so-thue-bao', SoThueBaoController::class);
-        Route::get('so-thue-bao/{id}/edit', [SoThueBaoController::class, 'edit'])->name('so-thue-bao.edit');
         //file excel số thuê bao
         Route::get('export-so-thue-bao', [SoThueBaoController::class, 'export'])->name('so-thue-bao.export');
         Route::post('import-so-thue-bao', [SoThueBaoController::class, 'import'])->name('so-thue-bao.import');    
