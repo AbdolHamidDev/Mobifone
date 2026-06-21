@@ -14,7 +14,7 @@ RUN npm run build
 # Stage 2: PHP-FPM + Nginx for production
 FROM php:8.2-fpm
 
-# Cài đặt system dependencies
+# Cài đặt system dependencies + supervisor
 RUN apt-get update && apt-get install -y \
     git \
     curl \
@@ -26,6 +26,7 @@ RUN apt-get update && apt-get install -y \
     libzip-dev \
     nginx \
     libpq-dev \
+    supervisor \
     && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
 
 # Cài đặt Composer
@@ -79,11 +80,36 @@ server {
 }
 EOF
 
-# Start script: khởi động PHP-FPM + Nginx + migrate + storage link
+# Cấu hình Supervisor để quản lý PHP-FPM + Nginx
+COPY <<'EOF' /etc/supervisor/conf.d/supervisord.conf
+[supervisord]
+nodaemon=true
+logfile=/var/log/supervisord.log
+pidfile=/var/run/supervisord.pid
+
+[program:php-fpm]
+command=php-fpm8.2 -F
+autostart=true
+autorestart=true
+stdout_logfile=/dev/stdout
+stdout_logfile_maxbytes=0
+stderr_logfile=/dev/stderr
+stderr_logfile_maxbytes=0
+
+[program:nginx]
+command=nginx -g "daemon off;"
+autostart=true
+autorestart=true
+stdout_logfile=/dev/stdout
+stdout_logfile_maxbytes=0
+stderr_logfile=/dev/stderr
+stderr_logfile_maxbytes=0
+EOF
+
+# Start script: khởi động Supervisor + migrate + storage link
 CMD sh -c "\
-    php-fpm8.2 -D && \
-    nginx && \
+    /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf & \
     php artisan migrate --force --graceful 2>/dev/null; \
     php artisan storage:link 2>/dev/null || true && \
-    tail -f /var/log/nginx/access.log /var/log/nginx/error.log \
+    wait \
 "
