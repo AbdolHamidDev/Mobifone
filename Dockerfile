@@ -44,42 +44,6 @@ COPY --from=node-builder /app/public/build ./public/build
 # Cài đặt PHP dependencies (bỏ qua scripts để tránh lỗi database trong quá trình build)
 RUN composer install --no-dev --optimize-autoloader --no-scripts
 
-# Cấu hình Nginx
-COPY <<'EOF' /etc/nginx/sites-available/default
-server {
-    listen ${PORT};
-    server_name _;
-    root /app/public;
-    index index.php;
-
-    client_max_body_size 50M;
-
-    location / {
-        try_files $uri $uri/ /index.php?$query_string;
-    }
-
-    location = /favicon.ico { access_log off; log_not_found off; }
-    location = /robots.txt  { access_log off; log_not_found off; }
-
-    location ~ \.php$ {
-        fastcgi_pass 127.0.0.1:9000;
-        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
-        include fastcgi_params;
-        fastcgi_hide_header X-Powered-By;
-    }
-
-    location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|webp)$ {
-        expires 1y;
-        add_header Cache-Control "public, immutable";
-        try_files $uri =404;
-    }
-
-    location ~ /\.(?!well-known).* {
-        deny all;
-    }
-}
-EOF
-
 # Cấu hình Supervisor để quản lý PHP-FPM + Nginx
 COPY <<'EOF' /etc/supervisor/conf.d/supervisord.conf
 [supervisord]
@@ -88,7 +52,7 @@ logfile=/var/log/supervisord.log
 pidfile=/var/run/supervisord.pid
 
 [program:php-fpm]
-command=php-fpm8.2 -F
+command=php-fpm -F
 autostart=true
 autorestart=true
 stdout_logfile=/dev/stdout
@@ -106,8 +70,43 @@ stderr_logfile=/dev/stderr
 stderr_logfile_maxbytes=0
 EOF
 
-# Start script: khởi động Supervisor + migrate + storage link
+# Tạo nginx config với placeholder PORT
+RUN echo 'server {' > /etc/nginx/sites-available/default && \
+    echo '    listen 8080;' >> /etc/nginx/sites-available/default && \
+    echo '    server_name _;' >> /etc/nginx/sites-available/default && \
+    echo '    root /app/public;' >> /etc/nginx/sites-available/default && \
+    echo '    index index.php;' >> /etc/nginx/sites-available/default && \
+    echo '' >> /etc/nginx/sites-available/default && \
+    echo '    client_max_body_size 50M;' >> /etc/nginx/sites-available/default && \
+    echo '' >> /etc/nginx/sites-available/default && \
+    echo '    location / {' >> /etc/nginx/sites-available/default && \
+    echo '        try_files $uri $uri/ /index.php?$query_string;' >> /etc/nginx/sites-available/default && \
+    echo '    }' >> /etc/nginx/sites-available/default && \
+    echo '' >> /etc/nginx/sites-available/default && \
+    echo '    location = /favicon.ico { access_log off; log_not_found off; }' >> /etc/nginx/sites-available/default && \
+    echo '    location = /robots.txt  { access_log off; log_not_found off; }' >> /etc/nginx/sites-available/default && \
+    echo '' >> /etc/nginx/sites-available/default && \
+    echo '    location ~ \.php$ {' >> /etc/nginx/sites-available/default && \
+    echo '        fastcgi_pass 127.0.0.1:9000;' >> /etc/nginx/sites-available/default && \
+    echo '        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;' >> /etc/nginx/sites-available/default && \
+    echo '        include fastcgi_params;' >> /etc/nginx/sites-available/default && \
+    echo '        fastcgi_hide_header X-Powered-By;' >> /etc/nginx/sites-available/default && \
+    echo '    }' >> /etc/nginx/sites-available/default && \
+    echo '' >> /etc/nginx/sites-available/default && \
+    echo '    location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|webp)$ {' >> /etc/nginx/sites-available/default && \
+    echo '        expires 1y;' >> /etc/nginx/sites-available/default && \
+    echo '        add_header Cache-Control "public, immutable";' >> /etc/nginx/sites-available/default && \
+    echo '        try_files $uri =404;' >> /etc/nginx/sites-available/default && \
+    echo '    }' >> /etc/nginx/sites-available/default && \
+    echo '' >> /etc/nginx/sites-available/default && \
+    echo '    location ~ /\.(?!well-known).* {' >> /etc/nginx/sites-available/default && \
+    echo '        deny all;' >> /etc/nginx/sites-available/default && \
+    echo '    }' >> /etc/nginx/sites-available/default && \
+    echo '}' >> /etc/nginx/sites-available/default
+
+# Start script: thay PORT + khởi động Supervisor + migrate + storage link
 CMD sh -c "\
+    sed -i 's/listen 8080/listen ${PORT}/' /etc/nginx/sites-available/default && \
     /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf & \
     php artisan migrate --force --graceful 2>/dev/null; \
     php artisan storage:link 2>/dev/null || true && \
