@@ -1,6 +1,6 @@
 FROM php:8.2-fpm
 
-# Cài đặt system dependencies
+# Cài đặt system dependencies + Node.js 20.x
 RUN apt-get update && apt-get install -y \
     git \
     curl \
@@ -13,6 +13,11 @@ RUN apt-get update && apt-get install -y \
     nginx \
     libpq-dev \
     && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
+
+# Cài Node.js 20.x từ NodeSource
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs \
+    && npm install -g npm@latest
 
 # Cài đặt Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
