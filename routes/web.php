@@ -44,6 +44,14 @@ use Illuminate\Support\Facades\Cache;
 
 
 
+// Health check cho FastCron
+Route::get('/health', function () {
+    return response()->json([
+        'status' => 'ok',
+        'timestamp' => now()->toIso8601String(),
+    ]);
+});
+
 // KHU VỰC ADMIN ĐĂNG NHẬP ĐĂNG XUẤT & GỬI MAIL QUÊN MẬT KHẨU
 
     // Hiển thị form quên mật khẩu
